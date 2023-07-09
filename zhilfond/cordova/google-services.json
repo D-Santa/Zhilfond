@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "110519839613",
+    "firebase_url": "https://zhilfond-app.firebaseio.com",
+    "project_id": "zhilfond-app",
+    "storage_bucket": "zhilfond-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110519839613:android:a7a948ecbccacb93",
+        "android_client_info": {
+          "package_name": "app.zhilfond.kz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "110519839613-d0bksf914g0cip9pmulncmorq5p1nuce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC487jmrxf8UyOvtmbREqP3Ax4cfUiN6jA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "110519839613-d0bksf914g0cip9pmulncmorq5p1nuce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

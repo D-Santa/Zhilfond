@@ -1,0 +1,922 @@
+<template>
+	<div class="page">
+		<div class="navbar">
+			<div class="navbar-inner sliding">
+				<div class="left">
+					<a class="link nazad" @Click="backs">
+						<i style="color:#073974;" class="icon icon-back"></i>
+					</a>
+				</div>
+				<div class="title">
+					<font size="3%">{{js 'return this.$route.query.title'}}</font>
+				</div>
+			</div>
+		</div>
+		<div class="page-content">
+			<div class="block">
+				<b><span id="fio">ФИО</span></b>
+				<div class="list no-hairlines-md" style="margin-top:-5px;">
+					<ul>
+						<li class="item-content item-input">
+							<div class="item-inner">
+								<div class="item-input-wrap">
+									<span id="name">Кожахметова Нурсулу Владимировна</span>
+								</div>
+							</div>
+						</li>
+						<b><span id="doljj">Должность</span></b>
+						<li class="item-content item-input">
+							<div class="item-inner">
+								<div class="item-input-wrap input-dropdown-wrap" id="selet">
+
+								</div>
+							</div>
+						</li>
+						<br>
+						<b>
+							<font style="color:#073974;"><span id="data">Дата</span></font>
+						</b>
+						<li class="item-content item-input">
+							<div class="item-inner">
+								<div class="item-input-wrap">
+									<div class="card">
+										<div class="card-content card-content-padding"><span id="text_o">Директор КГУ
+												«Жилищный фонд» акимата города Нур-Султан Кожахметова Нурсулу
+												Владимировна ведет личный прием граждан каждую пятницу с 16.00 до 18.00
+												по адресу: пр.Р.Кошкарбаева, 39.
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+
+			</div>
+
+			<div class="fab fab-right-bottom">
+				<a id="proverka2">
+					<i class="icon f7-icons">add</i>
+				</a>
+			</div>
+
+		</div>
+
+	</div>
+</template>
+<script>
+	export default {
+		methods: {
+			backs: function () {
+				var app = this.$f7;
+				var $$ = this.$$;
+				var router = this.$router;
+				router.back();
+			},
+		},
+		on: {
+			pageInit: function () {
+				var app = this.$f7;
+				var $$ = this.$$;
+				var today = new Date();
+				var router = this.$router;
+				var datas = JSON.parse(localStorage.getItem("f7form-lang"));
+				var test = [];
+				test.push({
+					from: new Date(0, 0, 1),
+					to: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1)
+				});
+
+				function datediff(first, second) {
+					return Math.round((second - first) / (1000 * 60 * 60 * 24));
+				}
+				var today2 = new Date(today.getFullYear(), today.getMonth() + 12, 1);
+				var today3 = new Date();
+				var toodd = new Date();
+				var dnei = datediff(today, today2);
+				for (var tt = 1; tt <= dnei; tt++) {
+					if (today3.getDay().toString() == "3") {
+						var tood = new Date(today3);
+						tood.setDate(tood.getDate() - 7);
+						var tood2 = new Date(today3);
+						toodd = tood2;
+						tood2.setDate(tood2.getDate() - 1);
+						test.push({
+							from: new Date(tood),
+							to: new Date(tood2)
+						});
+					}
+					today3.setDate(today3.getDate() + 1);
+				}
+				toodd.setDate(toodd.getDate() + 1);
+				test.push({
+					from: new Date(toodd),
+					to: new Date(9999, 11, 31)
+				});
+				var calendarModal;
+
+				var dan = [];
+				app.preloader.show('blue');
+				app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: "dan" }, function (otvet) {
+					app.preloader.hide();
+					dan = otvet;
+					if (datas.lang == "ru") {
+						rus(otvet[0]['den'][0]);
+						$$('#text_o').text(otvet[0]['text'][0]);
+						$$('#doljj').text('Должность');
+						$$('#fio').text('ФИО');
+						$$('#name').text(otvet[0]['user'][0]);
+						var dolj = "";
+						for (var g = 0; g < otvet[0]['text'].length; g++)
+							dolj += '<option value="' + g + '">' + otvet[0]['dolj'][g] + '</option>';
+						$$('#selet').html('<select placeholder="Please choose..." id="dolj">' + dolj +
+							'</select>');
+						$$('#data').text('Дата');
+						calendarModal = app.calendar.create({
+							openIn: 'customModal',
+							disabled: test,
+							toolbarCloseText: 'Закрыть',
+							header: true,
+							footer: true,
+							value: [today],
+							dateFormat: 'yyyy-mm-dd',
+							monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+							monthNamesShort: ['Янв', 'Фев', 'Мрт', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Нояб', 'Дек'],
+							dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+							dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+							closeOnSelect: true,
+							headerPlaceholder: 'Выберите дату',
+							firstDay: 1,
+							weekendDays: [0, 6],
+							touchmove: true,
+							on: {
+								dayClick: function (c, dayEl, year, month, day) {
+									var dayy = "", mon = "";
+									if (day < 10) dayy = "0"; else dayy = "";
+									if (c.currentMonth + 1 < 10) mon = "0";
+									app.preloader.show('blue');
+									app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: "proverka", data: year + "-" + mon + (c.currentMonth + 1) + "-" + dayy + day, komu: $$('#name').text() }, function (otvet) {
+										app.preloader.hide();
+										if (otvet[0].message == "ok") {
+											app.dialog.create({
+												title: '<div style="text-align: center;"><font color="red">Личные данные</font></div>',
+												text: "",
+												content: '<div class="list no-hairlines-md">' +
+													'<ul>' +
+													'<li class="item-content item-input item-input-outline">' +
+													'<div class="item-inner">' +
+													'<div class="item-title item-floating-label">Ф.И.О.</div>' +
+													'<div class="item-input-wrap">' +
+													'<input type="text" placeholder="Ф.И.О." id="fios">' +
+													'<span class="input-clear-button"></span>' +
+													'</div>' +
+													'</div>' +
+													'</li>' +
+													'<li class="item-content item-input item-input-outline">' +
+													'<div class="item-inner">' +
+													'<div class="item-title item-floating-label">ИИН</div>' +
+													'<div class="item-input-wrap">' +
+													'<input type="number" placeholder="ИИН" id="iin">' +
+													'<span class="input-clear-button"></span>' +
+													'</div>' +
+													'</div>' +
+													'</li>' +
+													'<li class="item-content item-input item-input-outline">' +
+													'<div class="item-inner">' +
+													'<div class="item-title item-floating-label">Адрес проживания</div>' +
+													'<div class="item-input-wrap">' +
+													'<input type="text" placeholder="Адрес проживания" id="adres">' +
+													'<span class="input-clear-button"></span>' +
+													'</div>' +
+													'</div>' +
+													'</li>' +
+													'<li class="item-content item-input item-input-outline">' +
+													'<div class="item-inner">' +
+													'<div class="item-title item-floating-label">Место работы</div>' +
+													'<div class="item-input-wrap">' +
+													'<input type="text" placeholder="Место работы" id="rabota">' +
+													'<span class="input-clear-button"></span>' +
+													'</div>' +
+													'</div>' +
+													'</li>' +
+													'<li class="item-content item-input item-input-outline">' +
+													'<div class="item-inner">' +
+													'<div class="item-title item-floating-label">Телефон</div>' +
+													'<div class="item-input-wrap">' +
+													'<input type="text" placeholder="Телефон" id="phones">' +
+													'<span class="input-clear-button"></span>' +
+													'</div>' +
+													'</div>' +
+													'</li>' +
+													'</li>' +
+													'<li class="item-content item-input item-input-outline">' +
+													'<div class="item-inner">' +
+													'<div class="item-title item-floating-label">Краткое содержание вопроса</div>' +
+													'<div class="item-input-wrap">' +
+													'<textarea type="text" placeholder="Краткое содержание вопроса" id="comment"></textarea>' +
+													'<span class="input-clear-button"></span>' +
+													'</div>' +
+													'</div>' +
+													'</li>' +
+													'</ul>' +
+													'</div>',
+												on: {
+													opened: function () {
+
+													}
+												},
+												buttons: [
+													{
+														text: 'Закрыть',
+														onClick: function () {
+														}
+													},
+													{
+														text: '<a class="col button button-fill">Записаться</a>',
+														close: false,
+														onClick: function () {
+															if ($$('#fios').val() == "" || $$('#iin').val() == "" || $$('#rabota').val() == "" || $$('#adres').val() == "" || $$('#phone').val() == "" || $$('#comment').val() == "") {
+																var toastCenter = app.toast.create({
+																	text: 'Заполните все поля',
+																	position: 'center',
+																	closeTimeout: 1000,
+																});
+																toastCenter.open();
+															}
+															else {
+																app.preloader.show('blue');
+																app.request.get('https://zhilfondapp.kz/api/zapis.php', { fio: $$('#fios').val(), iin: $$('#iin').val(), adres: $$('#adres').val(), rabota: $$('#rabota').val(), zapros: 'add', data: year + "-" + (c.currentMonth + 1) + "-" + dayy + day, id: app.data.routs.id, comment: $$('#comment').val(), komu: $$('#name').text(), phone: $$('#phones').val() }, function (otvet) {
+																	app.preloader.hide();
+																	if (otvet[0].message == "ok") {
+																		app.dialog.close();
+																		app.dialog.alert('Отправлено', function () {
+																			router.back();
+																			setTimeout(function () {
+																				router.navigate('/moi_zap/?title=' + $$('.moi_zap').text());
+																			}, 500);
+																		});
+																	}
+																	else {
+																		var toastCenter = app.toast.create({
+																			text: 'Выбранная дата забита, выберите другую дату',
+																			position: 'center',
+																			closeTimeout: 1000,
+																		});
+																		toastCenter.open();
+																	}
+																},
+																	function () {
+																		app.preloader.hide();
+																		app.dialog.alert('Нет подключения к интернету');
+																	}, 'json');
+															}
+														}
+													}
+												],
+
+											}).open();
+										}
+										else {
+											var toastCenter = app.toast.create({
+												text: 'Выбранная дата занято, выберите другую дату',
+												position: 'center',
+												closeTimeout: 2000,
+											});
+											toastCenter.open();
+										}
+									},
+										function () {
+											app.preloader.hide();
+											app.dialog.alert('Нет подключения к интернету');
+										}, 'json');
+									//app.dialog.alert(year+"-"+(c.currentMonth+1)+"-"+dayy+day);
+
+								}
+							}
+						});
+
+
+					}
+					else {
+						kaz(otvet[0]['den'][0]);
+						$$('#text_o').text(otvet[0]['textkaz'][0]);
+						$$('#doljj').text('Лауазым');
+						$$('#fio').text('ТАӘ');
+						$$('#name').text(otvet[0]['userkaz'][0]);
+						var dolj = "";
+						for (var g = 0; g < otvet[0]['textkaz'].length; g++)
+							dolj += '<option value="' + g + '">' + otvet[0]['doljkaz'][g] + '</option>';
+						$$('#selet').html('<select placeholder="Please choose..." id="dolj">' + dolj +
+							'</select>');
+						$$('#data').text('Уақыты');
+						calendarModal = app.calendar.create({
+							openIn: 'customModal',
+							disabled: test,
+							toolbarCloseText: 'Жабу',
+							header: true,
+							footer: true,
+							value: [today],
+							dateFormat: 'yyyy-mm-dd',
+							monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+							monthNamesShort: ['Янв', 'Фев', 'Мрт', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Нояб', 'Дек'],
+							dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+							dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+							closeOnSelect: true,
+							headerPlaceholder: 'Күнді таңдау',
+							firstDay: 1,
+							weekendDays: [0, 6],
+							touchmove: true,
+							on: {
+								dayClick: function (c, dayEl, year, month, day) {
+									var dayy = "", mon = "";
+									if (day < 10) dayy = "0"; else dayy = "";
+									if (c.currentMonth + 1 < 10) mon = "0";
+									app.preloader.show('blue');
+									app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: "proverka", data: year + "-" + mon + (c.currentMonth + 1) + "-" + dayy + day, komu: $$('#name').text() }, function (otvet) {
+										app.preloader.hide();
+										if (otvet[0].message == "ok") {
+											app.dialog.create({
+												title: '<div style="text-align: center;"><font color="red">Жеке мәлімет</font></div>',
+												text: "",
+
+												content: '<div class="list no-hairlines-md">' +
+													'<ul>' +
+													'<li class="item-content item-input item-input-outline">' +
+													'<div class="item-inner">' +
+													'<div class="item-title item-floating-label">Т.А.Ә</div>' +
+													'<div class="item-input-wrap">' +
+													'<input type="text" placeholder="Т.А.Ә" id="fios">' +
+													'<span class="input-clear-button"></span>' +
+													'</div>' +
+													'</div>' +
+													'</li>' +
+													'<li class="item-content item-input item-input-outline">' +
+													'<div class="item-inner">' +
+													'<div class="item-title item-floating-label">ЖСН</div>' +
+													'<div class="item-input-wrap">' +
+													'<input type="number" placeholder="ЖСН" id="iin">' +
+													'<span class="input-clear-button"></span>' +
+													'</div>' +
+													'</div>' +
+													'</li>' +
+													'<li class="item-content item-input item-input-outline">' +
+													'<div class="item-inner">' +
+													'<div class="item-title item-floating-label">Мекен-жайы</div>' +
+													'<div class="item-input-wrap">' +
+													'<input type="text" placeholder="Мекен-жайы" id="adres">' +
+													'<span class="input-clear-button"></span>' +
+													'</div>' +
+													'</div>' +
+													'</li>' +
+													'<li class="item-content item-input item-input-outline">' +
+													'<div class="item-inner">' +
+													'<div class="item-title item-floating-label">Жұмыс орны</div>' +
+													'<div class="item-input-wrap">' +
+													'<input type="text" placeholder="Жұмыс орны" id="rabota">' +
+													'<span class="input-clear-button"></span>' +
+													'</div>' +
+													'</div>' +
+													'</li>' +
+													'<li class="item-content item-input item-input-outline">' +
+													'<div class="item-inner">' +
+													'<div class="item-title item-floating-label">Телефон</div>' +
+													'<div class="item-input-wrap">' +
+													'<input type="text" placeholder="Телефон" id="phones">' +
+													'<span class="input-clear-button"></span>' +
+													'</div>' +
+													'</div>' +
+													'</li>' +
+													'<li class="item-content item-input item-input-outline">' +
+													'<div class="item-inner">' +
+													'<div class="item-title item-floating-label">Сұрақтың қысқаша мазмұны</div>' +
+													'<div class="item-input-wrap">' +
+													'<textarea type="text" placeholder="Сұрақтың қысқаша мазмұны" id="comment"></textarea>' +
+													'<span class="input-clear-button"></span>' +
+													'</div>' +
+													'</div>' +
+													'</li>' +
+													'</ul>' +
+													'</div>',
+												on: {
+													opened: function () {
+
+													}
+												},
+												buttons: [
+													{
+														text: 'Жабу',
+														onClick: function () {
+														}
+													},
+													{
+														text: '<a class="col button button-fill">Жазылу</a>',
+														close: false,
+														onClick: function () {
+															if ($$('#fios').val() == "" || $$('#iin').val() == "" || $$('#rabota').val() == "" || $$('#adres').val() == "" || $$('#phone').val() == "" || $$('#comment').val() == "") {
+																var toastCenter = app.toast.create({
+																	text: 'Барлық поляны толтырыңыз',
+																	position: 'center',
+																	closeTimeout: 1000,
+																});
+																toastCenter.open();
+															}
+															else {
+																app.preloader.show('blue');
+																app.request.get('https://zhilfondapp.kz/api/zapis.php', { fio: $$('#fios').val(), iin: $$('#iin').val(), adres: $$('#adres').val(), rabota: $$('#rabota').val(), zapros: 'add', data: year + "-" + (c.currentMonth + 1) + "-" + dayy + day, id: app.data.routs.id, comment: $$('#comment').val(), komu: $$('#name').text(), phone: $$('#phones').val() }, function (otvet) {
+																	app.preloader.hide();
+																	if (otvet[0].message == "ok") {
+																		app.dialog.close();
+																		app.dialog.alert('Жіберілді', function () {
+
+																		});
+																	}
+																	else {
+																		var toastCenter = app.toast.create({
+																			text: 'Бұл күн бос емес, басқа күнді таңданыз',
+																			position: 'center',
+																			closeTimeout: 1000,
+																		});
+																		toastCenter.open();
+																	}
+																},
+																	function () {
+																		app.preloader.hide();
+																		app.dialog.alert('Нет подключения к интернету');
+																	}, 'json');
+															}
+														}
+													}
+												],
+
+											}).open();
+
+										}
+										else {
+											var toastCenter = app.toast.create({
+												text: 'Таңдалған күн бос емес, басқа күнді таңданыз',
+												position: 'center',
+												closeTimeout: 2000,
+											});
+											toastCenter.open();
+										}
+									},
+										function () {
+											app.preloader.hide();
+											app.dialog.alert('Нет подключения к интернету');
+										}, 'json');
+									//app.dialog.alert(year+"-"+(c.currentMonth+1)+"-"+dayy+day);
+
+								}
+							}
+						});
+					}
+
+					$$('#dolj').change(function () {
+						var values = $$('#dolj').val();
+						if (datas.lang == "ru") {
+							$$('#name').text(otvet[0]['user'][parseInt(values)]);
+							rus(otvet[0]['den'][parseInt(values)]);
+							$$('#text_o').text(otvet[0]['text'][parseInt(values)]);
+						}
+						else {
+							$$('#name').text(otvet[0]['userkaz'][parseInt(values)]);
+							kaz(otvet[0]['den'][parseInt(values)]);
+							$$('#text_o').text(otvet[0]['textkaz'][parseInt(values)]);
+						}
+
+						/*if ($$('#dolj').val()=="Директор"){
+							$$('#name').text('Кожахметова Нурсулу Владимировна');
+							if (datas.lang=="ru"){
+						  rus("5");
+						  $$('#text_o').text('Директор КГУ «Жилищный фонд» акимата города Нур-Султан Кожахметова Нурсулу Владимировна ведет личный прием граждан каждую пятницу с 16.00 до 18.00 по адресу: пр.Р.Кошкарбаева, 39.');
+						}
+							else{
+						kaz("5");
+						$$('#text_o').text('Нұр-Сұлтан қаласы әкімдігінің «Тұрғын үй қоры» КММ директоры Қожахметова Нұрсұлу Владимирқызы азаматтарды жеке қабылдауды әр жұма күні сағат 16.00-ден 18.00-ге дейін Р. Қошқарбаев даңғылы, 39 мекенжайы бойынша жүргізеді.');  
+					  }
+						}
+						else
+						if ($$('#dolj').val()=="производственным")	{
+							$$('#name').text('Ахмеджанов Немат Ахралович');
+							if (datas.lang=="ru"){
+						  rus("3");
+						  $$('#text_o').text('Заместитель директора по производственным вопросам КГУ «Жилищный фонд» акимата города Нур-Султан Ахмеджанов Немат Ахралович ведет личный прием граждан каждую среду с 16.00 до 18.00 по адресу: пр.Р.Кошкарбаева, 39.');
+						}
+							else{
+						kaz("3");
+						$$('#text_o').text('Нұр-Сұлтан қаласы әкімдігінің «Тұрғын үй қоры» КММ өндірістік мәселелер жөніндегі директордың орынбасары Ахметжанов Немат Ахралұлы азаматтарды жеке қабылдауды әр сәрсенбі күні сағат 16.00-ден 18.00-ге дейін Р. Қошқарбаев даңғылы, 39 мекенжайы бойынша жүргізеді.');  
+					  }
+						}*/
+					});
+
+
+				}, 'json');
+
+
+
+
+				$$('#proverka2').on('click', function () {
+					calendarModal.open();
+				});
+
+				function rus(ch) {
+					test = [];
+					test.push({
+						from: new Date(0, 0, 1),
+						to: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1)
+					});
+
+					function datediff(first, second) {
+						return Math.round((second - first) / (1000 * 60 * 60 * 24));
+					}
+					today2 = new Date(today.getFullYear(), today.getMonth() + 12, 1);
+					today3 = new Date();
+					toodd = new Date();
+					dnei = datediff(today, today2);
+					for (var tt = 1; tt <= dnei; tt++) {
+						if (today3.getDay().toString() == ch) {
+							var tood = new Date(today3);
+							tood.setDate(tood.getDate() - 7);
+							var tood2 = new Date(today3);
+							toodd = tood2;
+							tood2.setDate(tood2.getDate() - 1);
+							test.push({
+								from: new Date(tood),
+								to: new Date(tood2)
+							});
+						}
+						today3.setDate(today3.getDate() + 1);
+					}
+					toodd.setDate(toodd.getDate() + 1);
+					test.push({
+						from: new Date(toodd),
+						to: new Date(9999, 11, 31)
+					});
+					calendarModal = app.calendar.create({
+						openIn: 'customModal',
+						disabled: test,
+						toolbarCloseText: 'Закрыть',
+						header: true,
+						footer: true,
+						value: [today],
+						dateFormat: 'yyyy-mm-dd',
+						monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+						monthNamesShort: ['Янв', 'Фев', 'Мрт', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Нояб', 'Дек'],
+						dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+						dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+						closeOnSelect: true,
+						headerPlaceholder: 'Выбрат дату',
+						firstDay: 1,
+						weekendDays: [0, 6],
+						touchmove: true,
+						on: {
+							dayClick: function (c, dayEl, year, month, day) {
+								var dayy = "", mon = "";
+								if (day < 10) dayy = "0"; else dayy = "";
+								if (c.currentMonth + 1 < 10) mon = "0";
+								app.preloader.show('blue');
+								app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: "proverka", data: year + "-" + mon + (c.currentMonth + 1) + "-" + dayy + day, komu: $$('#name').text() }, function (otvet) {
+									app.preloader.hide();
+									if (otvet[0].message == "ok") {
+										app.dialog.create({
+											title: '<div style="text-align: center;"><font color="red">Личные данные</font></div>',
+											text: "",
+											content: '<div class="list no-hairlines-md">' +
+												'<ul>' +
+												'<li class="item-content item-input item-input-outline">' +
+												'<div class="item-inner">' +
+												'<div class="item-title item-floating-label">Ф.И.О.</div>' +
+												'<div class="item-input-wrap">' +
+												'<input type="text" placeholder="Ф.И.О." id="fios">' +
+												'<span class="input-clear-button"></span>' +
+												'</div>' +
+												'</div>' +
+												'</li>' +
+												'<li class="item-content item-input item-input-outline">' +
+												'<div class="item-inner">' +
+												'<div class="item-title item-floating-label">ИИН</div>' +
+												'<div class="item-input-wrap">' +
+												'<input type="number" placeholder="ИИН" id="iin">' +
+												'<span class="input-clear-button"></span>' +
+												'</div>' +
+												'</div>' +
+												'</li>' +
+												'<li class="item-content item-input item-input-outline">' +
+												'<div class="item-inner">' +
+												'<div class="item-title item-floating-label">Адрес проживания</div>' +
+												'<div class="item-input-wrap">' +
+												'<input type="text" placeholder="Адрес проживания" id="adres">' +
+												'<span class="input-clear-button"></span>' +
+												'</div>' +
+												'</div>' +
+												'</li>' +
+												'<li class="item-content item-input item-input-outline">' +
+												'<div class="item-inner">' +
+												'<div class="item-title item-floating-label">Место работы</div>' +
+												'<div class="item-input-wrap">' +
+												'<input type="text" placeholder="Место работы" id="rabota">' +
+												'<span class="input-clear-button"></span>' +
+												'</div>' +
+												'</div>' +
+												'</li>' +
+												'<li class="item-content item-input item-input-outline">' +
+												'<div class="item-inner">' +
+												'<div class="item-title item-floating-label">Телефон</div>' +
+												'<div class="item-input-wrap">' +
+												'<input type="text" placeholder="Телефон" id="phones">' +
+												'<span class="input-clear-button"></span>' +
+												'</div>' +
+												'</div>' +
+												'</li>' +
+												'<li class="item-content item-input item-input-outline">' +
+												'<div class="item-inner">' +
+												'<div class="item-title item-floating-label">Краткое содержание вопроса</div>' +
+												'<div class="item-input-wrap">' +
+												'<textarea type="text" placeholder="Краткое содержание вопроса" id="comment"></textarea>' +
+												'<span class="input-clear-button"></span>' +
+												'</div>' +
+												'</div>' +
+												'</li>' +
+												'</ul>' +
+												'</div>',
+											on: {
+												opened: function () {
+
+												}
+											},
+											buttons: [
+												{
+													text: 'Закрыть',
+													onClick: function () {
+													}
+												},
+												{
+													text: '<a class="col button button-fill">Записаться</a>',
+													close: false,
+													onClick: function () {
+														if ($$('#fios').val() == "" || $$('#iin').val() == "" || $$('#rabota').val() == "" || $$('#adres').val() == "" || $$('#phone').val() == "" || $$('#comment').val() == "") {
+															var toastCenter = app.toast.create({
+																text: 'Заполните все поля',
+																position: 'center',
+																closeTimeout: 1000,
+															});
+															toastCenter.open();
+														}
+														else {
+															app.preloader.show('blue');
+															app.request.get('https://zhilfondapp.kz/api/zapis.php', { fio: $$('#fios').val(), iin: $$('#iin').val(), adres: $$('#adres').val(), rabota: $$('#rabota').val(), zapros: 'add', data: year + "-" + (c.currentMonth + 1) + "-" + dayy + day, id: app.data.routs.id, comment: $$('#comment').val(), komu: $$('#name').text(), phone: $$('#phones').val() }, function (otvet) {
+																app.preloader.hide();
+																if (otvet[0].message == "ok") {
+																	app.dialog.close();
+																	app.dialog.alert('Отправлено', function () {
+																		router.back();
+																		setTimeout(function () {
+																			router.navigate('/moi_zap/?title=' + $$('.moi_zap').text());
+																		}, 500);
+																	});
+																}
+																else {
+																	var toastCenter = app.toast.create({
+																		text: 'Выбранная дата забита, выберите другую дату',
+																		position: 'center',
+																		closeTimeout: 1000,
+																	});
+																	toastCenter.open();
+																}
+															},
+																function () {
+																	app.preloader.hide();
+																	app.dialog.alert('Нет подключения к интернету');
+																}, 'json');
+														}
+													}
+												}
+											],
+
+										}).open();
+
+
+									}
+									else {
+										var toastCenter = app.toast.create({
+											text: 'Выбранная дата занято, выберите другую дату',
+											position: 'center',
+											closeTimeout: 2000,
+										});
+										toastCenter.open();
+									}
+								},
+									function () {
+										app.preloader.hide();
+										app.dialog.alert('Нет подключения к интернету');
+									}, 'json');
+
+							}
+						}
+					});
+
+
+				}
+
+				function kaz(ch) {
+					test = [];
+					test.push({
+						from: new Date(0, 0, 1),
+						to: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1)
+					});
+
+					function datediff(first, second) {
+						return Math.round((second - first) / (1000 * 60 * 60 * 24));
+					}
+					today2 = new Date(today.getFullYear(), today.getMonth() + 12, 1);
+					today3 = new Date();
+					toodd = new Date();
+					dnei = datediff(today, today2);
+					for (var tt = 1; tt <= dnei; tt++) {
+						if (today3.getDay().toString() == ch) {
+							var tood = new Date(today3);
+							tood.setDate(tood.getDate() - 7);
+							var tood2 = new Date(today3);
+							toodd = tood2;
+							tood2.setDate(tood2.getDate() - 1);
+							test.push({
+								from: new Date(tood),
+								to: new Date(tood2)
+							});
+						}
+						today3.setDate(today3.getDate() + 1);
+					}
+					toodd.setDate(toodd.getDate() + 1);
+					test.push({
+						from: new Date(toodd),
+						to: new Date(9999, 11, 31)
+					});
+					calendarModal = app.calendar.create({
+						openIn: 'customModal',
+						disabled: test,
+						toolbarCloseText: 'Жабу',
+						header: true,
+						footer: true,
+						value: [today],
+						dateFormat: 'yyyy-mm-dd',
+						monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+						monthNamesShort: ['Янв', 'Фев', 'Мрт', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Нояб', 'Дек'],
+						dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+						dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+						closeOnSelect: true,
+						headerPlaceholder: 'Күнді таңдау',
+						firstDay: 1,
+						weekendDays: [0, 6],
+						touchmove: true,
+						on: {
+							dayClick: function (c, dayEl, year, month, day) {
+								var dayy = "", mon = "";
+								if (day < 10) dayy = "0"; else dayy = "";
+								if (c.currentMonth + 1 < 10) mon = "0";
+								app.preloader.show('blue');
+								app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: "proverka", data: year + "-" + mon + (c.currentMonth + 1) + "-" + dayy + day, komu: $$('#name').text() }, function (otvet) {
+									app.preloader.hide();
+									if (otvet[0].message == "ok") {
+										app.dialog.create({
+											title: '<div style="text-align: center;"><font color="red">Жеке мәліметтер</font></div>',
+											text: "",
+
+											content: '<div class="list no-hairlines-md">' +
+												'<ul>' +
+												'<li class="item-content item-input item-input-outline">' +
+												'<div class="item-inner">' +
+												'<div class="item-title item-floating-label">Т.А.Ә</div>' +
+												'<div class="item-input-wrap">' +
+												'<input type="text" placeholder="Т.А.Ә" id="fios">' +
+												'<span class="input-clear-button"></span>' +
+												'</div>' +
+												'</div>' +
+												'</li>' +
+												'<li class="item-content item-input item-input-outline">' +
+												'<div class="item-inner">' +
+												'<div class="item-title item-floating-label">ЖСН</div>' +
+												'<div class="item-input-wrap">' +
+												'<input type="number" placeholder="ЖСН" id="iin">' +
+												'<span class="input-clear-button"></span>' +
+												'</div>' +
+												'</div>' +
+												'</li>' +
+												'<li class="item-content item-input item-input-outline">' +
+												'<div class="item-inner">' +
+												'<div class="item-title item-floating-label">Мекен-жайы</div>' +
+												'<div class="item-input-wrap">' +
+												'<input type="text" placeholder="Мекен-жайы" id="adres">' +
+												'<span class="input-clear-button"></span>' +
+												'</div>' +
+												'</div>' +
+												'</li>' +
+												'<li class="item-content item-input item-input-outline">' +
+												'<div class="item-inner">' +
+												'<div class="item-title item-floating-label">Жұмыс орны</div>' +
+												'<div class="item-input-wrap">' +
+												'<input type="text" placeholder="Жұмыс орны" id="rabota">' +
+												'<span class="input-clear-button"></span>' +
+												'</div>' +
+												'</div>' +
+												'</li>' +
+												'<li class="item-content item-input item-input-outline">' +
+												'<div class="item-inner">' +
+												'<div class="item-title item-floating-label">Телефон</div>' +
+												'<div class="item-input-wrap">' +
+												'<input type="text" placeholder="Телефон" id="phones">' +
+												'<span class="input-clear-button"></span>' +
+												'</div>' +
+												'</div>' +
+												'</li>' +
+												'<li class="item-content item-input item-input-outline">' +
+												'<div class="item-inner">' +
+												'<div class="item-title item-floating-label">Сұрақтың қысқаша мазмұны</div>' +
+												'<div class="item-input-wrap">' +
+												'<textarea type="text" placeholder="Сұрақтың қысқаша мазмұны" id="comment"></textarea>' +
+												'<span class="input-clear-button"></span>' +
+												'</div>' +
+												'</div>' +
+												'</li>' +
+												'</ul>' +
+												'</div>',
+											on: {
+												opened: function () {
+
+												}
+											},
+											buttons: [
+												{
+													text: 'Жабу',
+													onClick: function () {
+													}
+												},
+												{
+													text: '<a class="col button button-fill">Жазылу</a>',
+													close: false,
+													onClick: function () {
+														if ($$('#fios').val() == "" || $$('#iin').val() == "" || $$('#rabota').val() == "" || $$('#adres').val() == "" || $$('#phone').val() == "" || $$('#comment').val() == "") {
+															var toastCenter = app.toast.create({
+																text: 'Барлық поляны толтырыңыз',
+																position: 'center',
+																closeTimeout: 1000,
+															});
+															toastCenter.open();
+														}
+														else {
+															app.preloader.show('blue');
+															app.request.get('https://zhilfondapp.kz/api/zapis.php', { fio: $$('#fios').val(), iin: $$('#iin').val(), adres: $$('#adres').val(), rabota: $$('#rabota').val(), zapros: 'add', data: year + "-" + (c.currentMonth + 1) + "-" + dayy + day, id: app.data.routs.id, comment: $$('#comment').val(), komu: $$('#name').text(), phone: $$('#phones').val() }, function (otvet) {
+																app.preloader.hide();
+																if (otvet[0].message == "ok") {
+																	app.dialog.close();
+																	app.dialog.alert('Жіберілді', function () {
+
+																	});
+																}
+																else {
+																	var toastCenter = app.toast.create({
+																		text: 'Бұл күн бос емес, басқа күнді таңданыз',
+																		position: 'center',
+																		closeTimeout: 1000,
+																	});
+																	toastCenter.open();
+																}
+															},
+																function () {
+																	app.preloader.hide();
+																	app.dialog.alert('Нет подключения к интернету');
+																}, 'json');
+														}
+													}
+												}
+											],
+
+										}).open();
+
+
+									}
+									else {
+										var toastCenter = app.toast.create({
+											text: 'Таңдалған күн бос емес, басқа күнді таңданыз',
+											position: 'center',
+											closeTimeout: 2000,
+										});
+										toastCenter.open();
+									}
+								},
+									function () {
+										app.preloader.hide();
+										app.dialog.alert('Нет подключения к интернету');
+									}, 'json');
+
+							}
+						}
+					});
+
+
+				}
+
+			},
+		},
+	};
+</script>

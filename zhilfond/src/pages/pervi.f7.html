@@ -1,0 +1,214 @@
+
+<template>
+  <div class="page">
+    <div class="navbar" >
+      <div class="navbar-inner gradient">
+        <div class="title"><font size="3%">{{js 'return this.$route.query.title'}}</font></div>
+      </div>
+    </div>
+  
+  <div class="page-content login-screen-content">
+      <div class="list" style="width:100%;">
+        <ul>
+		<li class="item-content item-input" style="--f7-label-font-size: 12px;--f7-input-font-size: 14px;">
+            <div class="item-inner" >
+              <div class="item-title item-label" id = "textlogin">Логин</div>
+              <div class="item-input"  style="width:100%;">
+                <input id="login" type="text" placeholder="логин(не меньше 6 символов)">
+              </div>
+            </div>
+          </li>
+		  <li class="item-content item-input" style="--f7-label-font-size: 12px;--f7-input-font-size: 14px;">
+            <div class="item-inner">
+              <div class="item-title item-label" id = "textpassword">Пароль</div>
+              <div class="item-input" style="width:100%;">
+                <input id="password" type="text" placeholder="пароль(не меньше 6 символов)">
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input" style="--f7-label-font-size: 12px;--f7-input-font-size: 14px;">
+            <div class="item-inner">
+              <div class="item-title item-label" id = "textfam">{{js 'return this.$route.query.iin'}}</div>
+              <div class="item-input" style="width:100%;">
+                <input id="iin" type="number" placeholder="ИИН">
+              </div>
+            </div>
+          </li>
+		<li class="item-content item-input" style="--f7-label-font-size: 12px;--f7-input-font-size: 14px;">
+            <div class="item-inner">
+              <div class="item-title item-label" id = "textfam">{{js 'return this.$route.query.fam'}}</div>
+              <div class="item-input" style="width:100%;">
+                <input id="fam" type="text" placeholder="фамилия">
+              </div>
+            </div>
+          </li>
+		  
+		  <li class="item-content item-input" style="--f7-label-font-size: 12px;--f7-input-font-size: 14px;">
+            <div class="item-inner">
+              <div class="item-title item-label" id = "textim">{{js 'return this.$route.query.name'}}</div>
+              <div class="item-input" style="width:100%;">
+                <input id="im" type="text" placeholder="имя">
+              </div>
+            </div>
+          </li>
+		  
+		<li class="item-content item-input" style="--f7-label-font-size: 12px;--f7-input-font-size: 14px;">
+            <div class="item-inner">
+              <div class="item-title item-label" id = "textim">{{js 'return this.$route.query.ot'}}</div>
+              <div class="item-input" style="width:100%;">
+                <input id="ot" type="text" placeholder="отчество">
+              </div>
+            </div>
+          </li>
+
+		  
+		  
+        </ul>
+      </div>
+	  
+      <div class="list">
+<div class="block">
+ <button  class="col button button-big button-round button-fill" style="background-color:#073974;"  @Click="dalee">{{js 'return this.$route.query.save'}}</button>
+ </div>
+   
+      </div>
+  
+			
+			
+			
+        </div>
+	
+	
+    </div>
+</template>
+
+<script>
+export default {
+    methods: {
+	dalee: function () {
+	var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+		router.back();	
+	 var fam  = $$('#fam').val();
+	 var im  = $$('#im').val();
+	 var ot  = $$('#ot').val();
+   var iin  = $$('#iin').val();
+		var login = $$('#login').val().replace(/\s/g, '');
+		var passwords=$$('#password').val().replace(/\s/g, '');
+    var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+    if (lang.lang=="ru"){
+if (login == "" || passwords == "" || fam == "" || im == "" || ot == "" || iin.length!=12)app.dialog.alert('Заполните все поля');
+else 
+if (login.length<6 || passwords.length<6){
+app.dialog.alert('Логин или пароль не должно быть меньше 6 символов');
+}
+else{
+ app.preloader.show('blue');
+	app.request.get("https://zhilfondapp.kz/api/regs.php",{login:login,password:passwords,fam:fam,im:im,ot:ot,zapros:"vtoroi",id:app.data.routs.id,token:app.data.routs.token,token_app:app.data.routs.token_app,iin:iin},function (data) {
+		app.preloader.hide();
+		if (data[0].message=="ok"){
+									  app.form.storeFormData('user', {
+							'id': app.data.routs.id,
+							'token': app.data.routs.token
+							});
+							app.data.user.fam=fam;
+		app.data.user.im=im;
+		app.data.user.ot=ot;
+	router.navigate('/',{reloadAll:true});
+  }
+  else
+  if (data[0].message=="nolog"){
+$$('#login').val(login);
+app.dialog.alert('Такой логин занят, придумайте другой!');
+ }
+ else
+ {
+ app.dialog.alert('Ошибка сервера! Попробуйте еще раз...',function(){
+ router.navigate('/author/',{reloadAll:true});
+ });
+ }
+  },function(){
+   app.preloader.hide();
+		app.dialog.alert('Нет подключения к интернету');
+  },'json');
+	}
+  }
+  else
+  {
+    if (login == "" || passwords == "" || fam == "" || im == "" || ot == "" || iin.length!=12)app.dialog.alert('Барлық өрістерді толтырыңыз');
+else 
+if (login.length<6 || passwords.length<6){
+app.dialog.alert('Логин және пароль 6 таңбадан кем болмауы керек');
+}
+else{
+ app.preloader.show('blue');
+	app.request.get("https://zhilfondapp.kz/api/regs.php",{login:login,password:passwords,fam:fam,im:im,ot:ot,zapros:"vtoroi",id:app.data.routs.id,token:app.data.routs.token,token_app:app.data.routs.token_app,iin:iin},function (data) {
+		app.preloader.hide();
+		if (data[0].message=="ok"){
+									  app.form.storeFormData('user', {
+							'id': app.data.routs.id,
+							'token': app.data.routs.token
+							});
+							app.data.user.fam=fam;
+		app.data.user.im=im;
+		app.data.user.ot=ot;
+	router.navigate('/',{reloadAll:true});
+  }
+  else
+  if (data[0].message=="nolog"){
+$$('#login').val(login);
+app.dialog.alert('Мұңдай логин тіркелген, басқасын жазыныз!');
+ }
+ else
+ {
+ app.dialog.alert('Серверлік қателік! Тағыда көріңіз...',function(){
+ router.navigate('/author/',{reloadAll:true});
+ });
+ }
+  },function(){
+   app.preloader.hide();
+		app.dialog.alert('Нет подключения к интернету');
+  },'json');
+	}
+
+
+  }
+	},
+    },
+    on: {
+      pageInit: function () {
+	  var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+	 app.data.routs.rout="pervi";
+
+   var push = PushNotification.init({
+     "android": {
+        "senderID": "110519839613",
+			"vibrate": true
+       }, 
+	   "ios": {
+       "sound": true,
+        "vibration": true,
+        "badge": true
+         },
+        "windows": {}
+        });
+		
+		push.on('registration', function(data) {
+			 app.data.routs.token_app = data.registrationId;
+           });
+		   
+		   push.on('error', function(e) {
+            
+             });
+
+
+
+      },
+    },
+  }
+</script>
+
+

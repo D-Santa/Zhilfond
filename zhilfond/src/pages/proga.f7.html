@@ -1,0 +1,100 @@
+<template>
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a class="link nazad" @Click="backs">
+          <i  style="color:#073974;" class="icon icon-back"></i>
+        </a>
+      </div>
+      <div class="title"><font size="3%">{{js 'return this.$route.query.title'}}</font></div>
+    </div>
+  </div>
+  <div class="page-content">
+      <div class="list media-list">
+  <ul id="news_list">
+
+  </ul>
+</div>   
+		  		  
+    </div>
+
+</div>
+</template>
+<script>
+export default {
+ methods: {
+    backs: function () {
+		var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+		router.back();		
+		},
+		},
+on: {
+    pageInit: function () {
+	var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+	var news="";
+  var proga=[];
+  app.preloader.show('blue');
+  var datas = JSON.parse(localStorage.getItem("f7form-lang"));
+		app.request.get('https://zhilfondapp.kz/api/proga.php',{},function(otvet){
+app.preloader.hide();
+if (otvet[0].message=="ok"){
+
+	for (var t =0; t<otvet.length;t++){
+    proga.push({
+topick:otvet[t].topick,
+topick_kz:otvet[t].topick_kz,
+text:otvet[t].text,
+text_kz:otvet[t].text_kz,
+image:otvet[t].image,
+id:otvet[t].id
+});
+app.data.proga.array=proga;
+	if (datas.lang=="ru")
+	news+='<li>'+
+      '<a data-id="'+t+'" class="item-link item-content">'+
+        '<div class="item-media"><img src="https://zhilfondapp.kz/api/'+otvet[t].image+'" width="100"/></div>'+
+        '<div class="item-inner">'+
+          '<div class="item-title-row">'+otvet[t].topick+
+          '</div>'+
+          '<div class="item-subtitle"></div>'+
+        '</div>'+
+      '</a>'+
+    '</li>';
+	else
+	news+='<li>'+
+      '<a data-id="'+t+'" class="item-link item-content">'+
+        '<div class="item-media"><img src="https://zhilfondapp.kz/api/'+otvet[t].image+'" width="100"/></div>'+
+        '<div class="item-inner">'+
+          '<div class="item-title-row">'+otvet[t].topick_kz+
+          '</div>'+
+          '<div class="item-subtitle"></div>'+
+        '</div>'+
+      '</a>'+
+    '</li>';
+	
+	}
+	$$('#news_list').html(news);
+}
+},function(){
+app.preloader.hide();
+},'json');
+
+
+	
+	$$('#news_list').on('click','a',function(){
+	var id_news = $$(this).attr('data-id');
+	if (datas.lang=="ru")
+router.navigate('/about/?picture=https://zhilfondapp.kz/api/'+proga[id_news].image+'&topik='+proga[id_news].topick+'&id='+id_news+'&title='+$$('.serv-5').text()+'&otv=proga');
+else
+router.navigate('/about/?picture=https://zhilfondapp.kz/api/'+proga[id_news].image+'&topik='+proga[id_news].topick_kz+'&id='+id_news+'&title='+$$('.serv-5').text()+'&otv=proga');
+
+	});
+	},
+	},
+};
+</script>

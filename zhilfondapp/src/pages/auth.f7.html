@@ -1,0 +1,114 @@
+<style>
+  #panel_left {
+    display: none;
+  }
+
+  .view {
+    left: -120px;
+  }
+</style>
+<template>
+  <div class="page">
+    <div class="page-content">
+      <br>
+      <div class="login-screen-title">
+        <font style="font-size: 70%;">ВХОД</font>
+      </div>
+      <div class="card" style="--f7-card-border-radius: 8px; width:70%; left:15%;">
+
+        <div class="card-content">
+          <div class="list">
+            <ul>
+              <li class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label"><i
+                      class="icon f7-icons color-blue size-22">person</i>логин</div>
+                  <div class="item-input-wrap">
+                    <input id="log" type="text" placeholder="ваш логин">
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label"><span id="supervizer"><i
+                        class="icon f7-icons color-blue size-22">unlock</i> пароль</span></div>
+                  <div class="item-input-wrap">
+                    <input id="pass" type="password" placeholder="******">
+                  </div>
+                </div>
+              </li>
+              <br>
+            </ul>
+
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="col button color-white" style="background-color:#073974" id="vhod">
+            <font size="2%">Войти</font>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</template>
+<script>
+  export default {
+    on: {
+      pageInit: function () {
+        var app = this.$app;
+        var $$ = this.$$;
+        var router = this.$router;
+        $$('#right_but').hide();
+        var log = JSON.parse(localStorage.getItem("f7form-user"));
+        if (log != null) {
+          var mail = log.mail; var token = log.token;
+          app.preloader.show('blue');
+          app.request.post('https://zhilfondapp.kz/api/vhod_admin.php', { log: "", pass: "", token: token }, function (data) {
+            app.preloader.hide();
+            if (data[0].message == "ok") {
+              $$('#right_but').show();
+              app.data.user.id = data[0].id;
+              app.data.user.status = data[0].status;
+              if (data[0].status == '0') {
+                $$('.panel').remove();
+                $$('.view').css('margin-left','0');
+                router.navigate('/addzapis/', { reloadCurrent: true });
+              }
+              else
+                router.navigate('/home/', { reloadCurrent: true });
+            } else {
+              app.form.removeFormData("user");
+            }
+          }, 'json');
+        }
+
+        $$('#vhod').on('click', function () {
+          app.preloader.show('blue');
+          app.request.post('https://zhilfondapp.kz/api/vhod_admin.php', { log: $$('#log').val(), pass: $$('#pass').val(), token: "" }, function (otvet) {
+            app.preloader.hide();
+            if (otvet[0].message == "ok") {
+              $$('#right_but').show();
+              app.data.user.id = otvet[0].id;
+              app.data.user.status = otvet[0].status;
+              app.form.storeFormData('user', {
+                'token': otvet[0].token
+              });
+              if (otvet[0].status == '0') {
+                $$('.panel').remove();
+                $$('.view').css('margin-left','0');
+                router.navigate('/addzapis/', { reloadCurrent: true });
+              }
+              else
+                router.navigate('/home/', { reloadCurrent: true });
+            }
+            else
+              app.dialog.alert('Не правильный логин или пароль!');
+          }, 'json');
+        });
+
+      },
+    },
+  };
+</script>

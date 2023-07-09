@@ -1,0 +1,84 @@
+<template>
+<div class="page">
+  <div class="page-content">
+      <div class="dynamic-popover" style="position: absolute; top:30%; left:10%;"></div>
+<div id="welrus" style="height:98%;" data-speed="900" data-pagination='{"el": ".swiper-pagination"}' data-space-between="50" class="swiper-container swiper-init demo-swiper">
+  <div class="swiper-pagination"></div>
+  <div class="swiper-wrapper">
+    <div class="swiper-slide"><div align="center" style="position: absolute;"><img src="static/img/1 page.png" width="80%" height="60%"></img></div><div align="center" style="position:absolute;bottom:40px;width:100%;"><font size="3px">Теперь через бесплатное мобильное приложение  Zhilfond можно посмотреть:</font></div></div>
+    <div class="swiper-slide"><div align="center" style="position: absolute;"><img src="static/img/g2.png" width="80%" height="60%"></img></div><div align="center" style="position:absolute;bottom:40px;width:100%;"><font size="3px">Просмотр номер очереди на жилье;</font></div></div>
+    <div class="swiper-slide"><div align="center" style="position: absolute;"><img src="static/img/g3.png" width="80%" height="60%"></img></div><div align="center" style="position:absolute;bottom:40px;width:100%;"><font size="3px">Новости о действующих жилищных программах;</font></div></div>
+    <div class="swiper-slide"><div align="center" style="position: absolute;"><img src="static/img/g4.png" width="80%" height="60%"></img></div><div style="position: absolute; right: 10px; top:10px;"><a class="tutorial-close-btn button text-color-blue" href="#">Начать</a></div><div align="center" style="position:absolute;bottom:40px;width:100%;"><font size="3px">Уведомление о необходимости обновления документов, погашения задолженности за арендную плату и приближении вашей очереди на предоставление жилья;</font></div></div>
+  </div> 
+</div> 		
+
+<div id="welkz" style="height:98%;" data-speed="900" data-pagination='{"el": ".swiper-pagination"}' data-space-between="50" class="swiper-container swiper-init demo-swiper">
+  <div class="swiper-pagination"></div>
+  <div class="swiper-wrapper">
+    <div class="swiper-slide"><div align="center" style="position: absolute;"><img src="static/img/1 page.png" width="80%" height="60%"></img></div><div align="center" style="position:absolute;bottom:40px;width:100%;"><font size="3px">Енді Zhilfond тегін мобильді қосымшасы арқылы көруге болады:</font></div></div>
+    <div class="swiper-slide"><div align="center" style="position: absolute;"><img src="static/img/g2.png" width="80%" height="60%"></img></div><div align="center" style="position:absolute;bottom:40px;width:100%;"><font size="3px">Тұрғын үйге кезек нөмірін қарау;</font></div></div>
+    <div class="swiper-slide"><div align="center" style="position: absolute;"><img src="static/img/g3.png" width="80%" height="60%"></img></div><div align="center" style="position:absolute;bottom:40px;width:100%;"><font size="3px">Қолданыстағы тұрғын үй бағдарламалары туралы жаңалықтар;</font></div></div>
+    <div class="swiper-slide"><div align="center" style="position: absolute;"><img src="static/img/g4.png" width="80%" height="60%"></img></div><div style="position: absolute; right: 10px; top:10px;"><a class="tutorial-close-btn button text-color-blue" href="#">Бастау</a></div><div align="center" style="position:absolute;bottom:40px;width:100%;"><font size="3px">Құжаттарды жаңарту, жалдау ақысын өтеу және тұрғын үй беру кезегін жақындауы туралы хабарлама алу;</font></div></div>
+  </div>
+</div> 
+    </div>
+
+</div>
+</template>
+<script>
+export default {
+on: {
+    pageInit: function () {
+	var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+	//app.data.routs.rout="welcome";
+  var dynamicPopover = app.popover.create({
+  targetEl: 'div.dynamic-popover',
+  content: '<div class="popover">'+
+              '<div class="popover-inner">'+
+                '<div class="list">'+
+        '<ul>'+
+            '<li align="center">Выберите язык:</li>'+
+          '<li><a class="list-button item-link" id="ru">Русский</a></li>'+
+		  '<li><a class="list-button item-link" id="kz">Қазақша</a></li>'+
+        '</ul>'+
+      '</div>'+
+              '</div>'+
+            '</div>',
+  // Events
+  on: {
+    open: function (popover) {
+	$$('#ru').on('click',function(){
+	dynamicPopover.close();
+	app.form.storeFormData('lang', {
+		'lang': 'ru',
+		});
+    $$('#welrus').show();
+    $$('#welkz').hide();
+	});
+	
+	$$('#kz').on('click',function(){
+	dynamicPopover.close();
+	app.form.storeFormData('lang', {
+		'lang': 'kz',
+		});
+    $$('#welkz').show();
+    $$('#welrus').hide();
+	});
+    },
+    opened: function (popover) {
+
+    },
+  }
+});
+  dynamicPopover.open();
+  
+	$$('.tutorial-close-btn').on('click',function(){
+		app.data.routs.rout="home";
+	router.back({force:true});
+	});
+	},
+	},
+};
+</script>

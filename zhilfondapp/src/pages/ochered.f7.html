@@ -1,0 +1,91 @@
+<template>
+	<div class="page" data-name="/news/" style="height:94%;">
+
+		<div class="page-content" style="height:99%;">
+			<div class="card text-color-black col-100" style="--f7-card-border-radius:30px;margin-top:-15px;">
+				<div class="card-content card-content-padding" style="opacity:0.6;">
+					<i class="icon f7-icons margin-right-half"
+						style="font-size: 24px; margin-top:-5px;margin-left:10px;">data_fill</i>
+					<font size="4px"><b>Очередь</b></font>
+				</div>
+
+			</div>
+			<div class="block-title">Список государственных служащих, работников бюджетных организаций и военнослужащих
+				состоящих на учете нуждающихся в жилье из государcтве</div>
+			<div class="block">
+				<a class="col button button-fill color-blue" id="download1">Заргузить</a>
+			</div>
+
+			<div class="block-title">Список граждан, единственное жилище которых признано аварийным в порядке,
+				установленном законодательством Республики Казахстан состоящи</div>
+			<div class="block">
+				<a class="col button button-fill color-blue" id="download2">Заргузить</a>
+			</div>
+
+			<div class="block-title">Список детей-сирот и детей, оставшихся без попечения родителей состоящих на учете
+				нуждающихся в жилье из государственного жилищного фонда</div>
+			<div class="block">
+				<a class="col button button-fill color-blue" id="download3">Заргузить</a>
+			</div>
+
+			<div class="block-title">Список инвалидов и участников Великой Отечественной войны</div>
+			<div class="block">
+				<a class="col button button-fill color-blue" id="download4">Заргузить</a>
+			</div>
+
+			<div class="block-title">Список многодетных семей</div>
+			<div class="block">
+				<a class="col button button-fill color-blue" id="download5">Заргузить</a>
+			</div>
+
+			<div class="block-title">Список социально уязвимых слоев населения состоящих на учете нуждающихся в жилье из
+				государственного жилищного фонда</div>
+			<div class="block">
+				<a class="col button button-fill color-blue" id="download6">Заргузить</a>
+			</div>
+
+
+
+
+
+		</div>
+
+
+
+
+	</div>
+
+
+</template>
+<script>
+	export default {
+		on: {
+			pageInit: function (e, page) {
+				var app = this.$app;
+				var $$ = this.$$;
+				var router = this.$router;
+				$$('#download1').on('click', function () {
+					window.open('https://zhilfondapp.kz/api/add_ochered.php?id=1', '_blank');
+				});
+				$$('#download2').on('click', function () {
+					window.open('https://zhilfondapp.kz/api/add_ochered.php?id=2', '_blank');
+				});
+				$$('#download3').on('click', function () {
+					window.open('https://zhilfondapp.kz/api/add_ochered.php?id=3', '_blank');
+				});
+				$$('#download4').on('click', function () {
+					window.open('https://zhilfondapp.kz/api/add_ochered.php?id=4', '_blank');
+				});
+				$$('#download5').on('click', function () {
+					window.open('https://zhilfondapp.kz/api/add_ochered.php?id=5', '_blank');
+				});
+				$$('#download6').on('click', function () {
+					window.open('https://zhilfondapp.kz/api/add_ochered.php?id=6', '_blank');
+				});
+
+
+			},
+		},
+
+	}
+</script>

@@ -1,0 +1,592 @@
+<template>
+  <div class="page bg-color-white" data-name="/zapis/" style="height:94%;">
+
+    <div class="page-content" style="height:99%;">
+
+      <div class="card text-color-black col-100" style="--f7-card-border-radius:30px;margin-top:-15px;">
+        <div class="card-content card-content-padding">
+          <a id="addchs" class="col button button-fill button-round color-black"
+            style="position:absolute;right: 500px;">ЧС&nbsp;<i class="icon f7-icons"
+              style="margin-top:-2px;">book_fill</i></a>
+          <a id="addzap" class="col button button-fill button-round color-blue"
+            style="position:absolute;right: 380px;">Добавить&nbsp;<i class="icon f7-icons"
+              style="margin-top:-2px;">add</i></a>
+          <a id="otpusk" class="col button button-fill button-round color-blue"
+            style="position:absolute;right: 280px;">Отпуск&nbsp;<i class="icon f7-icons"
+              style="margin-top:-2px;">edit</i></a>
+          <a id="excell_zapisi" class="col button button-fill button-round color-blue"
+            style="position:absolute;right: 165px;">Выгрузка&nbsp;<i class="icon f7-icons"
+              style="margin-top:-2px;">save</i></a>
+          <a id="calendar" class="col button button-fill button-round color-red"
+            style="position:absolute;right: 15px;">Выберите дату&nbsp;<i class="icon f7-icons"
+              style="margin-top:-2px;">edit</i></a>
+          <i class="icon f7-icons margin-right-half"
+            style="font-size: 24px; margin-top:-5px;margin-left:10px;opacity:0.6;">logo_rss</i>
+          <font size="4px" style="opacity:0.6;"><b>Записи приема граждан</b></font>
+        </div>
+      </div>
+      <div class="block-title">Записи приема граждан <span id="datas"></span></div>
+      <div class="list accordion-list inset">
+        <ul>
+          <div id="virtual-proga-zapis"></div>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  export default {
+    on: {
+      pageInit: function (e, page) {
+        var app = this.$app;
+        var $$ = this.$$;
+        var router = this.$router;
+        var today = new Date();
+        var dayy = "";
+        if (today.getDate() < 10) dayy = "0"; else dayy = "";
+        app.preloader.show('blue');
+        var mon = "";
+        var month = parseInt(today.getMonth().toString()) + 1;
+        if (month < 10) mon = "0"; else mon = "";
+        $$('#addzap').on('click', function () {
+          router.navigate('/addzapis/');
+        });
+        $$("#datas").text("с " + today.getFullYear() + "-" + mon + month.toString() + "-" + dayy + today.getDate());
+        app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: 'list', data: today.getFullYear() + "-" + mon + month.toString() + "-" + dayy + today.getDate(), all: "yes" }, function (otvet) {
+          app.preloader.hide();
+          if (otvet[0].message == "ok") {
+            var items = [];
+            for (var i = 0; i < otvet.length; i++) {
+              let add_n = 'Сам';
+              if (otvet[i].id_user == '0')
+                if (otvet[i].add_name == null)
+                  add_n = 'Админ';
+                else
+                  add_n = otvet[i].add_name;
+              items.push({
+                fio: otvet[i].fio,
+                iin: otvet[i].iin,
+                adres: otvet[i].adres,
+                rabota: otvet[i].rabota,
+                komu: otvet[i].komu,
+                phone: otvet[i].phone,
+                data: otvet[i].data,
+                comment: otvet[i].comment,
+                add_name: add_n
+              });
+
+            }
+            var virtualList = app.virtualList.create({
+              el: '#virtual-proga-zapis',
+              items: items,
+              itemTemplate: '<li class="accordion-item"><a href="#" class="item-content item-link">' +
+                '<div class="item-inner">' +
+                '<div class="item-title">ФИО: <font size="3px"><b>{{fio}}</b></font> Дата: <font color="blue">{{data}}</font> Записался: <font color="gray">{{add_name}}</font><div class="item-after">Кому: <font color="red">{{komu}}</font></div></div>' +
+                '</div></a>' +
+                '<div class="accordion-item-content">' +
+                '<div class="block" style="left:20px;"><div class="data-table">' +
+                '<table>' +
+                '<thead>' +
+                '<tr>' +
+                ' <th class="label-cell">ФИО</th>' +
+                ' <th class="numeric-cell">ИИН</th>' +
+                '  <th class="numeric-cell">РАБОТА</th>' +
+                '  <th class="numeric-cell">АДРЕС</th>' +
+                '  <th class="numeric-cell">ТЕЛЕФОН</th>' +
+                '  <th class="numeric-cell">КОММЕНТАРИЙ</th>' +
+                ' </tr>' +
+                ' </thead>' +
+                '<tbody>' +
+                ' <tr>' +
+                ' <td class="label-cell">{{fio}}</td>' +
+                ' <td class="numeric-cell">{{iin}}</td>' +
+                ' <td class="numeric-cell">{{rabota}}</td>' +
+                ' <td class="numeric-cell">{{adres}}</td>' +
+                ' <td class="numeric-cell">{{phone}}</td>' +
+                ' <td class="numeric-cell">{{comment}}</td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>' +
+                '</div><br></div>' +
+                '</div>' +
+                '</li>',
+              // Item height
+              height: 33,
+            });
+          }
+          else
+            $$('#virtual-proga-zapis').html("Нету записи");
+        }, function () {
+          app.preloader.hide();
+          app.dialog.alert('Нет подключения к интернету');
+        }, 'json');
+
+        $$('#otpusk').on('click', function () {
+          var dynamicPopup = app.popup.create({
+            content: '<div class="popup pop-info-action">' +
+              '<div class="view popup-view">' +
+              '<div class="page">' +
+              '<div class="navbar">' +
+              '<div class="navbar-inner" style="background-color:#222c3c;">' +
+              '<div class="title">Отпуск</div>' +
+              '<div class="right"><a class="link popup-close" href="#">Закрыть</a></div>' +
+              '</div>' +
+              '</div>' +
+              '<div class="page-content bg-color-white block"><br>' +
+              '<div class="row">' +
+              '<div class="list col-100">' +
+              '<ul>' +
+              '<li class="item-content item-input item-input-outline">' +
+              '<div class="item-inner">' +
+              '<div class="item-title item-label">Кому</div>' +
+              '<div class="item-input-wrap input-dropdown-wrap">' +
+              '<select placeholder="" id="usr">' +
+              '<option value="Кожахметова Нурсулу Владимировна">Кожахметова Нурсулу Владимировна</option>' +
+              '<option value="Ахмеджанов Немат Ахралович">Ахмеджанов Немат Ахралович</option>' +
+              '<option value="Рахимгулов Даулет Казбекович">Рахимгулов Даулет Казбекович</option>' +
+              ' </select>' +
+              '</div>' +
+              '</div>' +
+              '</li>' +
+              '<li class="item-content">' +
+              '<div class="item-inner">' +
+              '<div class="item-title"><font size="2%">Дата отпуска</font></div>' +
+              '</div>' +
+              '</li>' +
+              '<li class="item-content item-input item-input-outline">' +
+              '<div class="item-inner">' +
+              '<div class="item-title item-label">От</div>' +
+              '<div class="item-input-wrap" id="py_optionz_div">' +
+              '<input type="date" placeholder="Select date" id="dat1"/>' +
+              '</div>' +
+              '</div>' +
+              '</li>' +
+              '<li class="item-content item-input item-input-outline">' +
+              '<div class="item-inner">' +
+              '<div class="item-title item-label">До</div>' +
+              '<div class="item-input-wrap" id="py_optionzz_div">' +
+              '<input type="date" placeholder="Select date" id="dat2"/>' +
+              '</div>' +
+              '</div>' +
+              '</li>' +
+              '<li class="item-content">' +
+              '<a class="button button-fill color-blue" id ="otpgot">Сохранить</a>' +
+              '</li>' +
+              '</ul>' +
+              '</div>' +
+              '</div>' +
+              '<div class="card data-table data-table-init"  style="--f7-card-border-radius: 0px;">' +
+              '<div class="card-header">Список отпусков<div class="right" style="width:300px;z-index: 8;">' +
+              '</div></div>' +
+              '<div class="col-100 scrollable">' +
+              ' <table>' +
+              ' <thead>' +
+              '  <tr>' +
+              ' <th class="label-cell">№</th>' +
+              ' <th class="label-cell" id="sort_fam">Кому</th>' +
+              '<th class="label-cell" id="sort_im">От</th>' +
+              ' <th class="label-cell" id="sort_center">До</th>' +
+              ' <th class="label-cell">Редактировать</th>' +
+              ' </tr>' +
+              ' </thead>' +
+              ' <tbody id="div_user">' +
+              ' </tbody>' +
+              '</table>' +
+              '  </div>' +
+              '</div>' +
+              '<br></div>' +
+              '</div>' +
+              '</div>' +
+              '</div>',
+            // Events
+            on: {
+              open: function (popup) {
+                app.preloader.show('blue');
+                app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: 'list_ot' }, function (otvet) {
+                  app.preloader.hide();
+                  if (otvet.length >= 1) {
+                    var divs = "";
+                    for (var s = 0; s < otvet.length; s++)
+                      divs += '<tr style="height:70px;">' +
+                        '<td class="label-cell" style="width:10%">' + (s + 1) + '</td>' +
+                        '<td class="label-cell" style="width:40%">' + otvet[s].usr + '</td>' +
+                        '<td class="label-cell" style="width:25%">' + otvet[s].ot + '</td>' +
+                        '<td class="label-cell" style="width:25%">' + otvet[s].do + '</td>' +
+                        '<td class="label-cell" style="width:10%"><button class="button button-fill" data-id="' + otvet[s].id + '">Удалить</button></td>' +
+                        '</tr>';
+                    $$('#div_user').html(divs);
+                  }
+                }, 'json');
+              },
+              opened: function (popup) {
+                var dte = new Date();
+                $$('#div_user').on('click', 'button', function () {
+                  var ids = $$(this).attr('data-id');
+                  app.preloader.show('blue');
+                  app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: 'dell_ot', id: ids }, function (otvetka) {
+                    console.log(otvetka);
+                    app.preloader.hide();
+                    if (otvetka[0].message == "oks")
+                      app.dialog.alert('Удалено', function () {
+                        var divs = "";
+                        for (var s = 0; s < otvetka.length; s++)
+                          divs += '<tr style="height:70px;">' +
+                            '<td class="label-cell" style="width:10%">' + (s + 1) + '</td>' +
+                            '<td class="label-cell" style="width:40%">' + otvetka[s].usr + '</td>' +
+                            '<td class="label-cell" style="width:25%">' + otvetka[s].ot + '</td>' +
+                            '<td class="label-cell" style="width:25%">' + otvetka[s].do + '</td>' +
+                            '<td class="label-cell" style="width:10%"><button class="button button-fill" data-id="' + otvetka[s].id + '">Удалить</button></td>' +
+                            '</tr>';
+                        $$('#div_user').html(divs);
+                      });
+                    else
+                      if (otvetka[0].message == "ok") app.dialog.alert('Удалено', function () { $$('#div_user').html(''); });
+                  }, 'json');
+                });
+                $$('#otpgot').on('click', function () {
+                  if ($$('#dat1').val() == "" || $$('#dat2').val() == "") app.dialog.alert('Выберите дату'); else
+
+                    if ($$('#dat1').val() > $$('#dat2').val()) app.dialog.alert("Первая дата меньше чем вторая");
+                    else {
+                      app.preloader.show('blue');
+                      app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: 'list_add_ot', ot: $$('#dat1').val(), do: $$('#dat2').val(), usr: $$('#usr').val() }, function (otvet) {
+                        app.preloader.hide();
+                        if (otvet[0].message == "ok");
+                        app.dialog.alert('Сохранено', function () {
+                          var divs = "";
+                          for (var s = 0; s < otvet.length; s++)
+                            divs += '<tr style="height:70px;">' +
+                              '<td class="label-cell" style="width:10%">' + (s + 1) + '</td>' +
+                              '<td class="label-cell" style="width:40%">' + otvet[s].usr + '</td>' +
+                              '<td class="label-cell" style="width:25%">' + otvet[s].ot + '</td>' +
+                              '<td class="label-cell" style="width:25%">' + otvet[s].do + '</td>' +
+                              '<td class="label-cell" style="width:10%"><button class="button button-fill" data-id="' + otvet[s].id + '">Удалить</button></td>' +
+                              '</tr>';
+                          $$('#div_user').html(divs);
+                        });
+                      }, 'json');
+                    }
+                });
+              },
+            }
+          });
+          dynamicPopup.open();
+        });
+
+        $$('#addchs').on('click', function () {
+          var dynamicPopup = app.popup.create({
+            content: '<div class="popup pop-info-action">' +
+              '<div class="view popup-view">' +
+              '<div class="page">' +
+              '<div class="navbar">' +
+              '<div class="navbar-inner" style="background-color:#222c3c;">' +
+              '<div class="title">Черный список</div>' +
+              '<div class="right"><a class="link popup-close" href="#">Закрыть</a></div>' +
+              '</div>' +
+              '</div>' +
+              '<div class="page-content bg-color-white block"><br>' +
+              '<div class="row">' +
+              '<div class="list col-100">' +
+              '<ul>' +
+              `<li class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                  <div class="item-title">ИИН</div>
+                  <div class="item-input-wrap">
+                    <input type="number" id="iinchs" />
+                  </div>
+                </div>
+              </li>`+
+              '<li class="item-content">' +
+              '<a class="button button-fill color-blue" id ="add_chs">Добавить</a>' +
+              '</li>' +
+              '</ul>' +
+              '</div>' +
+              '</div>' +
+              '<div class="card data-table data-table-init"  style="--f7-card-border-radius: 0px;">' +
+              '<div class="card-header">Список чс<div class="right" style="width:300px;z-index: 8;">' +
+              '</div></div>' +
+              '<div class="col-100 scrollable">' +
+              ' <table>' +
+              ' <thead>' +
+              '  <tr>' +
+              ' <th class="label-cell">№</th>' +
+              ' <th class="label-cell" id="sort_fam">ИИН</th>' +
+              ' <th class="label-cell">Редактировать</th>' +
+              ' </tr>' +
+              ' </thead>' +
+              ' <tbody id="div_user_chs">' +
+              ' </tbody>' +
+              '</table>' +
+              '</div>' +
+              '<br></div>' +
+              '</div>' +
+              '</div>' +
+              '</div>',
+            // Events
+            on: {
+              open: function (popup) {
+                app.preloader.show('blue');
+                app.request.post('https://zhilfondapp.kz/api/chs.php', { zapros: 'list' }, function (otvet) {
+                  app.preloader.hide();
+                  if (otvet[0].message == 'ok') {
+                    var divs = "";
+                    for (var s = 0; s < otvet.length; s++)
+                      divs += '<tr style="height:70px;">' +
+                        '<td class="label-cell" style="width:10%">' + (s + 1) + '</td>' +
+                        '<td class="label-cell" style="width:80%">' + otvet[s].iin + '</td>' +
+                        '<td class="label-cell" style="width:10%"><button class="button button-fill delete_chs" data-id="' + otvet[s].id + '">Удалить</button></td>' +
+                        '</tr>';
+                    $$('#div_user_chs').html(divs);
+                  }
+                  else
+                    $$('#div_user_chs').html('');
+                }, 'json');
+              },
+              opened: function (popup) {
+                $$('.delete_chs').on('click', function () {
+                  let id = $$(this).attr('data-id');
+                  app.preloader.show('blue');
+                  app.request.post('https://zhilfondapp.kz/api/chs.php', { zapros: 'delete', id: id }, function (otvet) {
+                    app.preloader.hide();
+                    if (otvet[0].message == 'ok') {
+                      dynamicPopup.close();
+
+                    }
+                  }, 'json');
+                });
+                $$('#add_chs').on('click', function () {
+                  if ($$('#iinchs').val().length != 12) app.dialog.alert('Не правильный формат ИИН'); else {
+                    app.preloader.show('blue');
+                    app.request.post('https://zhilfondapp.kz/api/chs.php', { zapros: 'add', iin: $$('#iinchs').val() }, function (otvet) {
+                      app.preloader.hide();
+                      if (otvet[0].message == 'ok') {
+                        dynamicPopup.close();
+
+                        $$('#iinchs').val('');
+                      }
+                      else
+                        if (otvet[0].message == 'yes') {
+                          app.dialog.alert('Данный ИИН уже находится в черным списке');
+                        }
+                    }, 'json');
+                  }
+                });
+              },
+            }
+          });
+          dynamicPopup.open();
+        });
+
+        $$('#excell_zapisi').on('click', function () {
+          var dynamicPopup = app.popup.create({
+            content: '<div class="popup pop-info-action">' +
+              '<div class="view popup-view">' +
+              '<div class="page">' +
+              '<div class="navbar">' +
+              '<div class="navbar-inner" style="background-color:#222c3c;">' +
+              '<div class="title">Выгрузка</div>' +
+              '<div class="right"><a class="link popup-close" href="#">Закрыть</a></div>' +
+              '</div>' +
+              '</div>' +
+              '<div class="page-content bg-color-white block"><br>' +
+              '<div class="row">' +
+              '<div class="list col-100">' +
+              '<ul>' +
+              '<li class="item-content item-input item-input-outline">' +
+              '<div class="item-inner">' +
+              '<div class="item-title item-label">От</div>' +
+              '<div class="item-input-wrap" id="py_optionz_div">' +
+              '<input type="date" placeholder="Select date" id="dat1"/>' +
+              '</div>' +
+              '</div>' +
+              '</li>' +
+              '<li class="item-content item-input item-input-outline">' +
+              '<div class="item-inner">' +
+              '<div class="item-title item-label">До</div>' +
+              '<div class="item-input-wrap" id="py_optionzz_div">' +
+              '<input type="date" placeholder="Select date" id="dat2"/>' +
+              '</div>' +
+              '</div>' +
+              '</li>' +
+              '<li class="item-content">' +
+              '<a class="button button-fill color-blue" id ="export">Экспортировать</a>' +
+              '</li>' +
+              '</ul>' +
+              '</div>' +
+              '</div>' +
+              '<br></div>' +
+              '</div>' +
+              '</div>' +
+              '</div>',
+            // Events
+            on: {
+              open: function (popup) {
+
+              },
+              opened: function (popup) {
+                var dte = new Date();
+                $$('#export').on('click', function () {
+                  if ($$('#dat1').val() == "" || $$('#dat2').val() == "") app.dialog.alert('Выберите дату'); else
+
+                    if ($$('#dat1').val() > $$('#dat2').val()) app.dialog.alert("Первая дата меньше чем вторая");
+                    else {
+                      window.location.href = "https://zhilfondapp.kz/api/export_zapisi.php?ot=" + $$('#dat1').val() + "&do=" + $$('#dat2').val();
+                    }
+                });
+              },
+            }
+          });
+          dynamicPopup.open();
+        });
+
+        var test = [];
+        /*test.push({
+         from: new Date(0,0,1),
+               to: new Date(today.getFullYear(),today.getMonth(),today.getDate()-1)
+         });*/
+        test.push({
+          from: new Date(0, 0, 1),
+          to: new Date("2019-01-01")
+        });
+        function datediff(first, second) {
+          return Math.round((second - first) / (1000 * 60 * 60 * 24));
+        }
+        var today2 = new Date(today.getFullYear(), today.getMonth() + 2, 1);
+        var today3 = new Date("2019-01-01");
+        var toodd = new Date("2019-01-01");
+        var today5 = new Date("2019-01-01");
+        var dnei = datediff(today5, today2);
+        for (var tt = 1; tt <= dnei; tt++) {
+
+          if (today3.getDay().toString() == "0") {
+            var tood = new Date(today3);
+            tood.setDate(tood.getDate() - 3);
+            var tood2 = new Date(today3);
+            toodd = tood2;
+            tood2.setDate(tood2.getDate());
+            test.push({
+              from: new Date(tood),
+              to: new Date(tood2)
+            });
+          }
+          else
+            if (today3.getDay().toString() == "2") {
+              var tood = new Date(today3);
+              tood.setDate(tood.getDate() - 1);
+              var tood2 = new Date(today3);
+              toodd = tood2;
+              tood2.setDate(tood2.getDate());
+              test.push({
+                from: new Date(tood),
+                to: new Date(tood2)
+              });
+            }
+
+          today3.setDate(today3.getDate() + 1);
+        }
+        toodd.setDate(toodd.getDate() + 1);
+        test.push({
+          from: new Date(toodd),
+          to: new Date(2050, 11, 31)
+        });
+        var calendarModal;
+        $$('#calendar').on('click', function () {
+          calendarModal = app.calendar.create({
+            openIn: 'customModal',
+            disabled: test,
+            toolbarCloseText: 'Закрыть',
+            header: true,
+            footer: true,
+            value: [today],
+            dateFormat: 'yyyy-mm-dd',
+            monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            monthNamesShort: ['Янв', 'Фев', 'Мрт', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Нояб', 'Дек'],
+            dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+            dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+            closeOnSelect: true,
+            headerPlaceholder: 'Выберите дату',
+            firstDay: 1,
+            weekendDays: [0, 6],
+            touchmove: true,
+            on: {
+              dayClick: function (c, dayEl, year, month, day) {
+                today = new Date(year, month, day);
+                var dayy = "";
+                if (day < 10) dayy = "0"; else dayy = "";
+                var mon = "";
+                if (month < 10) mon = "0"; else mon = "";
+                //app.dialog.alert(year+"-"+(c.currentMonth+1)+"-"+dayy+day);
+                app.preloader.show('blue');
+                $$("#datas").text("на " + year + "-" + mon + (c.currentMonth + 1) + "-" + dayy + day);
+                app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: 'list', data: year + "-" + mon + (c.currentMonth + 1) + "-" + dayy + day }, function (otvet) {
+                  app.preloader.hide();
+                  $$('#virtual-proga-zapis').html("");
+                  if (otvet[0].message == "ok") {
+                    var items = [];
+                    for (var i = 0; i < otvet.length; i++) {
+                      items.push({
+                        fio: otvet[i].fio,
+                        iin: otvet[i].iin,
+                        adres: otvet[i].adres,
+                        rabota: otvet[i].rabota,
+                        komu: otvet[i].komu,
+                        phone: otvet[i].phone,
+                        comment: otvet[i].comment,
+                        add_name: otvet[i].add_name
+                      });
+                    }
+                    var virtualList1 = app.virtualList.create({
+                      el: '#virtual-proga-zapis',
+                      items: items,
+                      itemTemplate: '<li class="accordion-item"><a href="#" class="item-content item-link">' +
+                        '<div class="item-inner">' +
+                        '<div class="item-title">ФИО: <font size="3px"><b>{{fio}}</b></font> <div class="item-after">Кому: <font color="red">{{komu}}</font></div></div>' +
+                        '</div></a>' +
+                        '<div class="accordion-item-content">' +
+                        '<div class="block" style="left:20px;"><div class="data-table">' +
+                        '<table>' +
+                        '<thead>' +
+                        '<tr>' +
+                        ' <th class="label-cell">ФИО</th>' +
+                        ' <th class="numeric-cell">ИИН</th>' +
+                        '  <th class="numeric-cell">РАБОТА</th>' +
+                        '  <th class="numeric-cell">АДРЕС</th>' +
+                        '  <th class="numeric-cell">ТЕЛЕФОН</th>' +
+                        '  <th class="numeric-cell">КОММЕНТАРИЙ</th>' +
+                        ' </tr>' +
+                        ' </thead>' +
+                        '<tbody>' +
+                        ' <tr>' +
+                        ' <td class="label-cell">{{fio}}</td>' +
+                        ' <td class="numeric-cell">{{iin}}</td>' +
+                        ' <td class="numeric-cell">{{rabota}}</td>' +
+                        ' <td class="numeric-cell">{{adres}}</td>' +
+                        ' <td class="numeric-cell">{{phone}}</td>' +
+                        ' <td class="numeric-cell">{{comment}}</td>' +
+                        '</tr>' +
+                        '</tbody>' +
+                        '</table>' +
+                        '</div><br></div>' +
+                        '</div>' +
+                        '</li>',
+                      // Item height
+                      height: 33,
+                    });
+
+                  }
+                  else
+                    $$('#virtual-proga-zapis').html("Нету записи");
+                }, function () {
+                  app.preloader.hide();
+                  app.dialog.alert('Нет подключения к интернету');
+                }, 'json');
+              }
+            }
+          });
+          calendarModal.open();
+        });
+      },
+    },
+
+  }
+</script>

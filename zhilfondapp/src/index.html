@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!--
+  Customize this policy to fit your own app's needs. For more guidance, see:
+      https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+  Some notes:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+      * Enable inline JS: add 'unsafe-inline' to default-src
+  -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+
+  <meta name="theme-color" content="#007aff">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <title>Zhilfond | Админ панель</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="static/icons/apple-touch-icon.png">
+  <link rel="icon" href="static/icons/favicon.png">
+
+
+  <!-- built styles file will be auto injected -->
+  <script src="https://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar"></div>
+
+    <div class="navbar">
+      <div class="navbar-inner text-color-white" style="background-color:#222c3c">
+        <div class="title">Админ панель</div>
+        <div class="right" id="right_but">
+          <a class="link popover-open text-color-white" data-popover=".profile-popover">
+            <span class="margin-right-half">Профиль</span>
+            <img src="static/img/admin.jpg" class="avatar">
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="popover profile-popover">
+      <div class="popover-inner">
+        <h3 class="text-align-center">Администратор</h3>
+        <div class="list no-hairlines no-hairlines-between margin-bottom">
+          <ul>
+            <li>
+              <a id="vyhod" class="item-link item-content popover-close">
+                <div class="item-media">
+                  <i class="icon f7-icons">exit_fill</i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title">Выход</div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    <!-- Left panel with cover effect-->
+    <div class="panel panel-left panel-reveal theme-dark" id="panel_left">
+      <div class="navbar">
+        <div class="navbar-inner text-color-white" style="background-color:#171717">
+          <div class="title"><a class="link text-color-white">
+              <img src="static/img/log.png" class="avatar">
+              <span class="margin-right-half">&nbsp;ЖИЛФОНД</span>
+
+            </a></div>
+        </div>
+      </div>
+      <div class="view">
+
+        <div class="page" style="--f7-list-chevron-icon-color:transparent;--f7-list-bg-color: #171717;">
+
+          <div class="list">
+            <ul>
+              <li>
+                <a id="home" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">data_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Главная</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="list">
+            <ul>
+              <li>
+                <a id="news" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">logo_rss</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Новости</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="list">
+            <ul>
+              <li>
+                <a id="proga" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">ticket_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Жилищные программы</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="block block-strong no-padding-horizontal padding-vertical-half">
+            <div class="treeview">
+              <div class="treeview-item">
+                <div class="treeview-item-root treeview-item-toggle">
+                  <div class="treeview-item-content" style="margin-left:0px;">
+                    <i class="icon f7-icons">keyboard_fill</i>
+                    <div class="treeview-item-label">&nbsp;Сервисы</div>
+                  </div>
+                  <div style="width:100%;" align="right">
+                    <div class="treeview-toggle"></div>
+                  </div><span class="badge color-red" style="display:none;" id="menu_badge_e_ob2"></span>
+                </div>
+                <div class="treeview-item-children">
+                  <div class="treeview-item">
+                    <a id="ochered" class="treeview-item-root">
+                      <div class="treeview-item-content" style="margin-left:0px;">
+                        <div class="treeview-item-label">Список очереди на жилье</div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="treeview-item">
+                    <a id="dolg" class="treeview-item-root">
+                      <div class="treeview-item-content" style="margin-left:0px;">
+                        <div class="treeview-item-label">Список на аренд жилье</div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="treeview-item">
+                    <a id="moi" class="treeview-item-root">
+                      <div class="treeview-item-content" style="margin-left:0px;">
+                        <div class="treeview-item-label">Электронное обращение</div><span class="badge color-red"
+                          style="display:none;" id="menu_badge_e_ob"></span>
+                      </div>
+                    </a>
+                  </div>
+                  <div style="display: none;" class="treeview-item">
+                    <a id="newza" class="treeview-item-root">
+                      <div class="treeview-item-content" style="margin-left:0px;">
+                        <div class="treeview-item-label">Заявки на 15 000тг</div><span class="badge color-red"
+                          id="menu_badge_newza"></span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="list">
+            <ul>
+              <li>
+                <a id="zapis" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">edit_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Записи приема граждан</div><span class="badge color-red"
+                      style="display:none;" id="menu_badge_zapis"></span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="list">
+            <ul>
+              <li>
+                <a id="karta" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">card</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Карточки приема граждан</div><span class="badge color-red"
+                      style="display:none;" id="menu_badge_karta"></span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="list">
+            <ul>
+              <li>
+                <a id="info" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">list_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Полезная информация</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="list">
+            <ul>
+              <li>
+                <a id="kontakt" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">phone_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Контакты</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="list">
+            <ul>
+              <li>
+                <a id="notification" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">bell_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Уведомления</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="list">
+            <ul>
+              <li>
+                <a id="opri" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon material-icons">content_paste</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">О приложений</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="list">
+            <ul>
+              <li>
+                <a id="ucher" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon f7-icons">home_fill</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Об учреждении</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="list">
+            <ul>
+              <li>
+                <a id="teh" class="item-content item-link">
+                  <div class="item-media">
+                    <i class="icon material-icons">developer_mode</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">Тех. Поддержка</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Your main view, should have "view-main" class -->
+    <div class="view view-main view-init safe-areas" data-url="/auth/"></div>
+
+    <!-- built script files will be auto injected -->
+</body>
+
+</html>

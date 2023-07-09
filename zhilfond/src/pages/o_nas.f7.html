@@ -1,0 +1,61 @@
+<template>
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a class="link nazad" @Click="backs_onas">
+          <i  style="color:#073974;" class="icon icon-back"></i>
+        </a>
+      </div>
+      <div class="title"><font size="3%">{{js 'return this.$route.query.title'}}</font></div>
+    </div>
+  </div>
+  <div class="page-content">
+  <div class="block">
+<p><span id="o_nas_text"></span></p>
+		</div>  		  
+    </div>
+
+</div>
+</template>
+<script>
+export default {
+ methods: {
+    backs_onas: function () {
+		var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+	//	app.data.routs.rout="ucher";
+		router.back();	
+		},
+		 
+		},
+on: {
+    pageInit: function () {
+	
+	var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+	//app.data.routs.rout="o_nas";
+		var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+
+app.preloader.show('blue');
+app.request.post('https://zhilfondapp.kz/api/ucher.php',{zapros:"list"},function(otvet){
+app.preloader.hide();
+if (otvet[0].message=="ok"){
+		if (lang.lang=="ru")
+		$$('#o_nas_text').html(otvet[0].text);
+		else
+		$$('#o_nas_text').html(otvet[0].text_kz);
+
+}
+else
+app.dialog.alert('error');
+},function(){
+app.preloader.hide();
+app.dialog.alert('Нет подключения к интернету');
+},'json');
+	},
+	},
+};
+</script>

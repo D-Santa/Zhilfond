@@ -1,0 +1,308 @@
+<template>
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a href="#" class="link nazad" @Click="backs">
+          <i  style="color:#073974;" class="icon icon-back"></i>
+        </a>
+      </div>
+      <div class="title"><font size="3%">{{js 'return this.$route.query.title'}}</font></div>
+    </div>
+  </div>
+   <!--
+<div class="toolbar tabbar" style="margin-top:60px;">
+    <div class="toolbar-inner">
+
+      <a href="#tab-iin" class="tab-link tab-link-active"><span id="text_poiin">ПО ИИН</span></a>
+      <a href="#tab-fio" class="tab-link"><span id="text_pofio">ПО ФИО</span></a>
+    </div>
+  </div>-->
+
+  <div class="page-content">
+    <div class="block">
+      <p><b><span id="text_iin">№ вашего ИИН</span></b></p>
+     <div class="list no-hairlines-md" style="margin-top:-5px;">
+<ul>
+  <li class="item-content item-input">
+    <div class="item-media">
+     <i class="f7-icons size-22">card</i>
+    </div>
+    <div class="item-inner">
+      <div class="item-input-wrap">
+        <input type="number" placeholder="Ваш ИИН" id="iin">
+        <span class="input-clear-button"></span>
+      </div>
+    </div>
+  </li>
+  <li>
+    <label class="item-radio item-radio-icon-start item-content">
+      <input type="radio" name="demo-radio-start" id="radio1" checked />
+      <i class="icon icon-radio"></i>
+      <div class="item-inner">
+        <div class="item-title"><span id="text_radio1">Поиск очереди на жилье</span></div>
+      </div>
+    </label>
+  </li>
+  <li>
+    <label class="item-radio item-radio-icon-start item-content">
+      <input type="radio" name="demo-radio-start" id="radio2" />
+      <i class="icon icon-radio"></i>
+      <div class="item-inner">
+        <div class="item-title"><span id="text_radio2">Поиск причины отказа в постановке на очередь</span></div>
+      </div>
+    </label>
+  </li>
+<br>
+<li>
+<button class="col button button-fill color-yellow text-color-black" @Click="proverka"><span class="text_prov">Проверить</span></button>
+
+</li>
+</ul>
+</div>
+    </div>
+  <div class="block-title"><span id="text_rane">Ранее проверенные</span></div>
+  <div class="list inset">
+  <ul  id="och_list"></ul></div>
+|<!--
+  <div class="tabs">
+    <div class="page-content tab tab-active" id="tab-iin">
+      <div class="block">
+        <p><b><span id="text_iin">№ вашего ИИН</span></b></p>
+       <div class="list no-hairlines-md" style="margin-top:-5px;">
+  <ul>
+    <li class="item-content item-input">
+      <div class="item-media">
+       <i class="f7-icons size-22">card</i>
+      </div>
+      <div class="item-inner">
+        <div class="item-input-wrap">
+          <input type="number" placeholder="Ваш ИИН" id="iin">
+          <span class="input-clear-button"></span>
+        </div>
+      </div>
+    </li>
+	<br>
+	<li>
+	<button class="col button button-fill color-yellow text-color-black" @Click="proverka"><span class="text_prov">Проверить</span></button>
+	
+	</li>
+	</ul>
+	</div>
+      </div>
+	  <div class="block-title"><span id="text_rane">Ранее проверенные</span></div>
+	  <div class="list inset">
+		<ul  id="och_list"></ul></div>
+    </div>
+
+    <div class="page-content tab" id="tab-fio">
+      <div class="block">
+       <b><span id="text_fam">Фамилия</span></b>
+               <div class="list no-hairlines-md" style="margin-top:-5px;">
+  <ul>
+    <li class="item-content item-input">
+      <div class="item-inner">
+        <div class="item-input-wrap">
+          <input type="text" placeholder="Ваше фамилия" id="fam">
+          <span class="input-clear-button"></span>
+        </div>
+      </div>
+    </li>
+	<b><span id="text_im">Имя</span></b>
+         <li class="item-content item-input">
+      <div class="item-inner">
+        <div class="item-input-wrap">
+          <input type="text" placeholder="Ваше имя" id="im">
+          <span class="input-clear-button"></span>
+        </div>
+      </div>
+    </li>   
+	<b><span id="text_ot">Отчество</span></b>
+         <li class="item-content item-input">
+      <div class="item-inner">
+        <div class="item-input-wrap">
+          <input type="text" placeholder="Ваше отчество" id="ot">
+          <span class="input-clear-button"></span>
+        </div>
+      </div>
+    </li> 
+	<br>
+	<li>
+	<button class="col button button-fill color-yellow text-color-black" @Click="proverka2"><span class="text_prov">Проверить</span></button>
+	
+	</li>
+	</ul>
+	</div>
+      </div>
+
+    </div>
+  </div>
+-->
+  </div>
+</div>
+</template>
+<script>
+export default {
+ methods: {
+   backs: function () {
+		var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+		router.back();		
+		},
+  proverka2: function () {
+		var app = this.$f7;
+		var $$ = this.$$;  
+		var router = this.$router;
+		var user = JSON.parse(localStorage.getItem("f7form-user"));
+		app.preloader.show('yellow');
+		 app.request.get("https://zhilfondapp.kz/api/ochered.php", {id:user.id,fam:$$('#fam').val(),im:$$('#im').val(),ot:$$('#ot').val()}, function (data) {	
+ app.preloader.hide();
+ if (data[0].message=="ok"){
+router.navigate('/otv_och/?nomer='+data[0].nomer+'&god='+data[0].god+'&fio='+data[0].fam+'<br>'+data[0].im+'<br>'+data[0].ot+'&data='+data[0].data+'&cat='+data[0].cat+'#about');
+ }
+ else
+  app.dialog.alert("Не найдено в базе");
+ },function(){
+ app.preloader.hide();
+ app.dialog.alert('Нет подключения к интернету');
+ },'json');
+		},
+ proverka: function () {
+		var app = this.$f7;
+		var $$ = this.$$;  
+		var router = this.$router;
+		var user = JSON.parse(localStorage.getItem("f7form-user"));
+		app.preloader.show('yellow');
+    var url = "https://search.zhilfond.kz/include/check_iin.php";
+    if ($$('#radio1').prop('checked'))url = "https://search.zhilfond.kz/include/check_iin.php";
+    else
+    url = "https://search.zhilfond.kz/include/check_iin_denied.php";
+		 //app.request.get("https://zhilfondapp.kz/api/ochered.php", {id:user.id,iin:$$('#iin').val()}, function (data) {	
+      app.request.post(url, {user_iin:$$('#iin').val()}, function (data) {
+ app.preloader.hide();
+ console.log(JSON.stringify(data));
+ var dat = new Date();
+    var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+    var year = dat.getFullYear();
+     var month = months[dat.getMonth()];
+     var date = dat.getDate();
+     var hours = dat.getHours();
+    var minutes = "0" + dat.getMinutes();
+    var seconds = "0" + dat.getSeconds();
+    var time = date + '-' + month + '-' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+ if (data.done==true){
+   if ($$('#radio1').prop('checked'))
+ router.navigate('/otv_och/?nomer='+data.order_num+'&god='+time+'&fio='+data.person_fio+'&data='+data.order_date+'&cat='+data.category+'#about');
+ else
+ router.navigate('/otv_otkaz/?nomer='+data.reason+'&god='+time+'&fio='+data.person_fio+'&data='+data.order_date+'&cat='+data.category+'#about');
+ }
+ else
+  app.dialog.alert("Не найдено в базе");
+ },function(){
+ app.preloader.hide();
+ app.dialog.alert('Нет подключения к интернету');
+ },'json');
+		},
+		},
+on: {
+    pageInit: function () {
+	var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+	
+	var user = JSON.parse(localStorage.getItem("f7form-user"));
+	var datas = JSON.parse(localStorage.getItem("f7form-lang"));
+	if (datas.lang=="ru"){
+	$$('#text_poiin').text('ПО ИИН');
+	$$('#text_pofio').text('ПО ФИО');
+	  $$('#text_iin').text('№ вашего ИИН');
+	  $$('#iin').attr('placeholder','Ваш ИИН');
+	  $$('.text_prov').text('Проверить');
+	    $$('#text_rane').text('Ранее проверенные');
+		  $$('#text_fam').text('Фамилия');
+  $$('#text_im').text('Имя');
+  $$('#text_ot').text('Отчество');
+  $$('#fam').attr('placeholder','Ваше фамилия');
+  $$('#im').attr('placeholder','Ваше имя');
+  $$('#ot').attr('placeholder','Ваше отчество');
+  $$('#text_radio1').text('Поиск очереди на жилье');
+	$$('#text_radio2').text('Поиск причины отказа в постановке на очередь');
+	app.preloader.show('yellow');
+	if (user.id!="null")
+		 app.request.get("https://zhilfondapp.kz/api/och_list.php", {id:user.id,zapros:"list"}, function (data) {	
+ app.preloader.hide();
+ if (data[0].message=="ok"){
+var spisok="";
+for (var s = 0; s < data.length; s++)
+spisok+= '<li>' +
+      '<a name="?nomer='+data[s].nomer+'&god='+data[s].data_proverka+'&fio='+data[s].fam+'<br>'+data[s].im+'<br>'+data[s].ot+'&data='+data[s].data+'&cat='+data[s].cat+'" class="link item-link item-content">' +
+        '<div class="item-inner">' +
+          '<div class="item-title-row">' +
+            '<div class="item-title">'+data[s].data_proverka+'</div>' +
+			'<div class="item-after"> ИИН: '+data[s].iin+'</div>'+
+          '</div>' +
+        '</div>' +
+      '</a>' +
+    '</li>';
+$$('#och_list').html(spisok);
+ }
+ else
+  app.dialog.alert("Не найдено в базе");
+ },function(){
+ app.preloader.hide();
+ app.dialog.alert('Нет подключения к интернету');
+ },'json');
+ else
+  app.preloader.hide();
+  }
+  else
+  {
+  $$('#text_poiin').text('ЖСН бойынша');
+	$$('#text_pofio').text('ТАЖ бойынша');
+  $$('#text_iin').text('Сіздің ЖСН №');
+  $$('#iin').attr('placeholder','Сіздің ИИН');
+  $$('.text_prov').text('ТЕКСЕРУ');
+  $$('#text_rane').text('Бұрын тексерілгенде');
+  $$('#text_fam').text('Тегі');
+  $$('#text_im').text('Аты');
+  $$('#text_ot').text('Әкесінің аты');
+  $$('#fam').attr('placeholder','Сіздің тегіңіз');
+  $$('#im').attr('placeholder','Сіздің атыңыз');
+  $$('#ot').attr('placeholder','Сіздің әкеңіздің аты');
+  $$('#text_radio1').text('Тұрғын үйге кезекті іздеу');
+	$$('#text_radio2').text('Кезекке қоюдан бас тарту себебін іздеу');
+  }
+  $$('#och_list').on('click','a',function(){
+  router.navigate('/otv_och/'+$$(this).attr('name'));
+  if (user.id!="null")
+		 app.request.get("https://zhilfondapp.kz/api/och_list.php", {id:user.id,zapros:"list"}, function (data) {	
+ app.preloader.hide();
+ if (data[0].message=="ok"){
+var spisok="";
+for (var s = 0; s < data.length; s++)
+spisok+= '<li>' +
+      '<a name="?nomer='+data[s].nomer+'&god='+data[s].data_proverka+'&fio='+data[s].fam+'<br>'+data[s].im+'<br>'+data[s].ot+'&data='+data[s].data+'&cat='+data[s].cat+'" class="link item-link item-content">' +
+        '<div class="item-inner">' +
+          '<div class="item-title-row">' +
+            '<div class="item-title">'+data[s].data_proverka+'</div>' +
+			'<div class="item-after"> ЖСН: '+data[s].iin+'</div>'+
+          '</div>' +
+        '</div>' +
+      '</a>' +
+    '</li>';
+$$('#och_list').html(spisok);
+ }
+ else
+  app.dialog.alert("Не найдено в базе");
+ },function(){
+ app.preloader.hide();
+ app.dialog.alert('Нет подключения к интернету');
+ },'json');
+ else
+  app.preloader.hide();
+  });
+	},
+	},
+};
+</script>

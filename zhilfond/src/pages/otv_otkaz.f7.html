@@ -1,0 +1,91 @@
+<template>
+  <div class="page">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="nazad link back text-color-black">
+            Закрыть
+          </a>
+        </div>
+        <div class="title"></div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="bg-color-blue text-color-white"
+        style="width:100%;background-position: center;background-repeat: no-repeat;background-size: cover;"
+        align="center"><br>
+        <font size="4px"><b>Причина отказа</b></font><br>
+        <font size="2px">{{js 'return this.$route.query.nomer'}}</font>
+      </div>
+      <div class="block">
+        <div class="list no-hairlines-md">
+          <ul>
+            <li>
+              <div class="item-content ">
+                <div class="item-inner item-cell">
+                  <div class="item-row">
+                    <div class="item-cell"><b>Дата проверки</b></div>
+                    <div class="item-cell" align="right">{{js 'return this.$route.query.god'}}</div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="list no-hairlines-md">
+          <ul>
+            <li>
+              <div class="item-content ">
+                <div class="item-inner item-cell">
+                  <div class="item-row">
+                    <div class="item-cell"><b>Ф И О</b></div>
+                    <div class="item-cell" align="right">{{js 'return this.$route.query.fio'}}</div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="list no-hairlines-md">
+          <ul>
+            <li>
+              <div class="item-content ">
+                <div class="item-inner item-cell">
+                  <div class="item-row">
+                    <div class="item-cell"><b>Дата подачи заявления:</b></div>
+                    <div class="item-cell" align="right">{{js 'return this.$route.query.data'}}</div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="list no-hairlines-md">
+          <ul>
+            <li>
+              <div class="item-content ">
+                <div class="item-inner item-cell">
+                  <div class="item-row">
+                    <div class="item-cell"><b>Категория:</b></div>
+                    <div class="item-cell" align="right">{{js 'return this.$route.query.cat'}}</div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  export default {
+    on: {
+      pageInit: function () {
+        var app = this.$f7;
+        var $$ = this.$$;
+        var router = this.$router;
+      },
+    },
+  };
+</script>

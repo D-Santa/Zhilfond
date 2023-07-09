@@ -1,0 +1,79 @@
+<template>
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a class="link nazad" @Click="backs">
+          <i  style="color:#073974;" class="icon icon-back"></i>
+        </a>
+      </div>
+      <div class="title"><font size="3%">{{js 'return this.$route.query.title'}}</font></div>
+    </div>
+  </div>
+  <div class="page-content">
+      <div class="list media-list">
+  <ul id="news_list">
+
+  </ul>
+</div>   
+		  		  
+    </div>
+
+</div>
+</template>
+<script>
+export default {
+ methods: {
+    backs: function () {
+		var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+		router.back();		
+		},
+		},
+on: {
+    pageInit: function () {
+	var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+	var news="";
+	for (var t =0; t<app.data.news.array.length;t++){
+	var datas = JSON.parse(localStorage.getItem("f7form-lang"));
+	if (datas.lang=="ru")
+	news+='<li>'+
+      '<a data-id="'+t+'" class="item-link item-content">'+
+        '<div class="item-media"><img src="https://zhilfondapp.kz/api/'+app.data.news.array[t].image+'" width="100"/></div>'+
+        '<div class="item-inner">'+
+          '<div class="item-title-row">'+app.data.news.array[t].topick+
+          '</div>'+
+          '<div class="item-subtitle"></div>'+
+        '</div>'+
+      '</a>'+
+    '</li>';
+	else
+	news+='<li>'+
+      '<a data-id="'+t+'" class="item-link item-content">'+
+        '<div class="item-media"><img src="https://zhilfondapp.kz/api/'+app.data.news.array[t].image+'" width="100"/></div>'+
+        '<div class="item-inner">'+
+          '<div class="item-title-row">'+app.data.news.array[t].topick_kz+
+          '</div>'+
+          '<div class="item-subtitle"></div>'+
+        '</div>'+
+      '</a>'+
+    '</li>';
+	
+	}
+	$$('#news_list').html(news);
+	
+	$$('#news_list').on('click','a',function(){
+	var id_news = $$(this).attr('data-id');
+	if (datas.lang=="ru")
+router.navigate('/about/?picture=https://zhilfondapp.kz/api/'+app.data.news.array[id_news].image+'&topik='+app.data.news.array[id_news].topick+'&id='+id_news+'&title='+$$('.title-news').text()+'&otv=news');
+else
+router.navigate('/about/?picture=https://zhilfondapp.kz/api/'+app.data.news.array[id_news].image+'&topik='+app.data.news.array[id_news].topick_kz+'&id='+id_news+'&title='+$$('.title-news').text()+'&otv=news');
+
+	});
+	},
+	},
+};
+</script>

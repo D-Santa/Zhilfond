@@ -1,0 +1,39 @@
+cordova plugin rm cordova-plugin-console
+cordova build --release android
+keytool -genkey -v -keystore zhilfond.keystore -alias zhilfond -keyalg RSA -keysize 2048 -validity 10000
+1. Enter keystore password:
+Здесь необходимо ввести пароль для файла (не менее 6 символов). Введенный пароль нужно записать в надежном месте, он нужен всякий раз при подписывании приложения.
+
+2. Re-enter new password:
+Повторный ввод пароля.
+
+3. What is your first and last name?
+[Unknown]: Ivan Petrov
+Ваше имя и фамилия. Значение в квадратных скобках — это значение по умолчанию.
+
+4. What is the name of your organizational unit?
+[Unknown]: IT
+Название подразделения вашей компании. Можно оставить пустым, я указываю IT.
+
+5. What is the name of your organization?
+[Unknown]: 2developers
+Название вашей организации. Укажите, если есть.
+
+6. What is the name of your City or Locality?
+[Unknown]: Moscow
+Название города
+
+7. What is the name of your State or Province?
+[Unknown]: MO
+Название области
+
+8. What is the two-letter country code for this unit?
+[Unknown]: RU
+Код страны. Я указываю RU.
+
+Далее будет предложено проверить введенную информацию:
+Is CN=Ivan Petrov, OU=IT, O=2developers, L=Moscow, ST=MO, C=RU correct?
+
+[no]: y
+
+Подтверждайте, если все верно или нажмите Enter, чтобы ввести еще раз.

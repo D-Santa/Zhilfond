@@ -1,0 +1,51 @@
+<template>
+	<div class="page">
+	  <div class="navbar">
+		<div class="navbar-inner sliding">
+		  <div class="left">
+			<a class="link" @Click="backs">
+			  <i  style="color:#073974;" class="icon icon-back"></i>
+			</a>
+		  </div>
+		  <div class="title"><font size="3%">{{js 'return this.$route.query.title'}}</font></div>
+		</div>
+	  </div>
+	  <div class="page-content">
+		<iframe frameborder="0" id="iframeQ6K4K2X5T1G9B5K3A" src="" height="100%" width="100%"></iframe>			
+		</div>
+	
+	</div>
+	</template>
+	<script>
+	export default {
+	 methods: {
+		backs: function () {
+			var app = this.$f7;
+			var $$ = this.$$; 
+			var router = this.$router;
+			router.back();		
+			},
+		},
+
+	on: {
+		pageInit: function () {
+		var app = this.$f7;
+			var $$ = this.$$;
+		var router = this.$router;
+		app.preloader.show('yellow');
+		var datas = JSON.parse(localStorage.getItem("f7form-lang"));
+		if (datas.lang=="ru"){
+			$$("#iframeQ6K4K2X5T1G9B5K3A").attr('src','https://zhilfondapp.kz/api/freim.php?lang=1');	
+			app.preloader.hide();
+		}
+		else
+		{
+			$$("#iframeQ6K4K2X5T1G9B5K3A").attr('src','https://zhilfondapp.kz/api/freim.php?lang=2');	
+			app.preloader.hide();
+		}
+		
+
+		},
+		},
+	};
+	</script>

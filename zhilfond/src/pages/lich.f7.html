@@ -1,0 +1,72 @@
+<template>
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a class="link nazad" @Click="backs">
+          <i  style="color:#073974;" class="icon icon-back"></i>
+        </a>
+      </div>
+      <div class="title"><font size="3%">{{js 'return this.$route.query.title'}}</font></div>
+    </div>
+  </div>
+  <div class="page-content">
+  <div class="block">
+  <div style="width:100%;text-align:center;"><img src="static/img/user.jpg" class="avatar" width="100"></img></div>
+	<div class="list media-list">
+  <ul>
+    <li>
+      <div class="item-content">
+        <div class="item-media"  style="margin-top:10px;"><i class="icon f7-icons" style="color:#073974">person</i></div>
+        <div class="item-inner">
+          <div class="item-title-row">
+           <span id="fio"><span>
+          </div>
+		  <div class="item-after">ФИО</div>
+        </div>
+      </div>
+    </li>
+
+    <li>
+      <div class="item-content">
+        <div class="item-media"  style="margin-top:10px;"><i class="icon f7-icons" style="color:#073974">phone</i></div>
+        <div class="item-inner">
+          <div class="item-title-row">
+           <span id="phone"><span>
+          </div>
+		  <div class="item-after">Телефон</div>
+        </div>
+      </div>
+    </li>
+	</ul>
+	</div>
+		</div>  		  
+    </div>
+
+</div>
+</template>
+<script>
+export default {
+ methods: {
+    backs: function () {
+		var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+		app.panel.open();
+	//	app.data.routs.rout="home";
+		router.back();		
+		},
+		 
+		},
+on: {
+    pageInit: function () {
+	var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+	//app.data.routs.rout ="lich";
+	$$('#fio').text(app.data.user.fam+' '+app.data.user.im+' '+app.data.user.ot);
+	$$('#phone').text(app.data.user.phone);
+	},
+	},
+};
+</script>

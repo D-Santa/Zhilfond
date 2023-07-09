@@ -1,0 +1,86 @@
+<template>
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a class="link nazad" @Click="backs">
+          <i  style="color:#073974;" class="icon icon-back"></i>
+        </a>
+      </div>
+      <div class="title"><font size="3%"><span id="title">{{js 'return this.$route.query.title'}}</span></font></div>
+    </div>
+  </div>
+  <div class="page-content">
+<div class="list media-list">
+  <ul>
+    <li>
+      <div class="item-content" id="o_nas">
+        <div class="item-media"><i class="icon material-icons" style="color:#073974">home</i></div>
+		
+        <div class="item-inner" >
+		
+          <div class="item-title-row">
+            <span class="onas">О нас</span>
+          </div>
+		  
+        </div>
+      </div>
+    </li>
+	    <li>
+      <div class="item-content" id="open_struk">
+        <div class="item-media"><i class="icon f7-icons" style="color:#073974">layers</i></div>
+        <div class="item-inner"> 
+          <div class="item-title-row">
+           <span class="struk">Структура</span>
+          </div>
+        </div>
+		
+      </div>
+    </li>
+	</ul>
+	</div>
+		  		  
+    </div>
+
+</div>
+</template>
+<script>
+export default {
+ methods: {
+    backs: function () {
+		var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+		router.back();	
+	app.panel.open();
+		},
+		},
+on: {
+    pageInit: function () {
+	var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+	//app.data.routs.rout="ucher";
+	var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+		if (lang.lang=="ru"){
+		$$('.onas').text('О нас');
+		$$('.struk').text('Структура');
+		}
+		else
+		{
+		$$('.onas').text('Біз туралы');
+		$$('.struk').text('Құрылым');
+		}
+		
+		$$('#open_struk').on('click',function(){
+window.open("http://zhilfond.kz/%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0/", '_system');
+});
+
+		
+		$$('#o_nas').on('click',function(){
+router.navigate('/o_nas/?title='+$$('.onas').text());
+});
+	},
+	},
+};
+</script>

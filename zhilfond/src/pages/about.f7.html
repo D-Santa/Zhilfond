@@ -1,0 +1,53 @@
+<template>
+<div class="page" data-name="about">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a href="#" class="link nazad back">
+          <i  style="color:#073974;" class="icon icon-back"></i>
+        </a>
+      </div>
+      <div class="title">{{js 'return this.$route.query.title'}}</div>
+    </div>
+  </div>
+  <div class="page-content">
+    <img id="imgs" width="100%"></img>
+    <div class="block block-strong" align="center">
+      <p><strong>{{js 'return this.$route.query.topik'}}</strong></p> </div>
+    <div class="block" id = "text_news">
+    </div>
+  </div>
+</div>
+</template>
+<script>
+export default {
+on: {
+    pageInit: function () {
+	var app = this.$f7;
+	var $$ = this.$$;
+	var router = this.$router;
+  $$('#imgs').attr('src',this.$route.query.picture);
+	var datas = JSON.parse(localStorage.getItem("f7form-lang"));
+  if (this.$route.query.otv=="news"){
+	if (datas.lang=="ru")
+	$$('#text_news').html(app.data.news.array[this.$route.query.id].text);
+	else
+	$$('#text_news').html(app.data.news.array[this.$route.query.id].text_kz);
+  }
+  else
+  {
+    if (datas.lang=="ru")
+	$$('#text_news').html(app.data.proga.array[this.$route.query.id].text);
+	else
+	$$('#text_news').html(app.data.proga.array[this.$route.query.id].text_kz);
+
+  }
+  $$('#text_news').on('click','a',function(){
+    var str = $$(this).attr('href'); 
+  window.open(str, '_system');
+  });
+  
+	},
+	},
+};
+</script>

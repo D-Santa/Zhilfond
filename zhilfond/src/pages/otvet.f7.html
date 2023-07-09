@@ -1,0 +1,163 @@
+<template>
+  <div class="page">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a class="link nazad" @Click="backs">
+            <i style="color:#073974;" class="icon icon-back"></i>
+          </a>
+        </div>
+        <div class="title">
+          <font size="3%">{{js 'return this.$route.query.title'}}</font>
+        </div>
+      </div>
+    </div>
+    <div class="toolbar messagebar">
+      <div class="toolbar-inner">
+        <div class="messagebar-area">
+          <textarea class="resizable" id="ttteext" placeholder="Сообщение"></textarea>
+        </div><a class="link send-link" href="#">Отправить</a>
+      </div>
+    </div>
+    <div class="page-content messages-content">
+      <div class="messages">
+
+      </div>
+    </div>
+
+  </div>
+</template>
+<script>
+  export default {
+    methods: {
+      backs: function () {
+        var app = this.$f7;
+        var $$ = this.$$;
+        var router = this.$router;
+        router.back({ force: true });
+      },
+
+    },
+    on: {
+      pageInit: function () {
+        var app = this.$f7;
+        var $$ = this.$$;
+        var router = this.$router;
+        var chat_id = "";
+        app.preloader.show('blue');
+        chat_id = this.$route.query.id;
+        app.request.get("https://zhilfondapp.kz/api/message.php", { id: chat_id }, function (messagess) {
+          if (messagess.length > 0) {
+            for (var s = 0; s < messagess.length; s++)
+              messages.addMessage({
+                text: messagess[s].text,
+                type: messagess[s].type,
+                name: messagess[s].name,
+                avatar: messagess[s].avatar,
+                textFooter: messagess[s].footer,
+                Footer: " "
+              });
+            app.request.get("https://zhilfondapp.kz/api/up_message.php", { id: chat_id, zapros: "received" }, function (data2) {
+
+            });
+            // Hide typing indicator
+            messages.hideTyping();
+            app.preloader.hide();
+          }
+        }, function () {
+          app.preloader.hide();
+          app.dialog.alert('Нет подключения к интернету');
+        }, 'json');
+
+
+
+        var messages = app.messages.create({
+          el: '.messages',
+          scrollMessages: true,
+          scrollMessagesOnEdge: false,
+          newMessagesFirst: false,
+          // First message rule
+          firstMessageRule: function (message, previousMessage, nextMessage) {
+            // Skip if title
+            if (message.isTitle) return false;
+            /* if:
+              - there is no previous message
+              - or previous message type (send/received) is different
+              - or previous message sender name is different
+            */
+            if (!previousMessage || previousMessage.type !== message.type || previousMessage.name !== message.name) return true;
+            return false;
+          },
+          // Last message rule
+          lastMessageRule: function (message, previousMessage, nextMessage) {
+            // Skip if title
+            if (message.isTitle) return false;
+            /* if:
+              - there is no next message
+              - or next message type (send/received) is different
+              - or next message sender name is different
+            */
+            if (!nextMessage || nextMessage.type !== message.type || nextMessage.name !== message.name) return true;
+            return false;
+          },
+          // Last message rule
+          tailMessageRule: function (message, previousMessage, nextMessage) {
+            // Skip if title
+            if (message.isTitle) return false;
+            /* if (bascially same as lastMessageRule):
+            - there is no next message
+            - or next message type (send/received) is different
+            - or next message sender name is different
+          */
+            if (!nextMessage || nextMessage.type !== message.type || nextMessage.name !== message.name) return true;
+            return false;
+          }
+        });
+
+        // Init Messagebar
+        var messagebar = app.messagebar.create({
+          el: '.messagebar'
+        });
+
+        // Response flag
+        var responseInProgress = false;
+
+        // Send Message
+        $$('.send-link').on('click', function () {
+          app.preloader.show('blue');
+          var text = messagebar.getValue().replace(/\n/g, '<br>').trim();
+          app.request.get("https://zhilfondapp.kz/api/add_mess.php", { id: chat_id, type: "sent", text: text, name: app.data.user.im }, function (data2) {
+            if (data2[0].message == "ok") {
+              app.preloader.hide();
+
+              // return if empty message
+              if (!text.length) return;
+
+              // Clear area
+              messagebar.clear();
+
+              // Return focus to area
+              messagebar.focus();
+
+              // Add message to messages
+              messages.addMessage({
+                text: text,
+                avatar: data2[0].avatar,
+                textFooter: data2[0].footer,
+                name: data2[0].data,
+                Footer: ""
+              });
+
+              if (responseInProgress) return;
+              // Receive dummy message
+            }
+          }, function () {
+            app.preloader.hide();
+            app.dialog.alert('Нет подключения к интернету');
+          }, 'json');
+        });
+
+      },
+    },
+  };
+</script>

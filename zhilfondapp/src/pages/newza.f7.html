@@ -1,0 +1,88 @@
+<template>
+  <div class="page" data-name="/news/" style="height:94%;">
+
+        <div class="page-content" style="height:99%;">
+
+			                      <div class="card text-color-black col-100"  style="--f7-card-border-radius:30px;margin-top:-15px;">
+                      <div class="card-content card-content-padding">
+					  <a id="downloadz" class="col button button-fill button-round color-red" style="position:absolute;right: 15px;">Скачать Excel&nbsp;<i class="icon f7-icons" style="margin-top:-2px;">download</i></a>
+<i class="icon f7-icons margin-right-half" style="font-size: 24px; margin-top:-5px;margin-left:10px;opacity:0.6;">logo_rss</i><font size="4px" style="opacity:0.6;"><b>Заявки</b>&nbsp; (на 15 000 тенге)</font>
+
+		</div>
+
+                    </div>
+					
+					<div class="row margin-horizontal">
+            <div class="col-100 margin-top">
+              <div class="card data-table data-table-init"  style="--f7-card-border-radius: 0px;">
+                <div class="card-header">Список всех заявок<div style="position: relative; right: 5px;"></div></div>
+                <div class="card-content card-content-padding">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th class="label-cell">№</th>
+                        <th class="label-cell">ФИО</th>
+                        <th class="label-cell">ИИН</th>
+                        <th class="label-cell">Номер лицевого счета</th>
+                        <th class="label-cell">Категория</th>
+                        <th class="label-cell">Контакты</th>
+                        <th class="label-cell">Электронная почта</th>
+                      </tr>
+                    </thead>
+                    <tbody id ="virtual_newza">
+          
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+		
+		
+		
+
+  </div>
+</template>
+<script>
+export default {
+on: {
+      pageInit: function(e, page) {
+        var app = this.$app;
+		var $$ = this.$$;
+		var router = this.$router;
+    app.preloader.show('blue');
+app.request.post('https://zhilfondapp.kz/api/newza.php',{zapros:"list"},function(otvet){
+  app.preloader.hide();
+if (otvet[0].message=="ok"){
+var spisok="";
+for (var i = 0; i < otvet.length; i++) {
+  spisok+='<tr style="height:70px;">'+
+                          '<td class="label-cell" style="width:5%">'+(i+1)+'</td>'+
+                          '<td class="label-cell" style="width:35%" class="col-100 ">'+
+						  '<img class="avatar" src="static/img/user.jpg" style="width:50px;height:50px;margin-top:6px;">'+
+						  '<div style="position:absolute;margin-top:-40px;margin-left:60px;">'+otvet[i].fio+'</div></td>'+
+                          '<td class="label-cell" style="width:15%">'+otvet[i].iin+'</td>'+
+                          '<td class="label-cell" style="width:15%">'+otvet[i].iban+'</td>'+
+                          '<td class="label-cell" style="width:30%">'+otvet[i].cat+'</td>'+
+                          '<td class="label-cell" style="width:15%">'+otvet[i].tel+'</td>'+
+                          '<td class="label-cell" style="width:15%">'+otvet[i].post+'</td>'+
+                        '</tr>';
+}
+$$('#virtual_newza').html(spisok);
+}
+
+},function(){
+app.preloader.hide();
+app.dialog.alert('Нет подключения к интернету');
+},'json');
+$$('#downloadz').on('click',function(){
+    window.location.href = "https://zhilfondapp.kz/api/down_excel.php?dan=newza"; 
+  });		
+      },
+	},
+
+}
+</script>

@@ -1,0 +1,164 @@
+<template>
+	<div class="page">
+	  <div class="navbar">
+		<div class="navbar-inner sliding">
+		  <div class="left">
+			<a class="link" @Click="backs">
+			  <i  style="color:#073974;" class="icon icon-back"></i>
+			</a>
+		  </div>
+		  <div class="title"><font size="3%">{{js 'return this.$route.query.title'}}</font></div>
+		</div>
+	  </div>
+	  <div class="page-content">
+			 <div class="block">
+				   <p> <b><span id="sosta">Состою в очереди на жилье:</span></b></p>
+				   <div class="list no-hairlines-md" style="margin-top:-5px;">
+	  <ul>
+	 <li class="item-content item-input">
+		  <div class="item-inner">
+			<div class="item-input-wrap input-dropdown-wrap" id="text_option">
+			</div>
+		  </div>
+		</li>
+		</ul>
+		</div>
+		   <p><b><span id="tema">Выбрать тему</span></b>
+		   </p>
+				   <div class="list no-hairlines-md" style="margin-top:-5px;">
+	  <ul>
+	 <li class="item-content item-input">
+		  <div class="item-inner">
+			<div class="item-input-wrap input-dropdown-wrap" id="problema">
+			</div>
+		  </div>
+		</li>
+	
+		</ul>
+		</div>
+		
+		
+			   <p><b><span id="opis">Описание к теме</span></b></p>
+				   <div class="list no-hairlines-md" style="margin-top:-5px;">
+	  <ul>
+	<li class="item-content item-input">
+		  <div class="item-inner">
+			<div class="item-input-wrap">
+			  <textarea placeholder="Описание" id="comment"></textarea>
+			</div>
+		  </div>
+		</li>
+		<li class="item-content item-input item-input-outline">
+			<div class="item-inner">
+			  <div class="item-title item-floating-label"><span id="iin_text">Укажите ИИН</span></div>
+			  <div class="item-input-wrap">
+				<input type="number" id="iin_el">
+			  </div>
+			</div>
+		  </li>
+		<br>
+		<li>
+		<button class="col button button-fill color-yellow text-color-black" @Click="proverka2"><span id="otrp">Отправить</span></button>
+		
+		</li>
+		</ul>
+		</div>
+		  </div>
+						
+		</div>
+	
+	</div>
+	</template>
+	<script>
+	export default {
+	 methods: {
+		backs: function () {
+			var app = this.$f7;
+			var $$ = this.$$; 
+			var router = this.$router;
+			router.back();		
+			},
+				proverka2: function () {
+			var app = this.$f7;
+			var $$ = this.$$; 
+			var router = this.$router;
+			var datas = JSON.parse(localStorage.getItem("f7form-lang"));
+			var iin = $$('#iin_el').val().replace(/\s/g, '');
+			var comments = $$('#comment').val().replace(/\s/g, '');
+			if (datas.lang=="ru"){
+	if (iin.length != 12) app.dialog.alert("Не правильный формат "+$$('#iin_text').text());
+	else if (comments=="") app.dialog.alert("Напишите описание к теме");
+			}
+			else
+			{
+				if (iin.length != 12) app.dialog.alert($$('#iin_text').text()+" форматы дұрыс емес");
+				else if (comments=="") app.dialog.alert("Тақырыпқа сипаттама жазыңыз");
+			}
+			if (iin.length == 12 && comments!=""){
+			app.preloader.show('yellow');
+			app.request.get('https://zhilfondapp.kz/api/obr.php',{id:app.data.routs.id,ochered:$$('#ochered').val(),theme:$$('#theme').val(),comment:$$('#comment').val(),iin:iin},function(otvet){
+	app.preloader.hide();
+	if (otvet[0].message=="ok"){
+		if (datas.lang=="ru")
+			app.dialog.alert('Ваше обращение отправлено',function(){
+			router.back();
+			});
+			else
+			app.dialog.alert('Сіздің өтінішіңіз жіберілді',function(){
+			router.back();
+			});
+			}
+			},function(){
+			app.preloader.hide();
+			},'json');
+			}
+			
+			},
+			},
+	on: {
+		pageInit: function () {
+		var app = this.$f7;
+			var $$ = this.$$;
+		var router = this.$router;
+		var datas = JSON.parse(localStorage.getItem("f7form-lang"));
+		if (datas.lang=="ru"){
+		$$('#sosta').text('Состою в очереди на жилье:');
+		$$('#text_option').html(' <select placeholder="Please choose..." id="ochered">'+
+				'<option value="Да">Да</option>'+
+				'<option value="Нет">Нет</option>'+
+			  '</select>');
+			  $$('#tema').text('Выбрать тему');
+			  $$('#problema').html(' <select placeholder="Please choose..." id="theme">'+
+				 '<option value="Действующие жилищные программы">Действующие жилищные программы </option>'+
+				  '<option value="Жалоба"> Жалоба </option>'+
+				   '<option value="Предложения">  Предложения</option>'+
+				   ' <option value="Прочее"> Прочее</option>'+
+			  '</select>');
+			   $$('#opis').text('Описание к теме');
+			   $$('#comment').attr('placeholder','Описание');
+			   $$('#otrp').text('Отправить');
+			   $$('#iin_text').text('Укажите ИИН');
+		}
+		else
+		{
+		$$('#sosta').text('Үйге кезекте тұрасыз ба?:');
+		$$('#text_option').html(' <select placeholder="Please choose..." id="ochered">'+
+				'<option value="Да">Ия</option>'+
+				'<option value="Нет">Жоқ</option>'+
+			  '</select>');
+			   $$('#tema').text('Тақырыпты таңданыз');
+				$$('#problema').html(' <select placeholder="Please choose..." id="theme">'+
+				 '<option value="Действующие жилищные программы">Қолданыстағы тұрғын үй бағдарламалары </option>'+
+				  '<option value="Жалоба"> Шағым </option>'+
+				   '<option value="Предложения">  Ұсыныстар</option>'+
+				   ' <option value="Прочее"> Өзге</option>'+
+			  '</select>');
+			   $$('#opis').text('Тақырыпқа Сипаттама');
+				$$('#comment').attr('placeholder','Сипаттамасы');
+				   $$('#otrp').text('Жіберу');
+				   $$('#iin_text').text('ЖСН көрсетіңіз');
+		}
+		},
+		},
+	};
+	</script>

@@ -1,0 +1,310 @@
+<template>
+	<div class="page">
+		<div class="navbar">
+			<div class="navbar-inner sliding">
+				<div class="left">
+					<a class="link" @Click="backs">
+						<i style="color:#073974;" class="icon icon-back"></i>
+					</a>
+				</div>
+				<div class="title">
+					<font size="3%">{{js 'return this.$route.query.title'}}</font>
+				</div>
+			</div>
+		</div>
+		<div class="toolbar tabbar toolbar-bottom">
+			<div style="width:100%;height:100%;display: -webkit-flex;
+	display: flex;
+	align-items: center;
+	justify-content: center;" class="gradient3 button" @Click="voiti">
+				<font size="3%" color="white"><span id="voiti_title">ВОЙТИ</span></font>
+			</div>
+		</div>
+		<div class="page-content gradient2">
+			<div class="card" id="auth_rus" style="--f7-card-border-radius: 8px;">
+
+				<div class="card-content">
+					<div class="login-screen-title">
+						<font style="font-size: 70%;">Авторизация
+					</div>
+					<div class="list">
+						<ul>
+							<li class="item-content item-input item-input-outline">
+								<div class="item-inner">
+									<div class="item-title item-floating-label"><i style="color:#073974"
+											class="icon f7-icons color-blue size-22">person</i>логин</div>
+									<div class="item-input-wrap">
+										<input id="loginsr" type="text" placeholder="ваш логин" \>
+									</div>
+								</div>
+							</li>
+							<li class="item-content item-input item-input-outline">
+								<div class="item-inner">
+									<div class="item-title item-floating-label"><span id="supervizer"><i
+												style="color:#073974"
+												class="icon f7-icons color-blue size-22">unlock</i> пароль</span></div>
+									<div class="item-input-wrap">
+										<input id="passsr" type="password" placeholder="******" \>
+									</div>
+								</div>
+							</li>
+							<br>
+						</ul>
+
+					</div>
+				</div>
+				<div class="card-footer">
+					<button class="col button" @Click="zabyl">
+						<font size="2%" style="color:#073974">Забыли пароль?</font>
+					</button>&#8195;
+					<button class="col button color-white" style="background-color:#073974" @Click="regss">
+						<font size="2%">Регистрация</font>
+					</button>
+
+				</div>
+			</div>
+
+			<div class="card" id="auth_kz" style="--f7-card-border-radius: 8px;">
+
+				<div class="card-content">
+					<div class="login-screen-title">
+						<font style="font-size: 70%;">Авторизация
+					</div>
+					<div class="list">
+						<ul>
+							<li class="item-content item-input item-input-outline">
+								<div class="item-inner">
+									<div class="item-title item-floating-label"><i style="color:#073974"
+											class="icon f7-icons color-blue size-22">person</i>логин</div>
+									<div class="item-input-wrap">
+										<input id="logins" type="text" placeholder="ваш логин" \>
+									</div>
+								</div>
+							</li>
+							<li class="item-content item-input item-input-outline">
+								<div class="item-inner">
+									<div class="item-title item-floating-label"><span id="supervizer"><i
+												style="color:#073974"
+												class="icon f7-icons color-blue size-22">unlock</i> құпия сөз</span>
+									</div>
+									<div class="item-input-wrap">
+										<input id="passs" type="password" placeholder="******" \>
+									</div>
+								</div>
+							</li>
+							<br>
+						</ul>
+
+					</div>
+				</div>
+				<div class="card-footer">
+					<button class="col button" @Click="zabyl">
+						<font size="2%" style="color:#073974">Ұмыттыңыз ба?</font>
+					</button>&#8195;
+					<button class="col button color-white" style="background-color:#073974" @Click="regss">
+						<font size="2%">Тіркелу</font>
+					</button>
+
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+</template>
+<script>
+	export default {
+		methods: {
+			backs: function () {
+				var app = this.$f7;
+				var $$ = this.$$;
+				var router = this.$router;
+				router.back();
+				app.data.routs.rout = "home";
+				app.panel.open();
+			},
+			regss: function () {
+				var app = this.$f7;
+				var $$ = this.$$;
+				var router = this.$router;
+				var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+				if (lang.lang == "ru")
+					router.navigate('/tel/?title=Регистрация&nazad=Назад&f1=ID(номер телефона)&f2=Отправить смс подтверждение');
+				else
+					router.navigate('/tel/?title=Тіркелу&nazad=Артқа&f1=ID(ұялы телефон нөмері)&f2=SMS растау жіберу');
+			},
+			zabyl: function () {
+				var app = this.$f7;
+				var $$ = this.$$;
+				var router = this.$router;
+				zabyl();
+				function zabyl() {
+					var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+					if (lang.lang == "ru")
+						app.dialog.create({
+							title: '<div style="text-align: center;">вход в личный кабинет</div>',
+							text: '<div style="text-align: center;">Напишите ваш номер телефона при регистрации:</div><br>',
+							content: '<div id="area1" align="center"><font color="black"><input type="tel" style="outline: 1px solid #000; width:100%; height:30px; text-align:center;" id="value" placeholder="(7**)*** ** **"></font></div>',
+							on: {
+								opened: function () {
+									var phoneMas = new IMask(
+										document.getElementById('value'), {
+										mask: '8(000)000 00 00'
+									});
+								}
+							},
+							buttons: [
+								{
+									text: '<a class="col button button-fill color-green">Отправить</a>',
+									onClick: function () {
+										if ($$('#value').val().length != 15) app.dialog.alert('Не правильный формат номера, повторите пожалуйста еще раз...', function () { zabyl(); });
+										else {
+											var tel = $$('#value').val();
+											tel = tel.slice(1);
+											app.preloader.show('blue');
+											app.request.get("https://zhilfondapp.kz/api/zabyl.php", { tel: tel }, function (data) {
+												app.preloader.hide();
+												if (data[0].message == "ok") {
+													app.dialog.alert("На ваш номер было отправлено смс с логином и пароль!");
+												}
+												else
+													if (data[0].message == "log") {
+														app.dialog.alert("Вы не создавали логин, пожалуйста пройдите регистрацию");
+													}
+													else
+														app.dialog.alert('Ваш номер не зарегистрирован в системе! Пожалуйста пройдите регистрацию...');
+											}, function () {
+												app.preloader.hide();
+												app.dialog.alert('Нет подключения к интернету');
+											}, 'json');
+										}
+									},
+								},
+								{
+									text: '<a class="col button button-fill color-red">Отмена</a>',
+									onClick: function () {
+
+
+									},
+								},
+
+							],
+						}).open();
+
+					else
+						app.dialog.create({
+							title: '<div style="text-align: center;">жеке кабинетке кіру</div>',
+							text: '<div style="text-align: center;">Тіркелген ұялы телефон нөмерін теріңіз:</div><br>',
+							content: '<div id="area1" align="center"><font color="black"><input type="tel" style="outline: 1px solid #000; width:100%; height:30px; text-align:center;" id="value" placeholder="(7**)*** ** **"></font></div>',
+							on: {
+								opened: function () {
+									var phoneMas = new IMask(
+										document.getElementById('value'), {
+										mask: '8(000)000 00 00'
+									});
+								}
+							},
+							buttons: [
+								{
+									text: '<a class="col button button-fill color-green">Жіберу</a>',
+									onClick: function () {
+										if ($$('#value').val().length != 15) app.dialog.alert('Формат дұрыс емес, қайтадан көріңіз...', function () { zabyl(); });
+										else {
+											var tel = $$('#value').val();
+											tel = tel.slice(1);
+											app.preloader.show('blue');
+											app.request.get("https://zhilfondapp.kz/api/zabyl.php", { tel: tel }, function (data) {
+												app.preloader.hide();
+												if (data[0].message == "ok") {
+													app.dialog.alert("Сіздің нөмеріңізге логин және құпия сөз смс жіберілді!");
+												}
+												else
+													if (data[0].message == "log") {
+														app.dialog.alert("Бұл нөмер тіркелмеген, өтінемін тіркеліңіз");
+													}
+													else
+														app.dialog.alert('Бұл нөмер тіркелмеген, өтінемін тіркеліңіз');
+											}, function () {
+												app.preloader.hide();
+												app.dialog.alert('Нет подключения к интернету');
+											}, 'json');
+										}
+									},
+								},
+								{
+									text: '<a class="col button button-fill color-red">Жабу</a>',
+									onClick: function () {
+
+
+									},
+								},
+
+							],
+						}).open();
+
+				}
+			},
+			voiti: function () {
+				var app = this.$f7;
+				var $$ = this.$$;
+				var router = this.$router;
+				app.preloader.show('blue');
+				var loginka = $$('#logins').val();
+				var pasword = $$('#passs').val();
+				var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+				if (lang.lang == "ru") {
+					loginka = $$('#loginsr').val();
+					pasword = $$('#passsr').val();
+				}
+				app.request.post('https://zhilfondapp.kz/api/vhod.php', { log: loginka, pass: pasword, token_app: app.data.routs.token_app }, function (otvet) {
+					app.preloader.hide();
+					if (otvet[0].message == "ok") {
+						app.data.user.id = otvet[0].id;
+						app.form.storeFormData('user', {
+							'id': otvet[0].id,
+							'token': otvet[0].token
+						});
+						app.data.user.fam = otvet[0].fam;
+						app.data.user.im = otvet[0].im;
+						app.data.user.ot = otvet[0].ot;
+						app.data.user.phone = otvet[0].phone;
+						app.data.routs.id = otvet[0].id;
+						app.data.routs.token = otvet[0].token;
+						router.back({ force: true });
+					}
+					else {
+						if (lang.lang == "ru")
+							app.dialog.alert('Не правильный логин или пароль!');
+						else
+							app.dialog.alert('Логин немесе құпия сөз дұрыс емес!');
+					}
+				}, function () {
+					app.preloader.hide();
+					app.dialog.alert('Нет подключения к интернету');
+
+				}, 'json');
+			},
+
+		},
+		on: {
+			pageInit: function () {
+				var app = this.$app;
+				var $$ = this.$$;
+				var router = this.$router;
+				app.data.routs.rout = "auth";
+				var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+				if (lang.lang == "ru") {
+					$$('#auth_rus').show();
+					$$('#auth_kz').hide();
+					$$('#voiti_title').text('ВОЙТИ');
+				}
+				else {
+					$$('#auth_rus').hide();
+					$$('#auth_kz').show();
+					$$('#voiti_title').text('КІРУ');
+				}
+			},
+		},
+	};
+</script>

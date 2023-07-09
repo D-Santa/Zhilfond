@@ -1,0 +1,117 @@
+<template>
+  <div class="page" data-name="/ucher/" style="height:94%;">
+
+        <div class="page-content" style="height:99%;">
+		<div class="block-title">ОБ УЧРЕЖДЕНИИ</div>
+
+
+
+		
+							<div class="dashboard-cards">
+            <div class="row margin-horizontal">
+              <div class="col-100  tablet-50 margin-top charts-col">
+					<div class="list inline-labels no-hairlines-md">
+  <ul>
+Текст (kaz):
+	<li class="item-content item-input">
+      <div class="item-inner item-input-outline" >
+        <div class="item-title item-label" style="width:10%;"></div>
+        <div class="item-input-wrap" >
+          <div id="text_kz"></div>
+        </div>
+      </div>
+    </li>
+	
+
+  </ul>
+</div>
+</div>
+
+              <div class="col-100  tablet-50 margin-top charts-col">
+					<div class="list inline-labels ">
+  <ul>
+
+	Текст (rus):
+	<li class="item-content item-input">
+      <div class="item-inner item-input-outline">
+        <div class="item-title item-label" style="width:10%;"></div>
+        <div class="item-input-wrap">
+          <div id="text"></div>
+        </div>
+      </div>
+    </li>
+
+  </ul>
+</div>
+</div>
+
+
+</div>
+</div>
+
+<div class="list inline-labels no-hairlines-md">
+  <ul>
+    <li class="item-content item-input" style="height:50px;">
+<a class="col button button-fill color-red link back" style="position:absolute;">Отмена</a>
+<div style="position:absolute;right: 15px; width:20%;">
+<p class="row">
+<a  class="col button button-fill color-blue" id="save">Сохранить</a>
+</p>
+</div>
+    </li>
+	</ul>
+	</div>
+		
+
+        </div>
+  </div>
+  
+
+</template>
+<script>
+export default {
+on: {
+      pageInit: function(e, page) {
+        var app = this.$app;
+		var $$ = this.$$;
+		var router = this.$router;
+		var editor = CKEDITOR.replace( 'text_kz' );
+		var editor2 = CKEDITOR.replace( 'text' );
+		var id = this.$route.query.id;
+		app.preloader.show('blue');
+		setTimeout(function() {
+app.request.post('https://zhilfondapp.kz/api/ucher.php',{zapros:"list"},function(otvet){
+app.preloader.hide();
+if (otvet[0].message=="ok"){
+if (otvet[0].image!="null")
+	editor2.setData(otvet[0].text);
+	editor.setData(otvet[0].text_kz);
+}
+},function(){
+app.preloader.hide();
+app.dialog.alert('Нет подключения к интернету');
+},'json');
+},1000);
+
+
+
+$$('#save').on('click',function(){
+app.preloader.show('blue');
+app.request.post('https://zhilfondapp.kz/api/ucher.php',{zapros:"save",text:editor2.getData(),text_kz:editor.getData()},function(otvet){
+app.preloader.hide();
+if (otvet[0].message=="ok"){
+app.dialog.alert('Сохранено');
+}
+else
+app.dialog.alert('error');
+},function(){
+app.preloader.hide();
+app.dialog.alert('Нет подключения к интернету');
+},'json');
+});
+			
+      },
+	},
+
+}
+</script>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!--
+  Customize this policy to fit your own app's needs. For more guidance, see:
+      https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+  Some notes:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+      * Enable inline JS: add 'unsafe-inline' to default-src
+  -->
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+
+  <meta name="theme-color" content="#007aff">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <title>Zhilfond</title>
+  
+  
+  
+  
+  <!-- built styles file will be auto injected -->
+</head>
+<body>
+  <div id="app">
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar"></div>
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar"></div>
+    <div class="panel panel-right panel-reveal">
+	    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="title sliding" style="width:100%;text-align:center;"><span class="menu">Меню</span></div>
+      </div>
+    </div>
+<div class="block">
+<div class="list">
+  <ul>
+        <li>
+      <a id="lich" class="item-content">
+        <div class="item-media"><i class="icon material-icons" style="color:#073974">account_circle</i></div>
+        <div class="item-inner">
+          <div class="item-title text-color-black"><span class="lich">Личный кабинет</span></div>
+        </div>
+      </a>
+    </li>
+	        <li id="li_moi">
+      <a class="item-content" id="moi">
+        <div class="item-media"><i class="icon material-icons" style="color:#073974">speaker_notes</i></div>
+        <div class="item-inner">
+          <div class="item-title text-color-black"><span class="moi_ob">Мои обращения</span></div><span class="badge color-red" style="display:none;"id ="menu_badge_e_ob"></span>
+        </div>
+      </a>
+    </li>
+    <li id="li_moi_zap">
+      <a class="item-content" id="moi_zap">
+        <div class="item-media"><i class="icon material-icons" style="color:#073974">create</i></div>
+        <div class="item-inner">
+          <div class="item-title text-color-black"><span class="moi_zap">Записи</span></div>
+        </div>
+      </a>
+    </li>
+		<li>
+      <a class="item-content" id="ucher">
+        <div class="item-media"><i class="icon material-icons" style="color:#073974">developer_mode</i></div>
+        <div class="item-inner">
+          <div class="item-title text-color-black"><span class="tex-ucher">Об учреждении</span></div>
+        </div>
+      </a>
+    </li>
+	<li>
+      <a class="item-content" id="setting">
+        <div class="item-media"><i class="icon material-icons" style="color:#073974">settings</i></div>
+        <div class="item-inner">
+          <div class="item-title text-color-black"><span class="nastr">Настройка</span></div>
+        </div>
+      </a>
+    </li>
+	<li>
+      <a class="item-content" id="opri">
+        <div class="item-media"><i class="icon material-icons" style="color:#073974">content_paste</i></div>
+        <div class="item-inner">
+          <div class="item-title text-color-black"><span class="o-pri">О приложении</span></div>
+        </div>
+      </a>
+    </li>
+	<li>
+      <a class="item-content" id="teh">
+        <div class="item-media"><i class="icon material-icons" style="color:#073974">developer_mode</i></div>
+        <div class="item-inner">
+          <div class="item-title text-color-black"><span class="tex-pod">Тех. Поддрежка</span></div>
+        </div>
+      </a>
+    </li>
+
+  </ul>
+</div>
+
+			 <div class="list" id="div_vyhod">
+              <ul>
+                <li>
+                  <a class="item-content" id="vyhod">
+                   <div class="item-media"><i class="f7-icons" style="color:#073974">exit</i></div>
+        <div class="item-inner">
+          <div class="item-title text-color-black"><span class="vyhod">Выход</span></div>
+        </div>
+                  </a>
+                </li>
+				</ul>
+
+
+
+
+      </div>
+	  </div>
+    </div>
+ 
+    
+    <!-- Your main view, should have "view-main" class -->
+    <div class="view view-main view-init safe-areas" data-url="/"></div>
+
+ </div>
+  <% if (process.env.TARGET === 'cordova') { %>
+  <script src="cordova.js"></script>
+  <% } %>
+  <!-- built script files will be auto injected -->
+</body>
+</html>

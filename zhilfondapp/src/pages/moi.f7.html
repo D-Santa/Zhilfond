@@ -1,0 +1,108 @@
+<template>
+<div class="page">
+  <div class="page-content infinite-scroll-content" style="height: 95%;">
+<div class="card text-color-black col-100"  style="--f7-card-border-radius:30px;margin-top:-15px;">
+                      <div class="card-content card-content-padding" style="opacity:0.6;">
+<i class="icon f7-icons margin-right-half" style="font-size: 24px; margin-top:-5px;margin-left:10px;">data_fill</i><font size="4px" ><b>Электронное обращение</b></font>
+		</div>
+
+                    </div>
+<div class="list inset">
+<ul class="virtual-list_obr">
+
+</ul>
+	</div>
+  <div style="display: none;" class="preloader infinite-scroll-preloader"></div>
+    </div>
+
+</div>
+</template>
+<script>
+export default {
+on: {
+    pageInit: function () {
+	var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+  var start = 0;
+app.preloader.show('yellow');
+		app.request.get('https://zhilfondapp.kz/api/obr.php',{id:"0",zapros:'spisok'},function(otvet){
+app.preloader.hide();
+if (otvet[0].message=="ok"){
+var items = [];
+var lis ='';
+for (var i = 0; i < otvet.length; i++) {
+var badge="";
+if (otvet[i].ochered!="0")badge='<span class="badge color-red">'+otvet[i].ochered+'</span>';
+ lis += '<li>' +
+      '<a data-id="'+otvet[i].id+'" name="'+otvet[i].fam+" "+otvet[i].im+" "+otvet[i].ot+":"+otvet[i].phone+'" class="item-link item-content">' +
+        '<div class="item-inner">' +
+          '<div class="item-title-row">' +
+            '<div class="item-title"> <b>'+otvet[i].fam+" "+otvet[i].im+" "+otvet[i].ot+":"+otvet[i].phone+'</b> <font color="blue">'+otvet[i].iin+'</font>: <font color="red">'+otvet[i].theme+'</font></div>' +
+          '</div>' +
+        '</div>' +badge+
+      '</a>' +
+    '</li>';
+  }
+  $$('.virtual-list_obr').html(lis);
+start=100;
+}
+},function(){
+app.preloader.hide();
+},'json');
+
+$$('.virtual-list_obr').on('click','a',function(){
+var id = $$(this).attr('data-id');
+var fio = $$(this).attr('name');
+router.navigate('/otvet/?title=Ответ&id='+id+'&fio='+fio);
+});
+var allowInfinite = true;
+$$('.page-content').on('infinite', function () {
+                    $$('.infinite-scroll-preloader').show();
+                    if (!allowInfinite) return;
+                    allowInfinite = false;
+                    list_obr(function(otvet){
+                      allowInfinite = true;
+                        if (otvet == false) {
+                            // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+                            app.infiniteScroll.destroy('.infinite-scroll-content');
+                            // Remove preloader
+                            $$('.infinite-scroll-preloader').remove();
+                            return;
+                        }
+                    });
+});
+
+function list_obr(call){
+		app.request.get('https://zhilfondapp.kz/api/obr.php',{id:"0",zapros:'spisok',start:start},function(otvet){
+      if(otvet.length==0)call(false);
+      if (otvet[0].message=="ok"){
+var items = [];
+var lis='';
+for (var i = 0; i < otvet.length; i++) {
+var badge="";
+if (otvet[i].ochered!="0")badge='<span class="badge color-red">'+otvet[i].ochered+'</span>';
+ lis += '<li>' +
+      '<a data-id="'+otvet[i].id+'" name="'+otvet[i].fam+" "+otvet[i].im+" "+otvet[i].ot+":"+otvet[i].phone+'" class="item-link item-content">' +
+        '<div class="item-inner">' +
+          '<div class="item-title-row">' +
+            '<div class="item-title"> <b>'+otvet[i].fam+" "+otvet[i].im+" "+otvet[i].ot+":"+otvet[i].phone+'</b> <font color="blue">'+otvet[i].iin+'</font>: <font color="red">'+otvet[i].theme+'</font></div>' +
+          '</div>' +
+        '</div>' +badge+
+      '</a>' +
+    '</li>';
+  }
+  $$('.virtual-list_obr').append(lis);
+start+=100;
+call(true);
+}
+else
+call(false);
+},function(){
+app.preloader.hide();
+},'json');
+}
+	},
+	},
+};
+</script>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>110519839613-jisbkp64uv96r2087vve17m80mom3adg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.110519839613-jisbkp64uv96r2087vve17m80mom3adg</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDqi2v4gEHFUjB0edYC_CIGFIOSXBxjOio</string>
+	<key>GCM_SENDER_ID</key>
+	<string>110519839613</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>app.zhilfond.kz</string>
+	<key>PROJECT_ID</key>
+	<string>zhilfond-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>zhilfond-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:110519839613:ios:a7a948ecbccacb93</string>
+	<key>DATABASE_URL</key>
+	<string>https://zhilfond-app.firebaseio.com</string>
+</dict>
+</plist>

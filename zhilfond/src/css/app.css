@@ -1,0 +1,186 @@
+/* iOS Cordova Tweak */
+html {
+      -webkit-touch-callout: none; /* Disables long-touch menu */
+      -webkit-user-select: none; /* Disable text selection (for Webkit) */
+      user-select: none; /* Disable text selection (standard syntax) */
+}
+.device-cordova.device-ios {
+  height: 100vh;
+}
+
+/* Your app custom styles here */
+ .gradient3 {
+   --f7-button-border-radius: 0px;
+ background: linear-gradient(to bottom, #0a3967, #176ee6);
+ }
+:root {
+  --f7-statusbar-bg-color: #073974;
+  --f7-list-chevron-icon-font-size: 12px;
+   
+  --f7-toolbar-bg-color: var(--f7-bars-bg-color);
+  --f7-toolbar-bg-image: var(--f7-bars-bg-image);
+  --f7-toolbar-border-color: var(--f7-bars-border-color);
+  --f7-toolbar-link-color: var(--f7-bars-link-color);
+  --f7-toolbar-text-color: var(--f7-bars-text-color);
+  --f7-tabbar-link-active-color: #ffffff;
+  
+  --f7-tabbar-link-active-bg-color: transparent;
+  --f7-tabbar-label-text-transform: none;
+  --f7-toolbar-hide-show-transition-duration: 400ms;
+}
+.device-cordova.device-ios {
+  height: 100vh;
+}
+.mycolor{
+  background-image: url(Номер очере2.jpg);
+background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;height:100px; width:95%;
+}
+.mycolor2{
+	margin-left:0px;
+  background-image: url(Узнать задолженность.jpg);
+background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;height:100px; width:95%;
+
+}
+.mycolor4{
+  background-image: url(Электрон обращ.jpg);
+background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;height:100px; width:95%;
+
+}
+.mycolor6{
+	margin-left:0px;
+  background-image: url(Запись на прием.jpg);
+background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;height:100px; width:95%;
+
+}
+
+.mycolor8{
+  background-image: url(prima.jpeg);
+  background-position: center -30px;
+  background-repeat: no-repeat;
+  background-size: 100% 130%;
+  height: 100px;
+}
+
+.mycolor81{
+  background-image: url(prima.jpeg);
+  background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;height:100px; width:95%;
+}
+
+.mycolor91{
+  margin-left:0px;
+  background-image: url(newza.jpg);
+background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;height:100px; width:95%;
+}
+
+.mycolor9{
+  background-image: url(newza2.jpg);
+  background-position: center -30px;
+  background-repeat: no-repeat;
+  background-size: 100% 130%;
+  height: 100px;
+}
+
+.fon{
+  background-image: url(../static/img/fon.jpg);
+background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.2;
+
+}
+.mycolor1{
+	  opacity: 0.4;text-align:center;
+	  background: black;
+	  height:70px;
+	  position:relative;
+	 color:white;
+	 border-radius: 2%;
+	 font-size:12px;
+}
+.mycolor3{
+	  opacity: 0.4;text-align:center;
+	  background: black;
+	  margin:-16px -16px -16px -16px;
+	  height:100px;
+	  position:relative;
+	 color:white;
+	 border-radius: 2%;
+	  font-size:12px;
+}
+.mycolor5{
+	  opacity: 0.4;text-align:center;
+	  background: white;
+	  height:70px;
+	  position:relative;
+	 color:black;
+	 border-radius: 2%;
+	  font-size:12px;
+}
+
+.mycolor7{
+	  opacity: 0.4;text-align:center;
+	  background: white;
+	  margin:-16px -16px -16px -16px;
+	  height:100px;
+	  position:relative;
+	 color:black;
+	 border-radius: 2%;
+	  font-size:12px;
+}
+.card-content-padding{
+height:-150px;	
+}
+.md {
+  --f7-toolbar-height: 48px;
+  --f7-tabbar-label-font-size: 9px;
+  --f7-tabbar-link-active-border-color: transparent;
+  --f7-tabbar-link-active-color: #073974;
+   --f7-label-font-size: 9px;
+   --f7-navbar-title-text-align: center;
+     --f7-list-font-size: 13px;
+	 --f7-list-link-pressed-bg-color: #073974;
+}
+.size-22{size:8px;}
+.demo-swiper .swiper-slide {
+  font-size: 10px;
+  font-weight: 300;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  color: #000;
+border-radius: 5px;
+}
+.demo-swiper .swiper-slide {
+  box-sizing: border-box;
+  background: #fff;
+}
+.demo-swiper {
+  margin: 0px 0px 0px;
+  font-size: 10px;
+  height: 150px;
+}
+.demo-swiper.demo-swiper-auto .swiper-slide {
+  width: 70%;
+}
+.demo-swiper.demo-swiper-auto .swiper-slide:nth-child(2n) {
+  width: 70%;
+}
+.demo-swiper.demo-swiper-auto .swiper-slide:nth-child(3n) {
+  width: 70%;
+}

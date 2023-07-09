@@ -1,0 +1,221 @@
+<template>
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a class="link nazad" @Click="backs">
+          <i  style="color:#073974;" class="icon icon-back"></i>
+        </a>
+      </div>
+      <div class="title"><font size="3%">{{js 'return this.$route.query.title'}}</font></div>
+    </div>
+  </div>
+ <!-- 
+<div class="toolbar tabbar" style="margin-top:60px;">
+    <div class="toolbar-inner">
+     Links have "tab-link" class instead of just "link" to switch tabs 
+      <a href="#tab-dog" class="tab-link" style="display:none;">ПО ДОГОВОРУ</a>
+      <a href="#tab-iin" class="tab-link tab-link-active">ПО ИИН</a>
+    </div>
+  </div>-->
+  
+    <div class="page-content">
+	<!-- <div class="tabs">
+    First tab, active 
+	<div class="page-content tab tab-active" id="tab-dog">
+      <div class="block">
+       <p><b>№ вашего договора</b></p>
+               <div class="list no-hairlines-md" style="margin-top:-5px;">
+  <ul>
+    <li class="item-content item-input">
+      <div class="item-inner">
+        <div class="item-input-wrap">
+          <input type="number" placeholder="********" id="nomer">
+          <span class="input-clear-button"></span>
+        </div>
+      </div>
+    </li>
+	
+	<br>
+	<li>
+	<button class="col button button-fill color-yellow text-color-black" @Click="proverka2">Проверить</button>
+	
+	</li>
+	</ul>
+	</div>
+      </div>
+	    <div class="block-title">Ранее проверенные</div>
+<div class="list inset">
+		<ul  id="dolg_list"></ul></div>
+
+   </div>-->
+   
+    <!-- <div class="page-content tab" id="tab-iin">-->
+      <div class="block">
+      <p> <b><span id="text_nom">№ вашего ИИН</span></b></p>
+               <div class="list no-hairlines-md" style="margin-top:-5px;">
+  <ul>
+    <li class="item-content item-input">
+      <div class="item-inner">
+        <div class="item-input-wrap">
+          <input type="number" placeholder="********" id="nomer_iin">
+          <span class="input-clear-button"></span>
+        </div>
+      </div>
+    </li>
+	
+	<br>
+	<li>
+	<button class="col button button-fill color-yellow text-color-black" @Click="proverka3"><span id="text_prov">Проверить</span></button>
+	
+	</li>
+	</ul>
+	</div>
+	<div class="block" id="titvnim"></div>
+		    <div class="block-title"><span id="text_rane">Ранее проверенные</span></div>
+<div class="list inset">
+		<ul  id="dolg_list"></ul></div>
+
+      </div>
+
+
+  <!-- </div>
+   </div>-->
+
+
+   </div>
+
+  
+</div>
+</template>
+<script>
+export default {
+ methods: {
+    backs: function () {
+		var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+		router.back();		
+		},
+ /* proverka2: function () {
+		var app = this.$f7;
+		var $$ = this.$$;  
+		var router = this.$router;
+		app.preloader.show('yellow');
+		var user = JSON.parse(localStorage.getItem("f7form-user"));
+		 app.request.get("https://zhilfondapp.kz/api/dolg.php", {id:user.id,nomer:$$('#nomer').val()}, function (data) {	
+ app.preloader.hide();
+ if (data[0].message=="ok"){
+router.navigate('/otv_dolg/?nomer='+data[0].summa+'&status='+data[0].stat+'&nan='+data[0].nan+'&data='+data[0].data+'&start='+data[0].d_start+'&end='+data[0].d_end+'#about');
+ }
+ else
+ app.dialog.alert("Не найдено в базе");
+ },function(){
+ app.preloader.hide();
+ app.dialog.alert('Нет подключения к интернету');
+ },'json');
+		},*/
+		  proverka3: function () {
+		var app = this.$f7;
+		var $$ = this.$$;  
+		var router = this.$router;
+		
+		var user = JSON.parse(localStorage.getItem("f7form-user"));
+		if ($$('#nomer_iin').val().length!=12)app.dialog.alert('Не правильный формат ИИН');
+		else{
+		app.preloader.show('yellow');
+		 app.request.get("https://zhilfondapp.kz/api/dolg.php", {id:user.id,iin:$$('#nomer_iin').val()}, function (data) {	
+ app.preloader.hide();
+ if (data[0].message=="ok"){
+router.navigate('/otv_dolg/?nomer='+data[0].summa+'&status='+data[0].stat+'&nan='+data[0].nan+'&data='+data[0].data+'&start='+data[0].d_start+'&end='+data[0].d_end+'#about');
+ }
+ else
+ app.dialog.alert("Не найдено в базе");
+ },function(){
+ app.preloader.hide();
+ app.dialog.alert('Нет подключения к интернету');
+ },'json');
+ }
+		},
+
+
+		},
+on: {
+    pageInit: function () {
+	var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+
+	var user = JSON.parse(localStorage.getItem("f7form-user"));
+	var datas = JSON.parse(localStorage.getItem("f7form-lang"));
+	if (datas.lang=="ru"){
+	$$('#text_nom').text('№ вашего ИИН');
+	$$('#text_prov').text('Проверить');
+	$$('#text_rane').text('Ранее проверенные');
+  $$('#titvnim').html('Внимание!<br>Данный раздел доступен только для заключивших договор найма жилища.');
+	app.preloader.show('yellow');
+	if (user.id!="null")
+		 app.request.get("https://zhilfondapp.kz/api/dolg_list.php", {id:user.id,zapros:"list"}, function (data) {	
+ app.preloader.hide();
+ if (data[0].message=="ok"){
+var spisok="";
+for (var s = 0; s < data.length; s++)
+spisok+= '<li>' +
+      '<a name="?nomer='+data[s].summa+'&status='+data[s].stat+'&nan='+data[s].nan+'&data='+data[s].data+'&start='+data[s].d_start+'&end='+data[s].d_end+'" class="link item-link item-content">' +
+        '<div class="item-inner">' +
+          '<div class="item-title-row">' +
+            '<div class="item-title">'+data[s].data_proverka+'</div>' +
+			'<div class="item-after"> Номер дог.: '+data[s].id_dog+'</div>'+
+          '</div>' +
+        '</div>' +
+      '</a>' +
+    '</li>';
+$$('#dolg_list').html(spisok);
+ }
+ },function(){
+ app.preloader.hide();
+ app.dialog.alert('Нет подключения к интернету');
+ },'json');
+ else
+  app.preloader.hide();
+  }
+  else
+  {
+  $$('#text_nom').text('Сіздің ЖСН №');
+	$$('#text_prov').text('ТЕКСЕРУ');
+	$$('#text_rane').text('Бұрын тексерілгендер');
+  $$('#titvnim').html('Назар аударыңыз!<br>Бұл бөлім тек тұрғын үйді жалдау шартын жасасқан тұлғалар үшін ғана қолжетімді.');
+  	app.preloader.show('yellow');
+	if (user.id!="null")
+		 app.request.get("https://zhilfondapp.kz/api/dolg_list.php", {id:user.id,zapros:"list"}, function (data) {	
+ app.preloader.hide();
+ if (data[0].message=="ok"){
+var spisok="";
+for (var s = 0; s < data.length; s++)
+spisok+= '<li>' +
+      '<a name="?nomer='+data[s].summa+'&status='+data[s].stat+'&nan='+data[s].nan+'&data='+data[s].data+'&start='+data[s].d_start+'&end='+data[s].d_end+'" class="link item-link item-content">' +
+        '<div class="item-inner">' +
+          '<div class="item-title-row">' +
+            '<div class="item-title">'+data[s].data_proverka+'</div>' +
+			'<div class="item-after"> Кел. шарт нөмері: '+data[s].id_dog+'</div>'+
+          '</div>' +
+        '</div>' +
+      '</a>' +
+    '</li>';
+$$('#dolg_list').html(spisok);
+ }
+ },function(){
+ app.preloader.hide();
+ app.dialog.alert('Нет подключения к интернету');
+ },'json');
+ else
+  app.preloader.hide();
+  }
+  
+  $$('#dolg_list').on('click','a',function(){
+  router.navigate('/otv_dolg/'+$$(this).attr('name'));
+  });
+	},
+	},
+};
+</script>

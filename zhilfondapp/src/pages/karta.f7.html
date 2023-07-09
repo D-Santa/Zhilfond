@@ -1,0 +1,370 @@
+<template>
+  <div class="page bg-color-white" data-name="/zapis/" style="height:94%;">
+
+    <div class="page-content" style="height:99%;">
+
+      <div class="card text-color-black col-100" style="--f7-card-border-radius:30px;margin-top:-15px;">
+        <div class="card-content card-content-padding">
+          <div class="find" style="position:absolute;right: 220px; width:250px;margin-top: -5px;">
+            <form class="searchbar searchbar-init">
+              <div class="searchbar-inner">
+                <div class="searchbar-input-wrap">
+                  <input type="search" id="search" placeholder="ИИН или ФИО" />
+                  <i class="searchbar-icon"></i>
+                  <span class="input-clear-button"></span>
+                </div>
+                <span class="searchbar-disable-button if-not-aurora">Cancel</span>
+              </div>
+            </form>
+          </div>
+          <a id="calendar" class="col button button-fill button-round color-red"
+            style="position:absolute;right: 15px;">Выберите дату&nbsp;<i class="icon f7-icons"
+              style="margin-top:-2px;">edit</i></a>
+          <i class="icon f7-icons margin-right-half"
+            style="font-size: 24px; margin-top:-5px;margin-left:10px;opacity:0.6;">logo_rss</i>
+          <font size="4px" style="opacity:0.6;"><b>Карточки приема граждан</b></font>
+        </div>
+      </div>
+      <div class="block-title">Карточки приема граждан <span id="datas"></span></div>
+      <div class="list accordion-list inset">
+        <ul>
+          <div id="virtual-proga"></div>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  export default {
+    on: {
+      pageInit: function (e, page) {
+        var app = this.$app;
+        var $$ = this.$$;
+        var router = this.$router;
+        var today = new Date();
+        var dayy = "";
+        if (today.getDate() < 10) dayy = "0"; else dayy = "";
+        app.preloader.show('blue');
+        var mon = "";
+        var month = parseInt(today.getMonth().toString()) + 1;
+        if (month < 10) mon = "0"; else mon = "";
+        $$('#addzap').on('click', function () {
+          router.navigate('/addzapis/');
+        });
+        //$$("#datas").text("с " + today.getFullYear() + "-" + mon + month.toString() + "-" + dayy + today.getDate());
+        app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: 'list', data: today.getFullYear() + "-" + mon + month.toString() + "-" + dayy + today.getDate(), all: "yes" }, function (otvet) {
+          app.preloader.hide();
+          if (otvet[0].message == "ok") {
+            var items = [];
+            for (var i = 0; i < otvet.length; i++) {
+              items.push({
+                id: otvet[i].ids,
+                fio: otvet[i].fio,
+                iin: otvet[i].iin,
+                adres: otvet[i].adres,
+                rabota: otvet[i].rabota,
+                komu: otvet[i].komu,
+                phone: otvet[i].phone,
+                data: otvet[i].data,
+                comment: otvet[i].comment,
+                row1: otvet[i].row1,
+                row2: otvet[i].row2,
+                row3: otvet[i].row3
+              });
+
+            }
+            var virtualList = app.virtualList.create({
+              el: '#virtual-proga',
+              items: items,
+              itemTemplate: '<li class="accordion-item"><a href="#" class="item-content item-link">' +
+                '<div class="item-inner">' +
+                '<div class="item-title">ФИО: <font size="3px"><b>{{fio}}</b></font> Дата: <font color="blue">{{data}}</font><div class="item-after">Кому: <font color="red">{{komu}}</font></div></div>' +
+                '</div></a>' +
+                '<div class="accordion-item-content">' +
+                '<div class="block" style="left:20px;"><div class="data-table">' +
+                '<table>' +
+                '<thead>' +
+                '<tr>' +
+                ' <th class="label-cell">ФИО</th>' +
+                ' <th class="numeric-cell">ИИН</th>' +
+                '  <th class="numeric-cell">РАБОТА</th>' +
+                '  <th class="numeric-cell">АДРЕС</th>' +
+                '  <th class="numeric-cell">ТЕЛЕФОН</th>' +
+                '  <th class="numeric-cell">КОММЕНТАРИЙ</th>' +
+                '  <th class="numeric-cell">Резолюция после приема</th>' +
+                '  <th class="numeric-cell">Фактическое присутствие на приеме</th>' +
+                '  <th class="numeric-cell">Был ли записан на прием ранее</th>' +
+                ' </tr>' +
+                ' </thead>' +
+                '<tbody>' +
+                ' <tr>' +
+                ' <td class="label-cell">{{fio}}</td>' +
+                ' <td class="numeric-cell">{{iin}}</td>' +
+                ' <td class="numeric-cell">{{rabota}}</td>' +
+                ' <td class="numeric-cell">{{adres}}</td>' +
+                ' <td class="numeric-cell">{{phone}}</td>' +
+                ' <td class="numeric-cell">{{comment}}</td>' +
+                ' <td class="numeric-cell"><textarea data-id="{{id}}" row="row1" class="comments" style="background:white;padding:5px;height:100%;min-height:130px;">{{row1}}</textarea></td>' +
+                ' <td class="numeric-cell"><textarea data-id="{{id}}" row="row2" class="comments" style="background:white;padding:5px;height:100%;min-height:130px">{{row2}}</textarea></td>' +
+                ' <td class="numeric-cell"><textarea data-id="{{id}}" row="row3" class="comments" style="background:white;padding:5px;height:100%;min-height:130px">{{row3}}</textarea></td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>' +
+                '</div><br></div>' +
+                '</div>' +
+                '</li>',
+              // Item height
+              height: 33,
+            });
+
+          }
+          else
+            $$('#virtual-proga').html("Нету записи");
+        }, function () {
+          app.preloader.hide();
+          app.dialog.alert('Нет подключения к интернету');
+        }, 'json');
+        $$('#search').on('keyup', function (e) {
+          if (e.key === 'Enter' || e.keyCode === 13) {
+            app.preloader.show('blue');
+            app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: 'find', find: $$('#search').val() }, function (otvet) {
+              app.preloader.hide();
+              if (otvet[0].message == "ok") {
+                var items = [];
+                for (var i = 0; i < otvet.length; i++) {
+                  items.push({
+                    id: otvet[i].ids,
+                    fio: otvet[i].fio,
+                    iin: otvet[i].iin,
+                    adres: otvet[i].adres,
+                    rabota: otvet[i].rabota,
+                    komu: otvet[i].komu,
+                    phone: otvet[i].phone,
+                    data: otvet[i].data,
+                    comment: otvet[i].comment,
+                    row1: otvet[i].row1,
+                    row2: otvet[i].row2,
+                    row3: otvet[i].row3
+                  });
+
+                }
+                var virtualList = app.virtualList.create({
+                  el: '#virtual-proga',
+                  items: items,
+                  itemTemplate: '<li class="accordion-item"><a href="#" class="item-content item-link">' +
+                    '<div class="item-inner">' +
+                    '<div class="item-title">ФИО: <font size="3px"><b>{{fio}}</b></font> Дата: <font color="blue">{{data}}</font><div class="item-after">Кому: <font color="red">{{komu}}</font></div></div>' +
+                    '</div></a>' +
+                    '<div class="accordion-item-content">' +
+                    '<div class="block" style="left:20px;"><div class="data-table">' +
+                    '<table>' +
+                    '<thead>' +
+                    '<tr>' +
+                    ' <th class="label-cell">ФИО</th>' +
+                    ' <th class="numeric-cell">ИИН</th>' +
+                    '  <th class="numeric-cell">РАБОТА</th>' +
+                    '  <th class="numeric-cell">АДРЕС</th>' +
+                    '  <th class="numeric-cell">ТЕЛЕФОН</th>' +
+                    '  <th class="numeric-cell">КОММЕНТАРИЙ</th>' +
+                    '  <th class="numeric-cell">Резолюция после приема</th>' +
+                    '  <th class="numeric-cell">Фактическое присутствие на приеме</th>' +
+                    '  <th class="numeric-cell">Был ли записан на прием ранее</th>' +
+                    ' </tr>' +
+                    ' </thead>' +
+                    '<tbody>' +
+                    ' <tr>' +
+                    ' <td class="label-cell">{{fio}}</td>' +
+                    ' <td class="numeric-cell">{{iin}}</td>' +
+                    ' <td class="numeric-cell">{{rabota}}</td>' +
+                    ' <td class="numeric-cell">{{adres}}</td>' +
+                    ' <td class="numeric-cell">{{phone}}</td>' +
+                    ' <td class="numeric-cell">{{comment}}</td>' +
+                    ' <td class="numeric-cell"><textarea data-id="{{id}}" row="row1" class="comments" style="background:white;padding:5px;height:100%;min-height:130px;">{{row1}}</textarea></td>' +
+                    ' <td class="numeric-cell"><textarea data-id="{{id}}" row="row2" class="comments" style="background:white;padding:5px;height:100%;min-height:130px">{{row2}}</textarea></td>' +
+                    ' <td class="numeric-cell"><textarea data-id="{{id}}" row="row3" class="comments" style="background:white;padding:5px;height:100%;min-height:130px">{{row3}}</textarea></td>' +
+                    '</tr>' +
+                    '</tbody>' +
+                    '</table>' +
+                    '</div><br></div>' +
+                    '</div>' +
+                    '</li>',
+                  // Item height
+                  height: 33,
+                });
+
+              }
+              else
+                $$('#virtual-proga').html("Нету записи");
+            }, 'json');
+          }
+        });
+        var test = [];
+        /*test.push({
+         from: new Date(0,0,1),
+               to: new Date(today.getFullYear(),today.getMonth(),today.getDate()-1)
+         });*/
+        test.push({
+          from: new Date(0, 0, 1),
+          to: new Date("2019-01-01")
+        });
+        function datediff(first, second) {
+          return Math.round((second - first) / (1000 * 60 * 60 * 24));
+        }
+        var today2 = new Date(today.getFullYear(), today.getMonth() + 2, 1);
+        var today3 = new Date("2019-01-01");
+        var toodd = new Date("2019-01-01");
+        var today5 = new Date("2019-01-01");
+        var dnei = datediff(today5, today2);
+        for (var tt = 1; tt <= dnei; tt++) {
+
+          if (today3.getDay().toString() == "0") {
+            var tood = new Date(today3);
+            tood.setDate(tood.getDate() - 3);
+            var tood2 = new Date(today3);
+            toodd = tood2;
+            tood2.setDate(tood2.getDate());
+            test.push({
+              from: new Date(tood),
+              to: new Date(tood2)
+            });
+          }
+          else
+          if (today3.getDay().toString() == "2") {
+            var tood = new Date(today3);
+            tood.setDate(tood.getDate()-1);
+            var tood2 = new Date(today3);
+            toodd = tood2;
+            tood2.setDate(tood2.getDate());
+            test.push({
+              from: new Date(tood),
+              to: new Date(tood2)
+            });
+          }
+
+          today3.setDate(today3.getDate() + 1);
+        }
+        toodd.setDate(toodd.getDate() + 1);
+        test.push({
+          from: new Date(toodd),
+          to: new Date(2050, 11, 31)
+        });
+        var calendarModalkarta;
+        $$('#calendar').on('click', function () {
+          calendarModalkarta = app.calendar.create({
+            openIn: 'customModal',
+            disabled: test,
+            toolbarCloseText: 'Закрыть',
+            header: true,
+            footer: true,
+            value: [today],
+            dateFormat: 'yyyy-mm-dd',
+            monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            monthNamesShort: ['Янв', 'Фев', 'Мрт', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Нояб', 'Дек'],
+            dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+            dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+            closeOnSelect: true,
+            headerPlaceholder: 'Выберите дату',
+            firstDay: 1,
+            weekendDays: [0, 6],
+            touchmove: true,
+            on: {
+              dayClick: function (c, dayEl, year, month, day) {
+                today = new Date(year, month, day);
+                var dayy = "";
+                if (day < 10) dayy = "0"; else dayy = "";
+                var mon = "";
+                if (month < 10) mon = "0"; else mon = "";
+                //app.dialog.alert(year+"-"+(c.currentMonth+1)+"-"+dayy+day);
+                app.preloader.show('blue');
+                //$$("#datas").text("на " + year + "-" + mon + (c.currentMonth + 1) + "-" + dayy + day);
+                app.request.get('https://zhilfondapp.kz/api/zapis.php', { zapros: 'list', data: year + "-" + mon + (c.currentMonth + 1) + "-" + dayy + day }, function (otvet) {
+                  app.preloader.hide();
+                  $$('#virtual-proga').html("");
+                  if (otvet[0].message == "ok") {
+                    var items = [];
+                    for (var i = 0; i < otvet.length; i++) {
+                      items.push({
+                        id: otvet[i].ids,
+                        fio: otvet[i].fio,
+                        iin: otvet[i].iin,
+                        adres: otvet[i].adres,
+                        rabota: otvet[i].rabota,
+                        komu: otvet[i].komu,
+                        phone: otvet[i].phone,
+                        comment: otvet[i].comment,
+                        row1: otvet[i].row1,
+                        row2: otvet[i].row2,
+                        row3: otvet[i].row3
+                      });
+                    }
+                    var virtualList1 = app.virtualList.create({
+                      el: '#virtual-proga',
+                      items: items,
+                      itemTemplate: '<li class="accordion-item"><a href="#" class="item-content item-link">' +
+                        '<div class="item-inner">' +
+                        '<div class="item-title">ФИО: <font size="3px"><b>{{fio}}</b></font> <div class="item-after">Кому: <font color="red">{{komu}}</font></div></div>' +
+                        '</div></a>' +
+                        '<div class="accordion-item-content">' +
+                        '<div class="block" style="left:20px;"><div class="data-table">' +
+                        '<table>' +
+                        '<thead>' +
+                        '<tr>' +
+                        ' <th class="label-cell">ФИО</th>' +
+                        ' <th class="numeric-cell">ИИН</th>' +
+                        '  <th class="numeric-cell">РАБОТА</th>' +
+                        '  <th class="numeric-cell">АДРЕС</th>' +
+                        '  <th class="numeric-cell">ТЕЛЕФОН</th>' +
+                        '  <th class="numeric-cell">КОММЕНТАРИЙ</th>' +
+                        '  <th class="numeric-cell">Резолюция после приема</th>' +
+                        '  <th class="numeric-cell">Фактическое присутствие на приеме</th>' +
+                        '  <th class="numeric-cell">Был ли записан на прием ранее</th>' +
+                        ' </tr>' +
+                        ' </thead>' +
+                        '<tbody>' +
+                        ' <tr>' +
+                        ' <td class="label-cell">{{fio}}</td>' +
+                        ' <td class="numeric-cell">{{iin}}</td>' +
+                        ' <td class="numeric-cell">{{rabota}}</td>' +
+                        ' <td class="numeric-cell">{{adres}}</td>' +
+                        ' <td class="numeric-cell">{{phone}}</td>' +
+                        ' <td class="numeric-cell">{{comment}}</td>' +
+                        ' <td class="numeric-cell"><textarea data-id="{{id}}" row="row1" class="comments" style="background:white;padding:5px;height:100%;min-height:130px;">{{row1}}</textarea></td>' +
+                        ' <td class="numeric-cell"><textarea data-id="{{id}}" row="row2" class="comments" style="background:white;padding:5px;height:100%;min-height:130px">{{row2}}</textarea></td>' +
+                        ' <td class="numeric-cell"><textarea data-id="{{id}}" row="row3" class="comments" style="background:white;padding:5px;height:100%;min-height:130px">{{row3}}</textarea></td>' +
+                        '</tr>' +
+                        '</tbody>' +
+                        '</table>' +
+                        '</div><br></div>' +
+                        '</div>' +
+                        '</li>',
+                      // Item height
+                      height: 33,
+                    });
+
+                  }
+                  else
+                    $$('#virtual-proga').html("Нету записи");
+                }, function () {
+                  app.preloader.hide();
+                  app.dialog.alert('Нет подключения к интернету');
+                }, 'json');
+              }
+            }
+          });
+          calendarModalkarta.open();
+        });
+
+        $$('#virtual-proga').on('change', 'textarea', function () {
+          let id = $$(this).attr('data-id');
+          let row1 = $$(this).attr('row');
+          let textrow = $$(this).val();
+          app.preloader.show('blue');
+          app.request.post('https://zhilfondapp.kz/api/zapis.php', { zapros: 'update', row: row1, textrow: textrow, id: id }, function (otvet) {
+            app.preloader.hide();
+          }, 'json');
+        });
+      },
+    },
+
+  }
+</script>

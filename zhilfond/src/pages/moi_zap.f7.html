@@ -1,0 +1,85 @@
+<template>
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a class="link nazad" @Click="backs">
+          <i  style="color:#073974;" class="icon icon-back"></i>
+        </a>
+      </div>
+      <div class="title"><font size="3%">{{js 'return this.$route.query.title'}}</font></div>
+    </div>
+  </div>
+  <div class="page-content">
+
+<div class="list inset virtual-list">
+
+	</div>
+		  
+    </div>
+
+</div>
+</template>
+<script>
+export default {
+ methods: {
+    backs: function () {
+		var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+		router.back();
+	//	app.data.routs.rout="home";
+app.panel.open();		
+		},
+		 
+		},
+on: {
+    pageInit: function () {
+	var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+//	app.data.routs.rout ="moi";
+app.preloader.show('blue');
+		app.request.get('https://zhilfondapp.kz/api/zapis.php',{id:app.data.routs.id,zapros:'id'},function(otvet){
+app.preloader.hide();
+if (otvet[0].message=="ok"){
+var items = [];
+for (var i = 0; i < otvet.length; i++) {
+  items.push({
+    fio: otvet[i].fio,
+    theme: otvet[i].komu,
+    id: otvet[i].id,
+    data: otvet[i].data
+  });
+}
+
+var virtualList = app.virtualList.create({
+  // List Element
+  el: '.virtual-list',
+  // Pass array with items
+  items: items,
+  // List item Template7 template
+  itemTemplate:
+    '<li>' +
+      '<a data-id="{{id}}" class="item-link item-content">' +
+        '<div class="item-inner">' +
+            '<div>'+
+              '<div class="item-header"><strong>Кто:</strong> {{fio}}</div>'+
+              '<strong>Кому:</strong> {{theme}}'+
+              '<div class="item-footer"><font color="black"><strong>Дата записи:</strong></font> {{data}}</div></div>' +
+        '</div>' +
+      '</a>' +
+    '</li>',
+  // Item height
+  height: app.theme === 'ios' ? 63 : (app.theme === 'md' ? 73 : 46),
+});
+
+}
+},function(){
+app.preloader.hide();
+},'json');
+
+	},
+	},
+};
+</script>

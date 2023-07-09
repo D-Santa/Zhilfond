@@ -1,0 +1,6 @@
+cordova build --release android
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore zhilfond.keystore C:\zhilfond\cordova\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk zhilfond
+C:\Users\dasta\AppData\Local\Android\Sdk\build-tools\28.0.2\zipalign.exe -v 4 C:\zhilfond\cordova\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk Zhilfond.apk
+pass: zhilfond2019
+
+7f11e15a71b80beee515e12e1fdc9686

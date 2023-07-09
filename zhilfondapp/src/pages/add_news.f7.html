@@ -1,0 +1,175 @@
+<template>
+  <div class="page" data-name="/news/" style="height:94%;">
+
+        <div class="page-content" style="height:99%;">
+					<div class="block-title">ДОБАВИТЬ НОВОСТЬ</div>
+					
+					<div class="dashboard-cards">
+            <div class="row margin-horizontal">
+              <div class="col-100  tablet-50 margin-top charts-col">
+					<div class="list inline-labels no-hairlines-md">
+  <ul>
+    <li class="item-content item-input">
+      <div class="item-inner">
+        <div class="item-title item-label" style="width:10%;">Icon:</div>
+        <div class="item-input-wrap">
+<input id="inp" type='file'>
+<p>
+<img id="img" height="150"></p>
+        </div>
+      </div>
+    </li>
+
+Название (kaz):
+    <li class="item-content item-input">
+      <div class="item-inner item-input-outline">
+        <div class="item-title item-label" style="width:10%;"></div>
+        <div class="item-input-wrap">
+          <textarea placeholder="қазақша" id="topick_kz"></textarea>
+        </div>
+      </div>
+    </li>
+Текст (kaz):
+	<li class="item-content item-input">
+      <div class="item-inner item-input-outline" >
+        <div class="item-title item-label" style="width:10%;"></div>
+        <div class="item-input-wrap" >
+          <div id="text_kz"></div>
+        </div>
+      </div>
+    </li>
+	
+
+  </ul>
+</div>
+</div>
+
+              <div class="col-100  tablet-50 margin-top charts-col">
+					<div class="list inline-labels ">
+  <ul>
+    <li class="item-content item-input">
+      <div class="item-inner">
+        <div class="item-title item-label" style="width:10%;"></div>
+        <div class="item-input-wrap">
+
+<br>
+<p>
+</p>
+<img  height="150"></p>
+        </div>
+      </div>
+    </li>
+Название (rus):
+	<li class="item-content item-input">
+      <div class="item-inner item-input-outline">
+        <div class="item-title item-label" style="width:10%;"></div>
+        <div class="item-input-wrap">
+          <textarea placeholder="на русском" id="topick"></textarea>
+        </div>
+      </div>
+    </li>
+
+	Текст (rus):
+	<li class="item-content item-input">
+      <div class="item-inner item-input-outline">
+        <div class="item-title item-label" style="width:10%;"></div>
+        <div class="item-input-wrap">
+          <div id="text"></div>
+        </div>
+      </div>
+    </li>
+
+  </ul>
+</div>
+</div>
+
+
+</div>
+</div>
+<div class="list inline-labels no-hairlines-md">
+  <ul>
+  	    <li class="item-content item-input">
+        <label class="item-checkbox item-content">
+        <input type="checkbox" id="glav-checkbox"/>
+        <i class="icon icon-checkbox"></i>
+        <div class="item-inner">
+          <div class="item-title">На главную</div>
+        </div>
+      </label>
+    </li>
+    <li class="item-content item-input" style="height:50px;">
+<a class="col button button-fill color-red link back" style="position:absolute;">Отмена</a>
+<div style="position:absolute;right: 15px; width:20%;">
+<p class="row">
+<a  class="col button button-fill color-blue" id="save">Сохранить</a>
+</p>
+</div>
+    </li>
+	</ul>
+	</div>
+
+        </div>
+		
+		
+		
+
+  </div>
+  
+
+</template>
+<script>
+export default {
+on: {
+      pageInit: function(e, page) {
+        var app = this.$app;
+		var $$ = this.$$;
+		var router = this.$router;
+		var editor = CKEDITOR.replace( 'text_kz' );
+		var editor2 = CKEDITOR.replace( 'text' );
+
+var img;
+$$('#inp').change(function(){
+ img = URL.createObjectURL(this.files[0]);
+
+    
+   var FR= new FileReader();
+    
+    FR.addEventListener("load", function(e) {
+	img   = e.target.result;
+      document.getElementById("img").src       = e.target.result;
+    }); 
+    
+    FR.readAsDataURL( this.files[0] );
+  
+});
+
+$$('#save').on('click',function(){
+app.preloader.show('blue');
+var glav = '0';
+if ($$('#glav-checkbox').prop('checked') == true)
+glav = "1";
+else 
+glav = "0";
+
+app.request.post('https://zhilfondapp.kz/api/upload.php',{img:img,topick:$$('#topick').val(),topick_kz:$$('#topick_kz').val(),text:editor2.getData(),text_kz:editor.getData(),glav:glav},function(otvet){
+app.preloader.hide();
+if (otvet[0].message=="ok"){
+app.dialog.alert('Добавлено',function(){
+router.navigate('/news/');
+});
+}
+else
+app.dialog.alert('error');
+},function(){
+app.preloader.hide();
+app.dialog.alert('Нет подключения к интернету');
+},'json');
+});
+
+
+			
+      },
+	},
+
+}
+</script>

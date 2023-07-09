@@ -1,0 +1,128 @@
+<template>
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a href="#" class="nazad link back text-color-black">
+         Закрыть
+        </a>
+      </div>
+      <div class="title"></div>
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="bg-color-blue text-color-white" style="height:150px; width:100%;background-position: center;background-repeat: no-repeat;background-size: cover;" align="center"><br><font size="15px">{{js 'return this.$route.query.nomer'}}тг</font>
+	<br> <font size="4px"><b>Ежемесячный платеж</b></font>
+	</div>
+    <div class="block">
+     <div class="list no-hairlines-md">
+  <ul>
+    <li>
+      <div  class="item-content ">
+        <div class="item-inner item-cell">
+          <div class="item-row">
+            <div class="item-cell"><b>Наниматель</b></div>
+            <div class="item-cell" align="right">{{js 'return this.$route.query.nan'}}</div>
+          </div>
+		  </div>
+		  </div>
+		  </li>
+
+		  
+		  
+		  
+		  </ul>
+		  </div>
+		  		       <div class="list no-hairlines-md">
+  <ul>
+		  
+		  <li>
+      <div  class="item-content ">
+        <div class="item-inner item-cell">
+          <div class="item-row">
+            <div class="item-cell"><b>Статус</b></div>
+            <div class="item-cell" align="right">{{js 'return this.$route.query.status'}}</div>
+          </div>
+		  </div>
+		  </div>
+		  </li>
+		  
+		  
+		  
+		  </ul>
+		  </div>
+		       <div class="list no-hairlines-md">
+  <ul>
+		  
+		  <li>
+      <div  class="item-content ">
+        <div class="item-inner item-cell">
+          <div class="item-row">
+            <div class="item-cell"><b>Дата заключения</b></div>
+            <div class="item-cell" align="right">{{js 'return this.$route.query.data'}}</div>
+          </div>
+		  </div>
+		  </div>
+		  </li>
+		  
+		  
+		  
+		  </ul>
+		  </div>
+		  
+		  		       <div class="list no-hairlines-md">
+  <ul>
+		  
+		  <li>
+      <div  class="item-content ">
+        <div class="item-inner item-cell">
+          <div class="item-row">
+            <div class="item-cell"><b>Начало периода:</b></div>
+            <div class="item-cell" align="right">{{js 'return this.$route.query.start'}}</div>
+          </div>
+		  </div>
+		  </div>
+		  </li>
+		  
+		  
+		  
+		  </ul>
+		  </div>
+		  
+		  		  		       <div class="list no-hairlines-md">
+  <ul>
+		  
+		  <li>
+      <div  class="item-content ">
+        <div class="item-inner item-cell">
+          <div class="item-row">
+            <div class="item-cell"><b>Конец периода:</b></div>
+            <div class="item-cell" align="right">{{js 'return this.$route.query.end'}}</div>
+          </div>
+		  </div>
+		  </div>
+		  </li>
+		  
+		  
+		  
+		  </ul>
+		  </div>
+		 <div style="top:40%;" align="center" class="text-color-gray">Информацию по произведенным платежам за ежемесячную арендную плату можете уточнить по номеру <br>79-34-56, 79-43-58
+</div> 		  
+    </div>
+	
+	
+  </div>
+</div>
+</template>
+<script>
+export default {
+on: {
+    pageInit: function () {
+	var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+	},
+	},
+};
+</script>

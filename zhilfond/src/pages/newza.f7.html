@@ -1,0 +1,311 @@
+<template>
+	<div class="page">
+	  <div class="navbar">
+		<div class="navbar-inner sliding">
+		  <div class="left">
+			<a class="link" @Click="backs">
+			  <i  style="color:#073974;" class="icon icon-back"></i>
+			</a>
+		  </div>
+		  <div class="title"><font size="3%">{{js 'return this.$route.query.title'}}</font></div>
+		</div>
+	  </div>
+	  <div class="page-content">
+			 <div class="block">
+				<p><b><span id="dann">Личные данные</span></b>
+				</p>
+				<div class="list no-hairlines-md" style="margin-top:-5px;">
+					<ul>
+						<li class="item-content item-input item-input-outline">
+							<div class="item-inner">
+							  <div class="item-title item-floating-label"><span id="fio_text">Ваш ФИО</span></div>
+							  <div class="item-input-wrap">
+								<input type="text" id="fio_el">
+							  </div>
+							</div>
+						  </li>
+						<li>
+					  <li class="item-content item-input item-input-outline">
+						  <div class="item-inner">
+							<div class="item-title item-floating-label"><span id="iin_text">Укажите ИИН</span></div>
+							<div class="item-input-wrap">
+							  <input type="number" maxlength="12" id="iin_el">
+							</div>
+						  </div>
+						</li>
+						<li class="item-content item-input item-input-outline">
+							<div class="item-inner">
+							  <div class="item-title item-floating-label"><span id="iban_text">Номер лицевого счета</span></div>
+							  <div class="item-input-wrap" style="-webkit-touch-callout:text ;-webkit-user-select: text;user-select: text;">
+								<input type="text" id="iban_el">
+							  </div>
+							</div>
+						  </li>
+					  </ul>
+					  </div>
+
+		   <p><b><span id="cat">Категория</span></b>
+		   </p>
+				   <div class="list no-hairlines-md" style="margin-top:-5px;">
+	  <ul>
+	 <li class="item-content item-input">
+		  <div class="item-inner">
+			<div class="item-input-wrap input-dropdown-wrap" id="categor">
+			</div>
+		  </div>
+		</li>
+		<li class="item-content item-input" id="drug" style="display: none;">
+			<div class="item-inner">
+			  <div class="item-input-wrap">
+				<textarea placeholder="Описание" id="comment"></textarea>
+			  </div>
+			</div>
+		  </li>
+		</ul>
+		</div>
+		<p><b><span id="dann2">Контакты</span></b>
+		</p>
+		<div class="list no-hairlines-md" style="margin-top:-5px;">
+					<ul>
+						<li class="item-content item-input item-input-outline">
+							<div class="item-inner">
+							  <div class="item-title item-floating-label"><span id="contact_text">Контакты</span></div>
+							  <div class="item-input-wrap">
+								<input type="tel" id="contact_el">
+							  </div>
+							</div>
+						  </li>
+						<li>
+					  <li class="item-content item-input item-input-outline">
+						  <div class="item-inner">
+							<div class="item-title item-floating-label"><span id="post_text">Адрес</span></div>
+							<div class="item-input-wrap">
+							  <input type="email" id="post_el">
+							</div>
+						  </div>
+						</li>
+					  <br>
+					  <li>
+					  <button class="col button button-fill color-yellow text-color-black" @Click="proverka3"><span id="otrp2">Отправить</span></button>
+					  
+					  </li>
+					  </ul>
+					  </div>
+
+		  </div>
+						
+		</div>
+	
+	</div>
+	</template>
+	<script>
+	export default {
+	 methods: {
+		backs: function () {
+			var app = this.$f7;
+			var $$ = this.$$; 
+			var router = this.$router;
+			router.back();		
+			},
+				proverka3: function () {
+			var app = this.$f7;
+			var $$ = this.$$; 
+			var router = this.$router;
+			var datas = JSON.parse(localStorage.getItem("f7form-lang"));
+			var iin = $$('#iin_el').val().replace(/\s/g, '');
+			var fio = $$('#fio_el').val().replace(/\s/g, '');
+			var iban = $$('#iban_el').val().replace(/\s/g, '');
+			var contact = $$('#contact_el').val().replace(/\s/g, '');
+			var post = $$('#post_el').val().replace(/\s/g, '');
+			var comments = $$('#comment').val().replace(/\s/g, '');
+			var cat = $$('#theme').val();
+			/*if ($$('#drug').css('display')=="none")comments="";
+			console.log(comments);
+			if (datas.lang=="ru"){
+				 if (fio=="") app.dialog.alert("Напишите ваш ФИО");
+				else if (iin.length != 12) app.dialog.alert("Не правильный формат "+$$('#iin_text').text());
+				else if (contact.length != 13) app.dialog.alert("Не правильный формат "+$$('#contact_text').text());
+			}
+			else
+			{
+				 if (fio=="") app.dialog.alert("ТАЖ толтырыңыз");
+				 else if (iin.length != 12) app.dialog.alert($$('#iin_text').text()+" форматы дұрыс емес");
+				else if (contact.length != 13) app.dialog.alert($$('#contact_text').text()+" форматы дұрыс емес");
+			}
+			if (iin.length == 12 && contact.length == 13 && fio!=""){*/
+				app.preloader.show('yellow');
+			app.request.post('https://komtolem.kz/api/sendorder.php',{data_iin:iin,data_account:iban,data_name:$$('#fio_el').val(),data_address:post,data_phone:contact,data_rent:cat},function(otvet){
+	console.log(JSON.stringify(otvet));
+	app.preloader.hide();
+	if (otvet.done==true){
+		if (datas.lang=="ru")
+			app.dialog.alert('Ваша заявка принята',function(){
+			router.back();
+			});
+			else
+			app.dialog.alert('Сіздің өтінішіңіз қабылдаңды',function(){
+			router.back();
+			});
+			}
+			else
+				if (otvet.done==false){
+					if (otvet.errors=="order_present"){
+				if (datas.lang=="ru")
+			app.dialog.alert('Ваш ИИН или лицевой счет ЕРЦ зарегестрирован',function(){
+			router.back();
+			});
+			else
+			app.dialog.alert('Сіздің ТАЖ немесе Жеке шот нөміріңіз (ЕРЦ) тіркелген',function(){
+			router.back();
+			});	
+				}
+				else
+				{
+					if (datas.lang=="ru")
+			app.dialog.alert('Ошибка сервера, попробуйте позднее',function(){
+			router.back();
+			});
+			else
+			app.dialog.alert('Серверлік қателік, кейінірек қайталап көріңіз.',function(){
+			router.back();
+			});		
+				}
+				}
+			},function(xhr,status){
+                         app.preloader.hide();
+                         //var err = JSON.parse(xhr.responseText);
+                        app.dialog.alert(JSON.stringify(xhr));  
+			},'json');
+			//}
+			
+			},
+			},
+	on: {
+		pageInit: function () {
+		var app = this.$f7;
+			var $$ = this.$$;
+		var router = this.$router;
+		var datas = JSON.parse(localStorage.getItem("f7form-lang"));
+		if (datas.lang=="ru"){
+			$$('#categor').html(' <select placeholder="Please choose..." id="theme">'+
+			'<option value="1">арендатор</option>'+
+				  '<option value="0">собственник</option>'+
+			  '</select>');
+			  /*$$('#categor').html(' <select placeholder="Please choose..." id="theme">'+
+				'<option value="инвалиды 1, 2, 3 групп">инвалиды 1, 2, 3 групп</option>'+
+				  '<option value="инвалиды и участники Великой Отечественной войны и лица, приравненные к инвалидам и участникам Великой Отечественной войны"> инвалиды и участники Великой Отечественной войны и лица, приравненные к инвалидам и участникам Великой Отечественной войны </option>'+
+				   '<option value="семьи, воспитывающие детей-инвалидов">  семьи, воспитывающие детей-инвалидов</option>'+
+				   '<option value="многодетные семьи"> многодетные семьи</option>'+
+				   '<option value="пенсионеры с минимальной пенсией и менее"> пенсионеры с минимальной пенсией и менее</option>'+
+				   '<option value="семьи лиц, погибших (умерших) при исполнении государственных или общественных обязанностей, воинской службы, при подготовке или осуществлении полета в космическое пространство, при спасании человеческой жизни, при охране правопорядка"> семьи лиц, погибших (умерших) при исполнении государственных или общественных обязанностей, воинской службы, при подготовке или осуществлении полета в космическое пространство, при спасании человеческой жизни, при охране правопорядка</option>'+
+				   '<option value="граждане, получающие адресную социальную помощь, в том числе одинокие пенсионеры"> граждане, получающие адресную социальную помощь, в том числе одинокие пенсионеры</option>'+
+				   '<option value="другие"> другие</option>'+
+			  '</select>');*/
+			   $$('#fio_text').text('Ваш ФИО');
+			   $$('#iban_text').text('Номер лицевого счета (ЕРЦ)');
+			   $$('#post_text').text('Адрес');
+			   $$('#contact_text').text('Номер телефона');
+			   $$('#dann').text('Личные данные');
+			   $$('#dann2').text('Контакты');
+			   $$('#otrp2').text('Отправить');
+			   $$('#comment').attr('placeholder','Описание');
+			   $$('#iin_text').text('Укажите ИИН');
+		}
+		else
+		{
+			$$('#categor').html(' <select placeholder="Please choose..." id="theme">'+
+			'<option value="1">жалға алушы</option>'+
+				  '<option value="0">өз үйім</option>'+
+			  '</select>');
+			/*
+			$$('#categor').html(' <select placeholder="Please choose..." id="theme">'+
+				'<option value="1, 2, 3 топтағы мүгедектер">1, 2, 3 топтағы мүгедектер</option>'+
+				  '<option value="Ұлы Отан соғысының мүгедектері мен қатысушылары және Ұлы Отан соғысының мүгедектері мен қатысушыларына теңестірілген адамдар"> Ұлы Отан соғысының мүгедектері мен қатысушылары және Ұлы Отан соғысының мүгедектері мен қатысушыларына теңестірілген адамдар</option>'+
+				   '<option value="мүгедек балаларды тәрбиелеп отырған отбасылар"> мүгедек балаларды тәрбиелеп отырған отбасылар</option>'+
+				   '<option value="көп балалы отбасылар"> көп балалы отбасылар</option>'+
+				   '<option value="ең төмен және одан аз зейнетақы алатын зейнеткерлер"> ең төмен және одан аз зейнетақы алатын зейнеткерлер</option>'+
+				   '<option value="мемлекеттік немесе қоғамдық міндеттерді, әскери қызметті орындау кезінде, ғарыш кеңістігіне ұшуды дайындау немесе жүзеге асыру кезінде, адам өмірін құтқару кезінде, құқық тәртібін қорғау кезінде қаза тапқан (қайтыс болған) адамдардың отбасылары"> мемлекеттік немесе қоғамдық міндеттерді, әскери қызметті орындау кезінде, ғарыш кеңістігіне ұшуды дайындау немесе жүзеге асыру кезінде, адам өмірін құтқару кезінде, құқық тәртібін қорғау кезінде қаза тапқан (қайтыс болған) адамдардың отбасылары</option>'+
+				   '<option value="атаулы әлеуметтік көмек алатын азаматтар, соның ішінде жалғыз басты зейнеткерлер"> атаулы әлеуметтік көмек алатын азаматтар, соның ішінде жалғыз басты зейнеткерлер</option>'+
+				   '<option value="басқа"> басқа</option>'+
+			  '</select>');*/
+			   $$('#fio_text').text('Сіздің ТАЖ');
+			   $$('#iban_text').text('Жеке шот нөмірі (ЕРЦ)');
+			   $$('#post_text').text('Мекен-жай');
+			   $$('#contact_text').text('Телефон нөмері');
+			   $$('#dann').text('Жеке мәліметтері');
+			   $$('#dann2').text('Байланыс мәліметтері');
+			   $$('#comment').attr('placeholder','Сипаттамасы');
+				   $$('#otrp2').text('Жіберу');
+				   $$('#iin_text').text('ЖСН көрсетіңіз');
+		}
+		var iin_m = new IMask(
+  document.getElementById('iin_el'), {
+    mask: '000000000000'
+  });
+
+  /*var iban_m = new IMask(
+  document.getElementById('iban_el'), {
+    mask: 'KZ******************'
+  });*/
+
+  
+  var contact_m = new IMask(
+  document.getElementById('contact_el'), {
+    mask: '8(000)0000000',
+  });
+
+  $$('#theme').change(function(){
+		if ($$('#theme').val()=="другие" || $$('#theme').val()=="басқа")
+			$$('#drug').show();
+			else
+			$$('#drug').hide();
+	});
+
+	/*
+app.preloader.show('yellow');
+			app.request.postJSON('https://15000erc.kz/api/sendorder.php',{data_iin:""+iin,data_account:""+iban,data_name:""+$$('#fio_el').val(),data_address:""+post,data_phone:""+contact},function(otvet){
+	app.preloader.hide();
+	if (otvet[0].done=="true"){
+		if (datas.lang=="ru")
+			app.dialog.alert('Ваша заявка принята',function(){
+			router.back();
+			});
+			else
+			app.dialog.alert('Сіздің өтінішіңіз қабылдаңды',function(){
+			router.back();
+			});
+			}
+			else
+				if (otvet[0].done=="false"){
+					if (otvet[0].errors=="order_present"){
+				if (datas.lang=="ru")
+			app.dialog.alert('Ваш ИИН или лицевой счет ЕРЦ зарегестрирован',function(){
+			router.back();
+			});
+			else
+			app.dialog.alert('Сіздің ТАЖ немесе Жеке шот нөміріңіз (ЕРЦ) тіркелген',function(){
+			router.back();
+			});	
+				}
+				else
+				{
+					if (datas.lang=="ru")
+			app.dialog.alert('Ошибка сервера, попробуйте позднее',function(){
+			router.back();
+			});
+			else
+			app.dialog.alert('Серверлік қателік, кейінірек қайталап көріңіз.',function(){
+			router.back();
+			});		
+				}
+				}
+			},function(){
+			app.preloader.hide();
+			},'json');
+
+	*/
+
+		},
+		},
+	};
+	</script>

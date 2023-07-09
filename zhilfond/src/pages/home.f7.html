@@ -1,0 +1,1076 @@
+<template>
+	<div class="page" data-name="home">
+	  <!-- Top Navbar -->
+	  <div class="navbar">
+		<div class="navbar-inner">
+		  <div class="title sliding"><span id="title-text">Главная</span></div>
+		</div>
+	  </div>
+	  <!-- Toolbar-->
+  <div class="toolbar tabbar tabbar-labels toolbar-bottom">
+	  <div class="toolbar-inner">
+		<a href="#tab-1" class="tab-link tab-link-active" @Click="home">
+		  <!-- Different icons for iOS and MD themes -->
+		  <i class="icon material-icons md-only size-22" id ="home-ico">home</i>
+		  <!-- Label text -->
+		  <span class="tabbar-label" id ="home">Главная</span>
+		</a>
+		<a href="#tab-2" class="tab-link"  @Click="kontak">
+		  <i class="icon f7-icons size-22" style="margin-top:10%;" id ="kontak-ico">phone_fill</i>
+		  <span class="tabbar-label" id ="kontak">Контакты</span>
+		</a>
+		<a href="#tab-3" class="tab-link" @Click="uvedom">
+		  <i class="icon f7-icons size-22" style="margin-top:10%;" id ="uvedom-ico">bell<span class="badge color-red" style="display:none;"id ="badge_notifi"></span></i>
+		  <span class="tabbar-label" id ="uvedom">Уведомления</span>
+		</a>
+		<a href="#tab-4" class="tab-link"  @Click="info">
+		  <i class="icon material-icons md-only size-22" style="margin-top:10%;" id ="info-ico">receipt</i>
+		  <span class="tabbar-label" id ="info">Полезная инф.</span>
+		</a>
+		<a class="panel-open tab-link" data-panel="right" @Click="menu">
+		  <i class="icon material-icons md-only color-black size-22" style="margin-top:10%;" id ="menu-ico">menu<span class="badge color-red" style="display:none;"id ="badge_e_ob"></span></i>
+		  <span class="tabbar-label text-color-black" id="menu">Меню</span>
+		</a>
+	  </div>
+	</div>
+	  <div class="tabs">
+		  <div class="fon"></div>
+	 <div id="tab-1" class="page-content tab tab-active">
+	 <div class="block-strong" style="background: transparent;">
+	  <div class="row">
+	  <div class="col-80"><font size="4%"  style="color:#073974;margin-left:4%;font-weight:bold;"><span class="title-news">Новости</span></font></div>
+	  <div class="col-20" align="center" @Click="ewe" style="margin-top:4px;"><b><font color="blue"><span id="title-ewe">Еще</span></font></b></div>
+	</div>
+	<div id="news_slider">
+  
+  </div>
+
+	  <p class="row">
+  <font size="4%" style="color:#073974;margin-left:3%;font-weight:bold;"><span id="title-service">Сервисы</span></font>
+	</p>
+	<a @Click="newza" class="komtolem"><div class="card mycolor9" style="--f7-card-border-radius: 10px;"><div style="border-radius:10px 10px 10px 10px; -moz-background-size: 100%; /* Firefox 3.6+ */
+		-webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+		-o-background-size: 100%; /* Opera 9.6+ */
+		background-size: 100%;background-image:url(static/img/newz1.jpg);position:absolute;width:100%;height:100%;opacity:0.6;"></div>
+	<div class="card-content card-content-padding"><div align="center" class="text-color-black" id="newz" style="position:relative; margin-top:10px"><b><font size="3%"><span class="serv-6">Подача заявки на возмещение затрат за коммунальные услуги в период ЧП</span></font></b></div>
+	</div></div></a>
+	 <div class="row">
+	  <div class="col-50" align="center"><div class="card mycolor" @Click="ochered" style="--f7-card-border-radius: 10px;"><div style="border-radius:10px 10px 10px 10px; -moz-background-size: 100%; /* Firefox 3.6+ */
+	  -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+	  -o-background-size: 100%; /* Opera 9.6+ */
+	  background-size: 100%;background-image:url(static/img/4.png);position:absolute;width:100%;height:100%;opacity:0.8;"></div>
+  <div class="card-content card-content-padding"><div id="ochdiv" style="position:relative; margin-top:10px"><b><font color="white"><span class="serv-1">Просмотр номера очереди на жилье</span></font></b></div></div>
+  </div></div>
+	  <div class="col-50" align="center"><div class="card mycolor2" @Click="dolg" style="--f7-card-border-radius: 10px;"><div style="border-radius:10px 10px 10px 10px; -moz-background-size: 100%; /* Firefox 3.6+ */
+	  -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+	  -o-background-size: 100%; /* Opera 9.6+ */
+	  background-size: 100%;background-image:url(static/img/2.png);position:absolute;width:100%;height:100%;opacity:0.8;"></div>
+  <div class="card-content card-content-padding"><div style="position:relative; margin-top:10px"><b><font color="white"><span class="serv-2">Договор найма жилища</span></font></b></div>
+  </div></div></div>
+	</div>
+	
+	   <div class="row">
+	  <div class="col-50" align="center"><div class="card mycolor4" @Click="elek" style="--f7-card-border-radius: 10px;"><div style="border-radius:10px 10px 10px 10px; -moz-background-size: 100%; /* Firefox 3.6+ */
+	  -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+	  -o-background-size: 100%; /* Opera 9.6+ */
+	  background-size: 100%;background-image:url(static/img/3.png);position:absolute;width:100%;height:100%;opacity:0.8;"></div>
+  <div class="card-content card-content-padding"><div style="position:relative; margin-top:10px"><b><font color="white"><span class="serv-3">Электронное обращения</span></font></b></div>
+  </div></div>
+  </div>
+	  <div class="col-50" align="center"><div class="card mycolor6"  @Click="zapis" style="--f7-card-border-radius: 10px;"><div style="border-radius:10px 10px 10px 10px; -moz-background-size: 100%; /* Firefox 3.6+ */
+	  -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+	  -o-background-size: 100%; /* Opera 9.6+ */
+	  background-size: 100%;background-image:url(static/img/1.png);position:absolute;width:100%;height:100%;opacity:0.8;"></div>
+  <div class="card-content card-content-padding"><div id="zapdiv" style="position:relative; margin-top:10px"><b><font color="white"><span class="serv-4">Онлайн запись на прием к руководству</span></font></b></div>
+  </div></div>
+	</div>
+	 </div>
+  
+	  <div class="card mycolor8" @Click="proga" style="--f7-card-border-radius: 10px;"><div style="border-radius:10px 10px 10px 10px; -moz-background-size: 100%; /* Firefox 3.6+ */
+	-webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+	-o-background-size: 100%; /* Opera 9.6+ */
+	background-size: 100%;background-image:url(static/img/5.jpg);position:absolute;width:100%;height:100%;opacity:0.8;"></div>
+<div class="card-content card-content-padding"><div align="center" style="position:relative; margin-top:20px"><b><font color="white" size="3%"><span class="serv-5">Жилищные программы</span></font></b></div>
+</div></div>
+
+
+
+
+  
+
+	 </div>
+	</div>
+	  
+	  
+	  <div id="tab-2" class="page-content tab"> 
+	  <div class="list media-list">
+	<ul>
+	  <li>
+		<div class="item-content">
+		  <div class="item-media"  style="margin-top:10px;"><i class="icon material-icons" style="color:#073974">location_city</i></div>
+		  <div class="item-inner">
+			<div class="item-title-row">
+			  <font size="2.5px"> <font size="2.5px"><b><span id ="text1"></span></b></font></font>
+			</div>
+			<div class="item-subtitle"><font size="2.5px"><b><span id ="name1"></span></b></font></div>
+		  </div>
+		</div>
+	  </li>
+		  <li>
+		<div class="item-content">
+		  <div class="item-media" style="margin-top:10px;"><i class="icon material-icons" style="color:#073974">phone</i></div>
+		  <div class="item-inner">
+		  <a class="external text-color-black" id="tel1" href="tel:"> 
+			<div class="item-title-row">
+			   <font size="2.5px"><b><span id ="text2"></span></b></font>
+			</div>
+			<div class="item-subtitle"><font size="2.5px"><span id ="name2"></span></font></div>
+			</a>
+		  </div>
+		  
+		</div>
+	  </li>
+		 <li>
+		<div class="item-content">
+		  <div class="item-media" style="margin-top:10px;"><i class="icon material-icons" style="color:#073974">phone</i></div>
+		  <div class="item-inner">
+		  <a class="external text-color-black" id="tel2" href="tel:"> 
+			<div class="item-title-row">
+			   <font size="2.5px"><b><span id ="text3"></span></b></font>
+			</div>
+			<div class="item-subtitle"> <font size="2.5px"><span id ="name3"></span></font></div>
+			</a>
+		  </div>
+		</div>
+	  </li>
+	  <li>
+		<div class="item-content">
+		  <div class="item-media" style="margin-top:10px;"><i class="icon material-icons" style="color:#073974">phone</i></div>
+		  <div class="item-inner">
+		  <a class="external text-color-black" id="tel3" href="tel:"> 
+			<div class="item-title-row">
+			   <font size="2.5px"><b><span id ="text4"></span></b></font>
+			</div>
+			<div class="item-subtitle"> <font size="2.5px"><span id ="name4"></span></font></div>
+			</a>
+		  </div>
+		</div>
+	  </li>
+	  <li>
+		<div class="item-content">
+		  <div class="item-media" style="margin-top:10px;"><i class="icon f7-icons" style="color:#073974">world</i></div>
+		  <div class="item-inner">
+		  <a class="text-color-black" id="webs"> 
+			<div class="item-title-row">
+			   <font size="2.5px"><b><span id ="text5"></span></b></font>
+			</div>
+			<div class="item-subtitle"> <font size="2.5px"><span id ="name5"></span></font></div>
+			</a>
+		  </div>
+		</div>
+	  </li>
+	  
+		 <li>
+		<div class="item-content text-color-black">
+  
+		  <div class="item-media" style="margin-top:10px;"><i class="icon material-icons" style="color:#073974">location_on</i></div>
+		  <div class="item-inner">
+		  <a class="external text-color-black" id="maps">
+			<div class="item-title-row">
+			   <font size="2.5px"><b><span id ="text6"></span></b></font>
+			</div>
+			<div class="item-subtitle">  <font size="2.5px"><span id ="name6"></span></font></div>
+			</a>
+		  </div>
+  
+		</div>
+	  </li>
+	  
+	  <li>
+		<div class="item-content text-color-black">
+  
+		  <div class="item-media" style="margin-top:10px;"><i class="icon material-icons" style="color:#073974">location_on</i></div>
+		  <div class="item-inner">
+		  <a class="external text-color-black">
+			<div class="item-title-row">
+			   <font size="2.5px"><b><span id ="text7"></span></b></font>
+			</div>
+		   <div><font size="2.5px"><span id ="name7"></span></font></div>
+			</a>
+		  </div>
+  
+		</div>
+	  </li>
+	  
+	  <li>
+		<div class="item-content text-color-black">
+  
+		  <div class="item-media" style="margin-top:10px;"><i class="icon material-icons" style="color:#073974">list</i></div>
+		  <div class="item-inner">
+		  <a class="external text-color-black" id="telefony">
+			<div class="item-title-row">
+			   <font size="2.5px"><b>Справка</b></font>
+			</div>
+		   <div><font size="2.5px">Анықтама</font></div>
+			</a>
+		  </div>
+  
+		</div>
+	  </li>
+  
+	</ul>
+  </div>
+  <div class="block">
+	<p class="row">
+	  <button class="col button" id="whatsapp"><img style="height:100%;"src="data:image/png;base64,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"></img></button>
+	  <button class="col button" id="insta"><img style="height:100%;"src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/480px-Instagram_icon.png"></img></button>
+	  <button class="col button" id ="twitter"><img style="height:100%;"src="http://www.icons101.com/icon_png/size_256/id_74220/facebook.png"></img></button>
+	</p>
+	  </div>
+	  </div>
+	  <div id="tab-3" class="page-content tab"> 
+	  
+	  
+	  <div class="list accordion-list">
+	<ul>
+	<div id="notifi_list"></div>
+  
+  
+	</ul>
+  </div>
+	  
+	  
+	  </div>
+	  <div id="tab-4" class="page-content tab"> 
+  
+		  <!-- Searchbar with auto init -->
+		  <form class="searchbar">
+			<div class="searchbar-inner">
+			  <div class="searchbar-input-wrap">
+				<input type="search" placeholder="">
+				<i class="searchbar-icon"></i>
+				<span class="input-clear-button"></span>
+			  </div>
+			  <span class="searchbar-disable-button if-not-aurora">x</span>
+			</div>
+		  </form>
+	  <div class="poisk_list list accordion-list searchbar-found" style="margin-top:-7px;">
+	<ul>
+	<div id="info_list"></div>
+	 
+	</ul>
+  </div>
+  <div class="block searchbar-not-found">
+		<div class="block-inner">Ничего не найдено</div>
+	  </div>
+	  </div>
+	  <div id="tab-5" class="page-content tab"> ... </div>
+	</div>
+	</div>
+  </template>
+  <script>
+  export default {
+   methods: {
+	newza: function () {
+		  var app = this.$app;
+		  var $$ = this.$$;  
+		  var router = this.$router;
+		 window.open("http://komtolem.kz/", '_system');
+		  //if ($$('#newz').hasClass('text-color-black'))
+		 // router.navigate('/freim/?title='+$$('.serv-6').text()+'#about');
+		 // else
+		 // app.dialog.alert('Сервис временно не доступен');
+		  },
+	  proga: function () {
+		  var app = this.$app;
+		  var $$ = this.$$;  
+		  var router = this.$router;
+		  router.navigate('/proga/?title='+$$('.serv-5').text()+'#about');
+		  },
+	  zapis: function () {
+		  var app = this.$app;
+		  var $$ = this.$$;  
+		  var router = this.$router;
+		  var user = JSON.parse(localStorage.getItem("f7form-user"));
+		  if (user.id=="null"){
+		  var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+		  if (lang.lang=="ru")	app.dialog.create({
+   title: '<div style="text-align: center;">Нужно войти в личный кабинет</div>',
+   text:"",
+   buttons: [
+   {
+		  text: 'Закрыть',
+		   onClick: function() {
+  
+		   }
+		},
+		  {
+		  text: 'Войти',
+		  onClick: function(){
+			  router.navigate('/auth/?title='+$$('.lich').text());
+		  }
+		}
+  ],
+  }).open();  
+		  else app.dialog.create({
+   title: '<div style="text-align: center;">Жеке кабинетке кіру қажет</div>',
+   text:"",
+   buttons: [
+   {
+		  text: 'Жабу',
+		   onClick: function() {
+  
+		   }
+		},
+		  {
+		  text: 'Кіру',
+		  onClick: function(){
+			  router.navigate('/auth/?title='+$$('.lich').text());
+		  }
+		}
+  ],
+  }).open(); 
+		  }
+		  else
+		  router.navigate('/zapis/?title='+$$('.serv-4').text()+'#about');
+		  },
+	 elek: function () {
+		  var app = this.$f7;
+		  var $$ = this.$$;  
+		  var router = this.$router;
+		  var user = JSON.parse(localStorage.getItem("f7form-user"));
+		  if (user.id=="null"){
+		  var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+		  if (lang.lang=="ru")	app.dialog.create({
+   title: '<div style="text-align: center;">Нужно войти в личный кабинет</div>',
+   text:"",
+   buttons: [
+   {
+		  text: 'Закрыть',
+		   onClick: function() {
+  
+		   }
+		},
+		  {
+		  text: 'Войти',
+		  onClick: function(){
+			  router.navigate('/auth/?title='+$$('.lich').text());
+		  }
+		}
+  ],
+  }).open();  
+		  else app.dialog.create({
+   title: '<div style="text-align: center;">Жеке кабинетке кіру қажет</div>',
+   text:"",
+   buttons: [
+   {
+		  text: 'Жабу',
+		   onClick: function() {
+  
+		   }
+		},
+		  {
+		  text: 'Кіру',
+		  onClick: function(){
+			  router.navigate('/auth/?title='+$$('.lich').text());
+		  }
+		}
+  ],
+  }).open(); 
+		  }
+		  else
+		  router.navigate('/elek/?title='+$$('.serv-3').text()+'#about');
+		  },
+	dolg: function () {
+		  var app = this.$f7;
+		  var $$ = this.$$;  
+		  var router = this.$router;
+		  router.navigate('/dolg/?title='+$$('.serv-2').text()+'#about');
+		  },
+   ochered: function () {
+		  var app = this.$f7;
+		  var $$ = this.$$;  
+		  var router = this.$router;
+		  window.open("https://hf.kezekte.kz/ru/search-public-queue/by-iin ", '_system');
+		  //router.navigate('/ochered/?title='+$$('.serv-1').text()+'#about');
+		  },
+					ewe: function () {
+		  var app = this.$f7;
+		  var $$ = this.$$;  
+		  var router = this.$router;
+		  router.navigate('/news/?title='+$$('.title-news').text());
+		  },
+		   home: function () {
+		  var app = this.$f7;
+		  var $$ = this.$$;
+		  var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+		  if (lang.lang=="ru")$$('#home').text('Главная'); else $$('#home').text('Басты');
+		  $$('#kontak').hide();
+		  $$('#uvedom').hide();
+		  $$('#info').hide();
+		  $$('#home').show();
+  
+		  $$('#uvedom-ico').css('margin-top','10%');
+		  $$('#home-ico').css('margin-top','0%');
+		  $$('#info-ico').css('margin-top','10%');
+		  $$('#kontak-ico').css('margin-top','10%');
+		  if ($$('#title-text').text()!=$$('#home').text()){
+		  var mySwiper = app.swiper.create('.glav_swipe', {
+  slidesPerView: 1.2,
+  spaceBetween: 20,
+  slidesOffsetBefore: 10,
+  slidesOffsetAfter:10,
+	autoplay: {
+	  delay: 1000,
+	},
+  });
+		  $$('#title-text').text($$('#home').text());
+		  }
+		  },
+		   kontak: function () {
+		  var app = this.$f7;
+		  var $$ = this.$$;
+  $$('#kontak').show();
+  var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+  if (lang.lang=="ru")$$('#kontak').text('Контакты'); else $$('#kontak').text('Байланыс');
+  $$('#title-text').text($$('#kontak').text());
+		  $$('#uvedom').hide();
+		  $$('#info').hide();
+		  $$('#home').hide();
+		  $$('#uvedom-ico').css('margin-top','10%');
+		  $$('#home-ico').css('margin-top','10%');
+		  $$('#info-ico').css('margin-top','10%');
+		  $$('#kontak-ico').css('margin-top','0%');
+		  app.preloader.show('blue');
+		  app.request.post('https://zhilfondapp.kz/api/kontakt.php',{zapros:"list"},function(otvet){
+  app.preloader.hide();
+  if (otvet[0].message=="ok"){
+  if (lang.lang=="ru"){
+  $$('#text1').text(otvet[0].text1);
+  $$('#name1').text(otvet[0].text2);
+  $$('#text2').text(otvet[0].text3);
+  $$('#name2').text(otvet[0].text4);
+  $$('#text3').text(otvet[0].text5);
+  $$('#name3').text(otvet[0].text6);
+  $$('#text4').text(otvet[0].text7);
+  $$('#name4').text(otvet[0].text8);
+  $$('#text5').text(otvet[0].text9);
+  $$('#name5').text(otvet[0].text10);
+  $$('#text6').text(otvet[0].text11);
+  $$('#name6').text(otvet[0].text12);
+  $$('#text7').text(otvet[0].text16);
+  $$('#name7').text(otvet[0].text17);
+  $$("#tel1").attr("href","tel:87172"+otvet[0].text4); 
+  $$("#tel2").attr("href","tel:87172"+otvet[0].text6); 
+  $$("#tel3").attr("href","tel:87172"+otvet[0].text8); 
+  $$("#whatsapp").attr("name",otvet[0].text13); 
+  $$("#insta").attr("name",otvet[0].text14); 
+  $$("#twitter").attr("name",otvet[0].text15); 
+  }else
+  {
+  $$('#text1').text(otvet[0].text1_kz);
+  $$('#name1').text(otvet[0].text2_kz);
+  $$('#text2').text(otvet[0].text3_kz);
+  $$('#name2').text(otvet[0].text4_kz);
+  $$('#text3').text(otvet[0].text5_kz);
+  $$('#name3').text(otvet[0].text6_kz);
+  $$('#text4').text(otvet[0].text7_kz);
+  $$('#name4').text(otvet[0].text8_kz);
+  $$('#text5').text(otvet[0].text9_kz);
+  $$('#name5').text(otvet[0].text10_kz);
+  $$('#text6').text(otvet[0].text11_kz);
+  $$('#name6').text(otvet[0].text12_kz);
+  $$('#text7').text(otvet[0].text16_kz);
+  $$('#name7').text(otvet[0].text17_kz);
+  $$("#tel1").attr("href","tel:87172"+otvet[0].text4_kz); 
+  $$("#tel2").attr("href","tel:87172"+otvet[0].text6_kz); 
+  $$("#tel3").attr("href","tel:87172"+otvet[0].text8_kz); 
+  $$("#whatsapp").attr("name",otvet[0].text13_kz); 
+  $$("#insta").attr("name",otvet[0].text14_kz); 
+  $$("#twitter").attr("name",otvet[0].text15_kz);
+  }
+  $$("#maps").attr("name",otvet[0].text12); 
+  
+  }
+		  },function(){
+  app.preloader.hide();
+  },'json');
+		  },
+		   uvedom: function () {
+		  var app = this.$f7;
+		  var $$ = this.$$;
+  $$('#kontak').hide();
+  var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+  if (lang.lang=="ru")$$('#uvedom').text('Уведомления'); else $$('#uvedom').text('Хабарландыру');
+  $$('#title-text').text($$('#uvedom').text());
+		  $$('#uvedom').show();
+		  $$('#info').hide();
+		  $$('#home').hide();
+		  $$('#uvedom-ico').css('margin-top','0%');
+		  $$('#home-ico').css('margin-top','10%');
+		  $$('#info-ico').css('margin-top','10%');
+		  $$('#kontak-ico').css('margin-top','10%');
+					  app.preloader.show('blue');
+		  app.request.post('https://zhilfondapp.kz/api/add_notification.php',{id_user:app.data.routs.id,zapros:"list"},function(otvet){
+  app.preloader.hide();
+  if (otvet[0].message=="ok"){
+  $$('#badge_notifi').hide();
+  var spisok=""; 
+  for (var i=0; i<otvet.length; i++){
+		  if (lang.lang=="ru")
+  spisok+='<li class="accordion-item"><a href="#" class="item-content item-link">'+
+		  '<div class="item-inner">'+
+			'<div class="item-title"><font size="3px"> <b>'+otvet[i].topick+'</b></font></div>'+
+		  '</div></a>'+
+		'<div class="accordion-item-content">'+
+		  '<div class="block"><font size="3px"><div class="uvia">'+otvet[i].text+'</div></font></div>'+
+		'</div>'+
+	  '</li>';
+	  else
+	  spisok+='<li class="accordion-item"><a href="#" class="item-content item-link">'+
+		  '<div class="item-inner">'+
+			'<div class="item-title"><font size="3px"> <b>'+otvet[i].topick_kz+'</b></font></div>'+
+		  '</div></a>'+
+		'<div class="accordion-item-content">'+
+		  '<div class="block"><font size="3px"> <div class="uvia">'+otvet[i].text_kz+'</div></font></div>'+
+		'</div>'+
+	  '</li>';
+	  }
+  $$('#notifi_list').html(spisok);
+   
+	$$('.uvia').on('click','a',function(){
+	  var str = $$(this).attr('href'); 
+	window.open(str, '_system');
+	});
+  }
+		  },function(){
+  app.preloader.hide();
+  },'json');
+		  
+		  
+		  },
+		  
+		   info: function () {
+		  var app = this.$f7;
+		  var $$ = this.$$;
+  $$('#kontak').hide();
+  var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+  if (lang.lang=="ru")$$('#info').text('Полезная информация'); else $$('#info').text('Жиі қойылатын сұрақтар');
+  $$('#title-text').text($$('#info').text());
+		  $$('#uvedom').hide();
+		  $$('#info').show();
+		  $$('#home').hide();
+		  $$('#uvedom-ico').css('margin-top','10%');
+		  $$('#home-ico').css('margin-top','10%');
+		  $$('#info-ico').css('margin-top','0%');
+		  $$('#kontak-ico').css('margin-top','10%');
+			  app.preloader.show('blue');
+		  app.request.post('https://zhilfondapp.kz/api/add_info.php',{zapros:"list"},function(otvet){
+  app.preloader.hide();
+  if (otvet[0].message=="ok"){
+  var spisok="";
+  for (var i=0; i<otvet.length; i++){
+		  if (lang.lang=="ru")
+  spisok+=' <li class="accordion-item"><a href="#" class="item-content item-link">'+
+		  '<div class="item-inner poisk"><font size="3px"> <b>'+(i+1)+'. '+otvet[i].topick+'</b></font>'+
+		  '</div></a>'+
+		'<div class="accordion-item-content">'+
+		  '<div class="block">'+
+		  '<div class="block"><font size="3px"><div class="uvia">'+otvet[i].text+'</div></font>'+
+			'</div>'+
+		  '</div>'+
+		'</div>'+
+	  '</li>';
+	  else
+	  spisok+=' <li class="accordion-item"><a href="#" class="item-content item-link">'+
+		  '<div class="item-inner poisk"> <font size="3px"><b>'+(i+1)+'. '+otvet[i].topick_kz+'</b></font>'+
+		  '</div></a>'+
+		'<div class="accordion-item-content">'+
+		  '<div class="block">'+
+		  '<div class="block"><font size="3px"><div class="uvia">'+otvet[i].text_kz+'</div></font>'+
+			'</div>'+
+		  '</div>'+
+		'</div>'+
+	  '</li>';
+	  }
+  $$('#info_list').html(spisok);
+  $$('.uvia').on('click','a',function(){
+	  var str = $$(this).attr('href'); 
+	window.open(str, '_system');
+	});
+  }
+		  },function(){
+  app.preloader.hide();
+  },'json');
+		  },
+		  menu: function () {
+		  var app = this.$f7;
+		  var $$ = this.$$;
+  $$('#menu').show();
+  var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+  if (lang.lang=="ru")$$('#menu').text('Меню'); else $$('#menu').text('Мәзір');
+  
+  $$('#menu-ico').css('margin-top','0%');
+		  },
+		  },
+  on: {
+	  pageInit: function () {
+	  var app = this.$f7;
+		  var $$ = this.$$;
+		  var router = this.$router;
+		 window.CacheClear();
+		  var datas = JSON.parse(localStorage.getItem("f7form-lang"));
+		  if (datas==null){
+		  app.form.storeFormData('lang', {
+		  'lang': 'ru',
+		  'user':'new',
+		  });
+		  app.form.storeFormData('user', {
+		  'id': 'null',
+		  'token':'null',
+		  });
+		  
+		  }
+		  else
+		  {
+		  
+		  
+		  if (datas.lang=="ru"){
+		  app.form.storeFormData('lang', {
+		  'lang': 'ru',
+		  'user':'1',
+		  });
+		  $$('#home').text('Главная');
+		  $$('.title-news').text('Новости');
+		  $$('#title-ewe').text('Еще');
+		  $$('#title-service').text('Сервисы');
+		  $$('.serv-1').text('Просмотр номера очереди на жилье');
+		  if ($$('.page').css('width')=="320px"){
+		  $$('#ochdiv').css({'margin-top':'-5px'});
+		  $$('#zapdiv').css({'margin-top':'0px'});
+		  $$('#newz').css({'margin-top':'-5px'});
+		  }
+		  else
+		  if ($$('.page').css('width')=="375px")
+		  $$('#zapdiv').css({'margin-top':'5px'});
+		  $$('.serv-2').text('Договор найма жилища');
+		  $$('.serv-3').text('Электронное обращение');
+		  $$('.serv-4').text('Онлайн запись на прием к руководству');
+		  $$('.serv-5').text('Жилищные программы');
+		  $$('.serv-6').text('Подача заявки на возмещение затрат за коммунальные услуги в период ЧП');
+		  $$('.menu').text('Меню');
+		  $$('.lich').text('Личный кабинет');
+		  $$('.moi_ob').text('Мои обращения');
+		  $$('.moi_zap').text('Мои записи');
+		  $$('.nastr').text('Настройка');
+		  $$('.o-pri').text('О приложении');
+		  $$('.tex-pod').text('Тех. Поддрежка');
+		  $$('.tex-ucher').text('Об учреждении');
+		  $$('.vyhod').text('Выход');
+		  }
+		  else
+		  {
+		  app.form.storeFormData('lang', {
+		  'lang': 'kz',
+		  'user':'new',
+		  });
+		  $$('#home').text('Басты');
+		  $$('.title-news').text('Жаңалықтар');
+		  $$('#title-ewe').text('Тағы');
+		  $$('#title-service').text('Қызметтер');
+		  $$('.serv-1').text('Тұрғын үй бойынша кезектілік нөмерін қарау');
+		  if ($$('.page').css('width')<="464px")
+		  $$('#ochdiv').css({'margin-top':'-5px'});
+		  $$('#zapdiv').css({'margin-top':'0px'});
+		  $$('.serv-2').text('Тұрғын үйді жалдау шарты');
+		  $$('.serv-3').text('Электрондық өтініштер');
+		  $$('.serv-4').text('Басшылар қабылдауына онлайн жазылу');
+		  $$('.serv-5').text('Тұрғын үй бағдарламалары');
+		  $$('.serv-6').text('ТЖ кезеңінде коммуналдық қызмет шығындарын өтеуге өтінім беру');
+		  $$('.menu').text('Мәзір');
+		  $$('.lich').text('Жеке кабинет');
+		  $$('.moi_ob').text('Менің өтініштерім');
+		  $$('.moi_zap').text('Менің жазылуларым');
+		  $$('.nastr').text('Баптау');
+		  $$('.o-pri').text('Қосымша туралы');
+		  $$('.tex-pod').text('Тех. көмек');
+		  $$('.tex-ucher').text('Мекеме жайында');
+		  $$('.vyhod').text('Шығу');
+		  }
+		  $$('#title-text').text($$('#home').text());
+		  }
+		  
+		  
+		  
+		  document.addEventListener("resume", function(){
+		  var user = JSON.parse(localStorage.getItem("f7form-user"));
+		  if (user.id!="null"){
+  app.preloader.show('blue');
+		  app.request.get('https://zhilfondapp.kz/api/badge.php',{id_user:user.id,zapros:"glav"},function(otvet){
+  app.preloader.hide();
+  if (otvet[0].ochered!="0"){
+  $$('#badge_e_ob').show();
+  $$('#menu_badge_e_ob').show();
+  $$('#badge_e_ob').text(otvet[0].ochered);
+  $$('#menu_badge_e_ob').text(otvet[0].ochered);
+  }
+  else
+  {
+  $$('#badge_e_ob').hide();
+  $$('#menu_badge_e_ob').hide();
+  }
+  if (otvet[0].notifi!="0"){
+  $$('#badge_notifi').show();
+  $$('#badge_notifi').text(otvet[0].notifi);
+  }
+  else
+  {
+  $$('#badge_notifi').hide();
+  }
+  },function(){
+  app.preloader.hide();
+  },'json');
+  }
+		  
+		  }, false);
+		  
+				   document.addEventListener('backbutton', function (e) {
+				  var leftp = app.panel.left && app.panel.left.opened;
+			  var rightp = app.panel.right && app.panel.right.opened;
+			  if ( leftp || rightp ) {
+				  app.panel.close();
+				  return false;
+			  }else
+				  if ($$('.modal-in').length > 0) {
+				  app.dialog.close();
+				  return false;
+			  } 
+  else
+		  $$('.nazad').click();
+	  
+	  }, false);
+	  
+	  
+  app.on('panelClosed', function (panel) {
+	  $$('#menu').hide();
+	  $$('#menu-ico').css('margin-top','10%');
+  });
+		  $$('#kontak').hide();
+		  $$('#uvedom').hide();
+		  $$('#info').hide();
+		  $$('#menu').hide();
+  
+  $$('#lich').on('click',function(){
+	  app.panel.close();
+	  var user = JSON.parse(localStorage.getItem("f7form-user"));
+		  if (user.id == "null"){
+		  router.navigate('/auth/?title='+$$('.lich').text());
+		  }
+		  else
+		  router.navigate('/lich/?title='+$$('.lich').text());
+  });
+  
+  
+  $$('#ucher').on('click',function(){
+	  app.panel.close();
+		  router.navigate('/ucher/?title='+$$('.tex-ucher').text());
+  });
+  var item_news=[];
+  
+  $$('#news_slider').on('click','div',function(){
+  var id_news = $$(this).attr('data-id');
+  if (datas.lang=="ru")
+  router.navigate('/about/?picture=https://zhilfondapp.kz/api/'+app.data.news.array[id_news].image+'&topik='+app.data.news.array[id_news].topick+'&id='+id_news+'&title='+$$('.title-news').text()+'&otv=news');
+  else
+  router.navigate('/about/?picture=https://zhilfondapp.kz/api/'+app.data.news.array[id_news].image+'&topik='+app.data.news.array[id_news].topick_kz+'&id='+id_news+'&title='+$$('.title-news').text()+'&otv=news');
+  
+  });
+  
+  
+  
+  $$('#moi').on('click',function(){
+	  app.panel.close();
+  router.navigate('/moi/?title='+$$('.moi_ob').text());	
+  });
+  
+  $$('#moi_zap').on('click',function(){
+	  app.panel.close();
+  router.navigate('/moi_zap/?title='+$$('.moi_zap').text());	
+  });
+  
+
+  $$('#setting').on('click',function(){
+	  app.panel.close();
+  router.navigate('/setting/?title='+$$('.nastr').text());	
+  });
+  
+  $$('#opri').on('click',function(){
+	  app.panel.close();
+  router.navigate('/opri/?title='+$$('.o-pri').text());
+  });
+  
+  
+  $$('#teh').on('click',function(){
+	  app.panel.close();
+  router.navigate('/teh/?title='+$$('.tex-pod').text());	
+  });
+  var user = JSON.parse(localStorage.getItem("f7form-user"));
+		  if (user.id=="null"){
+		  $$('#li_moi').hide();
+		  $$('#li_moi_zap').hide();
+		  $$('#div_vyhod').hide();
+		  }
+		  else {
+		  $$('#li_moi').show();
+		  $$('#li_moi_zap').show();
+		  $$('#div_vyhod').show();
+				  app.preloader.show('blue');
+	  app.request.post("https://zhilfondapp.kz/api/vhod.php",{id:user.id,token:user.token,vhod:'app',token_app:app.data.routs.token_app},function (data) {
+		  app.preloader.hide();
+		  if (data[0].message=="ok"){
+		  app.data.user.fam=data[0].fam;
+		  app.data.user.im=data[0].im;
+		  app.data.user.ot=data[0].ot;
+		  app.data.user.phone=data[0].phone;
+		  app.data.routs.id=user.id;
+		  app.data.routs.token=user.token;
+		  }
+		  else
+		  {
+				  app.form.storeFormData('user', {
+		  'id': 'null',
+		  'token':'null',
+		  });
+		  $$('#li_moi').hide();
+		  $$('#li_moi_zap').hide();
+		  $$('#div_vyhod').hide();
+		  }
+		  },function(){
+		  app.preloader.hide();
+		  app.dialog.alert('Нет подключения к интернету');
+		  },'json');
+	  
+  }
+  
+  // create searchbar
+  var searchbar = app.searchbar.create({
+	el: '.searchbar',
+	searchContainer: '.poisk_list',
+	searchIn: '.poisk',
+	on: {
+  
+	}
+  });
+  
+  
+  if (datas!=null){
+	  app.preloader.show('blue');
+		  app.request.get('https://zhilfondapp.kz/api/news.php',{},function(otvet){
+  app.preloader.hide();
+  if (otvet[0].message=="ok"){
+	  if (otvet[0].newza=="no")
+		$$('.komtolem').hide();
+	  else
+	  $$('.komtolem').show();
+  //router.navigate('/welcome/');
+  var neww="";
+  var schet=0;
+  neww+='<div style="margin-top:10px;" class="swiper-container glav_swipe swiper-init demo-swiper demo-swiper-auto" data-speed="500" data-space-between="10" data-slides-per-view="1.1" data-loop="true" data-centered-slides="true" >'+
+	'<div class="swiper-wrapper" >';
+  for (var s=0;s<otvet.length;s++){
+  item_news.push({
+  topick:otvet[s].topick,
+  topick_kz:otvet[s].topick_kz,
+  text:otvet[s].text,
+  text_kz:otvet[s].text_kz,
+  image:otvet[s].image,
+  id:otvet[s].id
+  });
+  if (otvet[s].glav=="1"){
+  if (datas.lang=="ru")
+  neww+='<div data-id="'+schet+'" class="swiper-slide" style="background-image:url(\'https://zhilfondapp.kz/api/'+otvet[s].image+'\');background-position: center;'+
+	'background-repeat: no-repeat;'+
+	'background-size: 100% auto;"><div data-id="'+schet+'" style="width:100%;height:40%;border-radius:0 0 5px 5px;bottom:0px;right:0px;position:absolute;opacity:0.7; text-align:center;'+
+	   'background: #000;"><p><font color="white" size="2px">'+otvet[s].topick+'</font></p></div></div>';
+  else
+  neww+='<div data-id="'+schet+'" class="swiper-slide" style="background-image:url(\'https://zhilfondapp.kz/api/'+otvet[s].image+'\');background-position: center;'+
+	'background-repeat: no-repeat;'+
+	'background-size: 100% auto;"><div data-id="'+schet+'" style="width:100%;height:40%;border-radius:0 0 5px 5px;bottom:0px;right:0px;position:absolute;opacity:0.7; text-align:center;'+
+	   'background: #000;"><p><font color="white" size="2px">'+otvet[s].topick_kz+'</font></p></div></div>';
+  
+  }
+  schet++
+  }
+  neww+='</div></div>';
+  app.data.news.array=item_news;
+  $$("#news_slider").html(neww);
+  var mySwiper = app.swiper.create('.glav_swipe', {
+  slidesPerView: 1.2,
+  spaceBetween: 20,
+  slidesOffsetBefore: 10,
+  slidesOffsetAfter:10,
+	autoplay: {
+	  delay: 1000,
+	},
+  });
+  }
+  },function(){
+  app.preloader.hide();
+  },'json');
+  
+  }
+  
+  else
+
+  {
+
+  datas = JSON.parse(localStorage.getItem("f7form-lang"));
+  app.preloader.show('blue');
+		  app.request.post('https://zhilfondapp.kz/api/news.php',{user:"new"},function(otvet){
+  app.preloader.hide();
+  if (otvet[0].message=="ok"){
+	if (otvet[0].newza=="no")
+		$$('.komtolem').hide();
+	  else
+	  $$('.komtolem').show();
+  var neww="";
+  var schet=0;
+  neww+='<div style="margin-top:10px;" class="swiper-container glav_swipe swiper-init demo-swiper demo-swiper-auto" data-speed="500" data-space-between="10" data-slides-per-view="1.1" data-loop="true" data-centered-slides="true" >'+
+	'<div class="swiper-wrapper" >';
+  for (var s=0;s<otvet.length;s++){
+  item_news.push({
+  topick:otvet[s].topick,
+  topick_kz:otvet[s].topick_kz,
+  text:otvet[s].text,
+  text_kz:otvet[s].text_kz,
+  image:otvet[s].image,
+  id:otvet[s].id
+  });
+  if (otvet[s].glav=="1"){
+  neww+='<div data-id="'+schet+'" class="swiper-slide" style="background-image:url(\'https://zhilfondapp.kz/api/'+otvet[s].image+'\');background-position: center;'+
+	'background-repeat: no-repeat;'+
+	'background-size: 100% auto;"><div data-id="'+schet+'" style="width:100%;height:40%;border-radius:0 0 5px 5px;bottom:0px;right:0px;position:absolute;opacity:0.7; text-align:center;'+
+	   'background: #000;"><p><font color="white" size="2px">'+otvet[s].topick+'</font></p></div></div>';
+  
+  }
+  schet++
+  }
+  neww+='</div></div>';
+  app.data.news.array=item_news;
+  $$("#news_slider").html(neww);
+  var mySwiper = app.swiper.create('.glav_swipe', {
+  slidesPerView: 1.2,
+  spaceBetween: 20,
+  slidesOffsetBefore: 10,
+  slidesOffsetAfter:10,
+	autoplay: {
+	  delay: 1000,
+	},
+  });
+  router.navigate('/welcome/');
+  }
+  },function(){
+  app.preloader.hide();
+  },'json');
+  
+  }
+  
+  $$('#webs').on('click',function(){
+  window.open($$('#name5').text(), '_system');
+  });
+  
+  $$('#whatsapp').on('click',function(){
+  window.open("https://api.whatsapp.com/send?phone="+$$('#whatsapp').attr('name'), '_system');
+  });
+  
+  $$('#insta').on('click',function(){
+  window.open($$('#insta').attr('name'), '_system');
+  });
+  
+  $$('#twitter').on('click',function(){
+  window.open($$('#twitter').attr('name'), '_system');
+  });
+  
+  $$('#maps').on('click',function(){
+  window.open("https://2gis.kz/astana/firm/70000001034216672?queryState=center%2F71.498525%2C51.128886%2Fzoom%2F17", '_system');
+  });
+  
+  $$('#telefony').on('click',function(){
+  window.open("http://zhilfond.kz/%D0%BA%D0%BE%D0%BD%D1%82%D0%B0%D0%BA%D1%82%D1%8B/", '_system');
+  });
+  
+  
+  var user = JSON.parse(localStorage.getItem("f7form-user"));
+		  if (user.id!="null"){
+  app.preloader.show('blue');
+		  app.request.get('https://zhilfondapp.kz/api/badge.php',{id_user:user.id,zapros:"glav"},function(otvet){
+  app.preloader.hide();
+  if (otvet[0].ochered!="0"){
+  $$('#badge_e_ob').show();
+  $$('#menu_badge_e_ob').show();
+  $$('#badge_e_ob').text(otvet[0].ochered);
+  $$('#menu_badge_e_ob').text(otvet[0].ochered);
+  }
+  else
+  {
+  $$('#badge_e_ob').hide();
+  $$('#menu_badge_e_ob').hide();
+  }
+  if (otvet[0].notifi!="0"){
+  $$('#badge_notifi').show();
+  $$('#badge_notifi').text(otvet[0].notifi);
+  }
+  else
+  {
+  $$('#badge_notifi').hide();
+  }
+  },function(){
+  app.preloader.hide();
+  },'json');
+  }
+  
+		  var push = PushNotification.init({
+	   "android": {
+		  "senderID": "110519839613",
+			  "vibrate": true
+		 }, 
+		 "ios": {
+		 "sound": true,
+		  "vibration": true,
+		  "badge": true
+		   },
+		  "windows": {}
+		  });
+
+		  let topic = "all-android";
+
+        push.subscribe(topic, function () {
+           //alert('subscribe success: ');
+        }, function (e) {
+           // alert('subscribe error:');
+           // alert(e);
+        });
+		  
+		  push.on('registration', function(data) {
+			   app.data.routs.token_app = data.registrationId;
+			/*   app.request.get("https://zhilfondapp.kz/api/add_tokeny.php",{token:data.registrationId},function (otvet) {
+		  },function(){
+		  },'string');*/
+			 });
+			 
+			 push.on('error', function(e) {
+			  
+			   });
+  
+				  push.on('notification', function(data) {
+		  router.refreshPage();	 
+					  });	
+					  
+			  
+			  
+			  
+  
+	  },
+  },
+  }
+  </script>

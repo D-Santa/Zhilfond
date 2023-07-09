@@ -1,0 +1,129 @@
+
+<template>
+  <div class="page">
+    <div class="navbar" >
+      <div class="navbar-inner sliding">
+	          <div class="left" @Click="back_tel">
+          <a href="#" class="nazad link">
+            <i class="icon icon-back"  style="color:#073974;"></i> <span class="ios-only">{{js 'return this.$route.query.nazad'}}</span>
+          </a>
+        </div>
+        <div class="title"><font size="3%">{{js 'return this.$route.query.title'}}</font></div>
+      </div>
+    </div>
+  
+  <div class="page-content login-screen-content">
+        <div class="list">
+        <ul>
+          <li class="item-content item-input item-input-outline">
+		  <div class="item-inner">
+              <div class="item-title item-floating-label" ><i class="icon f7-icons size-22"  style="color:#073974;">phone</i>{{js 'return this.$route.query.f1'}}</div>
+              <div class="item-input-wrap">
+                <input id="iphones" type="tel" placeholder="8(***)*** ** **"\>
+              </div>
+            </div>
+          </li>
+<li>
+<div class="block">
+  <button  class="col button button-big button-round button-fill" style="background-color:#073974;" @Click="vhodreg">{{js 'return this.$route.query.f2'}}</button>
+ </div>
+</li>
+        </ul>
+
+		  </div>
+  
+			
+			
+			
+        </div>
+	
+	
+    </div>
+</template>
+
+<script>
+
+export default {
+    methods: {
+			back_tel: function () {
+		 var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+		router.back();		
+		},
+	vhodreg: function () {
+	 var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+		var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+	  if (lang.lang=="ru"){
+	  if ($$('#iphones').val().length!=15)app.dialog.alert('Заполните номер телефона!');else
+	  {
+	    var tel = $$('#iphones').val();
+	   tel = tel.slice(1);
+	  app.dialog.confirm('На номер '+tel+' будет отправлено смс для подтверждения номера.', function () {
+	 app.preloader.show('blue');
+	var tokenapp ="";
+	app.request.get("https://zhilfondapp.kz/api/regs.php",{tel:tel,zapros:"pervi",token_app:tokenapp},function (data) {
+		app.preloader.hide();
+	  if (data[0].message=="ok"){
+	  app.data.routs.id=data[0].id;
+	  app.data.routs.token=data[0].token;
+	 app.data.routs.pass = data[0].pass; 
+	 		app.data.user.phone=tel;
+	  router.navigate('/pass/?title=Введите смс-код&povtor=Отправить повторно&nazad=Назад');
+	  }
+	  else if (data[0].message=="regest"){
+	  app.dialog.alert('Вы уже зарегестрировы в системе! Пожалуйста зайдите через логин и пароль!'); 
+	  }
+	  },function(){
+	  	   app.preloader.hide();
+		app.dialog.alert('Нет подключения к интернету');
+	  },'json');
+	    });
+	}
+	  }
+	  else
+	  {
+		if ($$('#iphones').val().length!=15)app.dialog.alert('Ұялы телефон нөмерін толтырыңыз!');else
+	  {
+	    var tel = $$('#iphones').val();
+	   tel = tel.slice(1);
+	  app.dialog.confirm(tel+' нөмерге смс растау жіберіледі.', function () {
+	 app.preloader.show('blue');
+	var tokenapp ="";
+	app.request.get("https://zhilfondapp.kz/api/regs.php",{tel:tel,zapros:"pervi",token_app:tokenapp},function (data) {
+		app.preloader.hide();
+	  if (data[0].message=="ok"){
+	  app.data.routs.id=data[0].id;
+	  app.data.routs.token=data[0].token;
+	 app.data.routs.pass = data[0].pass; 
+	 		app.data.user.phone=tel;
+			 router.navigate('/pass/?title=смс-код теріңіз&povtor=Қайта жіберу&nazad=Артқа');
+	  }
+	  else if (data[0].message=="regest"){
+	  app.dialog.alert('Сіздің нөмер тіркелген! Өтініш, логин және құпия сөз арқылы кіріңіз!'); 
+	  }
+	  },function(){
+	  	   app.preloader.hide();
+		app.dialog.alert('Нет подключения к интернету');
+	  },'json');
+	    });
+	}
+	  }
+	},
+    },
+    on: {
+      pageInit: function () {
+	  var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+	  app.data.routs.rout="tel";
+var phoneMaskregs = new IMask(
+  document.getElementById('iphones'), {
+    mask: '8(000)000 00 00'
+  });
+      },
+    },
+  }
+</script>

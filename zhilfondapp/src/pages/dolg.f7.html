@@ -1,0 +1,40 @@
+<template>
+  <div class="page" data-name="/news/" style="height:94%;">
+
+        <div class="page-content" style="height:99%;">
+		<div class="card text-color-black col-100"  style="--f7-card-border-radius:30px;margin-top:-15px;">
+                      <div class="card-content card-content-padding" style="opacity:0.6;">
+<i class="icon f7-icons margin-right-half" style="font-size: 24px; margin-top:-5px;margin-left:10px;">data_fill</i><font size="4px" ><b>Долг</b></font>
+		</div>
+
+                    </div>
+					<div class="block-title">ДОБАВИТЬ ДОЛГ</div>
+<div class="block">				
+<a class="col button button-fill color-blue" id="download">Заргузить</a>
+</div>
+        </div>
+		
+		
+		
+
+  </div>
+  
+
+</template>
+<script>
+export default {
+on: {
+      pageInit: function(e, page) {
+        var app = this.$app;
+		var $$ = this.$$;
+		var router = this.$router;
+$$('#download').on('click',function(){
+	 	 window.open('https://zhilfondapp.kz/api/add_dolg.php', '_blank');
+	 });
+
+			
+      },
+	},
+
+}
+</script>

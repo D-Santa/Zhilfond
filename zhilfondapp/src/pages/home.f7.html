@@ -1,0 +1,314 @@
+<template>
+  <div class="page" data-name="/home/" style="height:95%;">
+
+    <div class="page-content" style="height:99%;">
+
+      <div class="card text-color-black col-100" style="--f7-card-border-radius:30px;margin-top:-15px;">
+        <div class="card-content card-content-padding">
+          <div style="position:absolute;right: 380px;display: flex;height: 50%;align-items: center;">От: <input
+              type="date" style="padding: 10px;" placeholder="Select date" id="sdat1" /></div>
+          <div style="position:absolute;right: 185px;display: flex;height: 50%;align-items: center;">До: <input
+              type="date" style="padding: 10px;" placeholder="Select date" id="sdat2" /></div>
+          <a id="statistic" class="col button button-fill button-round color-blue"
+            style="position:absolute;right: 15px;">Показать&nbsp;<i class="icon f7-icons"
+              style="margin-top:-2px;">list</i></a>
+          <i class="icon f7-icons margin-right-half"
+            style="font-size: 24px; margin-top:-5px;margin-left:10px;opacity:0.6;">data_fill</i>
+          <font size="4px" style="opacity:0.6;"><b>Главная</b></font>
+        </div>
+
+      </div>
+
+      <div class="dashboard-cards">
+        <div class="row margin-horizontal">
+          <div class="col-100 margin-top charts-col">
+            <div class="row" style="--f7-card-border-radius: 14px;">
+              <div class="col-25">
+                <div class="card text-color-white" style="background-image:url(static/img/1.png)">
+                  <div class="card-content card-content-padding">
+                    <p> </p>
+                    <div class="list media-list">
+                      <ul>
+                        <li class="item-content">
+                          <div class="item-media" style="opacity:0.9;"><img class="product-image"
+                              src="static/img/icon-1.png" width="44" /></div>
+                          <div class="item-inner" align="center">
+
+                            <div class="item-subtitle" style="opacity:0.8;">Количество скачиваний</div>
+                            <p> </p>
+                            <div class="item-title-row">
+                              <div class="item-title" style="width:100%;">
+                                <font size="5px"><span id="download_c"></span></font>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <p> </p>
+                  </div>
+                  <div class="card-footer text-color-white">
+                    <div class="col-100" style="width:100%;opacity:0.8;" align="center">Статистика скачивание</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-25">
+                <div class="card text-color-white" style="background-image:url(static/img/2.png)">
+                  <div class="card-content card-content-padding">
+                    <p> </p>
+                    <div class="list media-list">
+                      <ul>
+                        <li class="item-content">
+                          <div class="item-media" style="opacity:0.9;"><img class="product-image"
+                              src="static/img/icon-2.png" width="44" /></div>
+                          <div class="item-inner" align="center">
+
+                            <div class="item-subtitle" style="opacity:0.8;">Зарегистрировались</div>
+                            <p> </p>
+                            <div class="item-title-row">
+                              <div class="item-title" style="width:100%;">
+                                <font size="5px"><span id="zaregan"></span></font>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <p> </p>
+                  </div>
+                  <div class="card-footer text-color-white">
+                    <div class="col-100" style="width:100%;opacity:0.8;" align="center">Число зарегистр.пользователей
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-25">
+                <div class="card text-color-white" style="background-image:url(static/img/3.png)">
+                  <div class="card-content card-content-padding">
+                    <p> </p>
+                    <div class="list media-list">
+                      <ul>
+                        <li class="item-content">
+                          <div class="item-media" style="opacity:0.9;"><img class="product-image"
+                              src="static/img/icon-3.png" width="44" /></div>
+                          <div class="item-inner" align="center">
+
+                            <div class="item-subtitle" style="opacity:0.8;">Обратились</div>
+                            <p> </p>
+                            <div class="item-title-row">
+                              <div class="item-title" style="width:100%;">
+                                <font size="5px"><span id="e_ob"></span></font>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <p> </p>
+                  </div>
+                  <div class="card-footer text-color-white">
+                    <div class="col-100" style="width:100%;opacity:0.8;" align="center">Количество обращений</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-25">
+                <div class="card text-color-white" style="background-image:url(static/img/4.png)">
+                  <div class="card-content card-content-padding">
+                    <p> </p>
+                    <div class="list media-list">
+                      <ul>
+                        <li class="item-content">
+                          <div class="item-media" style="opacity:0.9;"><img class="product-image"
+                              src="static/img/icon-4.png" width="44" /></div>
+                          <div class="item-inner" align="center">
+
+                            <div class="item-subtitle" style="opacity:0.8;">Записались</div>
+                            <p> </p>
+                            <div class="item-title-row">
+                              <div class="item-title" style="width:100%;">
+                                <font size="5px"><span id="ochered_c"></span></font>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <p> </p>
+                  </div>
+                  <div class="card-footer text-color-white">
+                    <div class="col-100" style="width:100%;opacity:0.8;" align="center">Количество записи на прием
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="row margin-horizontal">
+          <div class="col-100 margin-top">
+            <div class="card data-table data-table-init" style="--f7-card-border-radius: 0px;">
+              <div class="card-header">Список зарегистрированных пользователей<div
+                  style="position: relative; right: 5px;"><a id="download"
+                    class="button button-fill color-red text-color-white">Скачать Excel</a></div>
+              </div>
+              <div class="card-content card-content-padding scrollable">
+                <table>
+                  <thead>
+                    <tr>
+                      <th class="label-cell">№</th>
+                      <th class="label-cell">ФИО</th>
+                      <th class="label-cell">Дата</th>
+                      <th class="label-cell">Контакты</th>
+                    </tr>
+                  </thead>
+                  <tbody id="virtual_user">
+
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+
+
+
+  </div>
+</template>
+<script>
+  export default {
+    on: {
+      pageInit: function (e, page) {
+        var app = this.$app;
+        var $$ = this.$$;
+        var router = this.$router;
+        $$('#statistic').on('click', function () {
+          let d1, d2;
+          d1 = $$('#sdat1').val();
+          d2 = $$('#sdat2').val();
+          app.preloader.show();
+          app.request.post('https://zhilfondapp.kz/api/statistic.php', { zapros: 'list', d1: d1, d2: d2 }, function (otvet) {
+            app.preloader.hide();
+            if (otvet[0].message == "ok") {
+              $$('#zaregan').text(otvet[0].reg);
+              $$('#e_ob').text(otvet[0].obr);
+              $$('#ochered_c').text(otvet[0].zap);
+            }
+          }, 'json');
+        });
+        $$('#news').on('click', function () {
+          router.navigate('/news/');
+        });
+        $$('#home').on('click', function () {
+          router.navigate('/home/');
+        });
+        $$('#dolg').on('click', function () {
+          router.navigate('/dolg/');
+        });
+        $$('#moi').on('click', function () {
+          router.navigate('/moi/');
+        });
+        $$('#info').on('click', function () {
+          router.navigate('/info/');
+        });
+        $$('#notification').on('click', function () {
+          router.navigate('/notification/');
+        });
+        $$('#kontakt').on('click', function () {
+          router.navigate('/kontakt/');
+        });
+        $$('#ochered').on('click', function () {
+          router.navigate('/ochered/');
+        });
+        $$('#ucher').on('click', function () {
+          router.navigate('/ucher/');
+        });
+        $$('#opri').on('click', function () {
+          router.navigate('/opri/');
+        });
+        $$('#teh').on('click', function () {
+          router.navigate('/teh/');
+        });
+        $$('#proga').on('click', function () {
+          router.navigate('/proga/');
+        });
+        $$('#zapis').on('click', function () {
+          router.navigate('/zapis/');
+        });
+        $$('#karta').on('click', function () {
+          router.navigate('/karta/');
+        });
+        $$('#newza').on('click', function () {
+          router.navigate('/newza/');
+        });
+
+        app.preloader.show('blue');
+        app.request.post('https://zhilfondapp.kz/api/users.php', {}, function (otvet) {
+          if (otvet[0].message == "ok") {
+            var spisok = "";
+            for (var i = 0; i < 100; i++) {
+              spisok += '<tr style="height:70px;">' +
+                '<td class="label-cell" style="width:10%">' + (i + 1) + '</td>' +
+                '<td class="label-cell" style="width:40%" class="col-100 ">' +
+                '<img class="avatar" src="static/img/user.jpg" style="width:50px;height:50px;margin-top:6px;">' +
+                '<div style="position:absolute;margin-top:-40px;margin-left:60px;">' + otvet[i].fio + '</div></td>' +
+                '<td class="label-cell" style="width:20%">' + otvet[i].data + '</td>' +
+                '<td class="label-cell" style="width:30%">' + otvet[i].phone + '</td>' +
+                '</tr>';
+            }
+            $$('#virtual_user').html(spisok);
+            $$('#download_c').text(otvet[0].download);
+
+          }
+          app.request.post('https://zhilfondapp.kz/api/statistic.php', { zapros: 'list', d1: '', d2: '' }, function (otvet) {
+            app.preloader.hide();
+            if (otvet[0].message == "ok") {
+              $$('#zaregan').text(otvet[0].reg);
+              $$('#e_ob').text(otvet[0].obr);
+              $$('#ochered_c').text(otvet[0].zap);
+            }
+          }, 'json');
+          app.request.get('https://zhilfondapp.kz/api/badge.php', {}, function (otvet) {
+            app.preloader.hide();
+            if (otvet[0].ochered != "0") {
+              $$('#menu_badge_e_ob').show();
+              $$('#menu_badge_e_ob2').show();
+              $$('#menu_badge_e_ob2').text(otvet[0].ochered);
+              $$('#menu_badge_e_ob').text(otvet[0].ochered);
+            }
+            else {
+              $$('#menu_badge_e_ob2').hide();
+              $$('#menu_badge_e_ob').hide();
+            }
+            if (otvet[0].zapis != "0") {
+              $$('#menu_badge_zapis').show();
+              $$('#menu_badge_zapis').text(otvet[0].zapis);
+            }
+            else
+              $$('#menu_badge_zapis').hide();
+
+          }, function () {
+            app.preloader.hide();
+          }, 'json');
+        }, function () {
+          app.preloader.hide();
+          app.dialog.alert('Нет подключения к интернету');
+        }, 'json');
+        $$('#download').on('click', function () {
+          window.location.href = "https://zhilfondapp.kz/api/down_excel.php";
+        });
+      },
+    },
+
+  }
+</script>

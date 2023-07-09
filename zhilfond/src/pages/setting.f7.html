@@ -1,0 +1,148 @@
+<template>
+<div class="page">
+  <div class="navbar">
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a class="link nazad" @Click="backs">
+          <i  style="color:#073974;" class="icon icon-back"></i>
+        </a>
+      </div>
+      <div class="title"><font size="3%"><span id="title">{{js 'return this.$route.query.title'}}</span></font></div>
+    </div>
+  </div>
+  <div class="page-content">
+<div class="list media-list">
+  <ul>
+    <li>
+      <div class="item-content">
+        <div class="item-media"  style="margin-top:10px;"><i class="icon material-icons" style="color:#073974">g_translate</i></div>
+        <div class="item-inner dynamic-popover" @Click="lang">
+          <div class="item-title-row">
+            <span class="titlel">Язык</span>
+          </div>
+		  <div class="item-subtitle text-color-gray"><span id="language">Русский</span></div>
+        </div>
+      </div>
+    </li>
+	    <li>
+      <div class="item-content" @Click="setting_notifi">
+        <div class="item-media"><i class="icon f7-icons" id ="uvedom-ico" style="color:#073974">bell</i></div>
+        <div class="item-inner">
+          <div class="item-title-row">
+           <span class="uvi">Настройка уведомлений</span>
+          </div>
+        </div>
+      </div>
+    </li>
+	</ul>
+	</div>
+		  		  
+    </div>
+
+</div>
+</template>
+<script>
+export default {
+ methods: {
+	lang: function(){
+	var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+			var dynamicPopover = app.popover.create({
+  targetEl: 'div.dynamic-popover',
+  content: '<div class="popover">'+
+              '<div class="popover-inner">'+
+                '<div class="list">'+
+        '<ul>'+
+          '<li><a class="list-button item-link" id="ru">Русский</a></li>'+
+		  '<li><a class="list-button item-link" id="kz">Қазақша</a></li>'+
+        '</ul>'+
+      '</div>'+
+              '</div>'+
+            '</div>',
+  // Events
+  on: {
+    open: function (popover) {
+	$$('#ru').on('click',function(){
+	dynamicPopover.close();
+	$$('#language').text('Русский');
+	$$('.titlel').text('Язык');
+	$$('#title').text('Настройка');
+	$$('.uvi').text('Настройка уведомлений');
+	app.form.storeFormData('lang', {
+		'lang': 'ru',
+		});
+	});
+	
+	$$('#kz').on('click',function(){
+	dynamicPopover.close();
+	$$('#language').text('Қазақша');
+	$$('.titlel').text('Тіл');
+	$$('#title').text('Баптау');
+	$$('.uvi').text('Хабарландыруды баптау');
+	app.form.storeFormData('lang', {
+		'lang': 'kz',
+		});
+	});
+    },
+    opened: function (popover) {
+
+    },
+  }
+});
+  dynamicPopover.open();
+	
+	
+	},
+    backs: function () {
+		var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+		//app.data.routs.rout="home";
+		router.back({force:true});	
+	app.panel.open();
+		},
+		 setting_notifi: function () {
+		var app = this.$f7;
+		var $$ = this.$$; 
+		var router = this.$router;
+		router.navigate('/setting_notifi/?title='+$$('.uvi').text());		
+		},
+		},
+on: {
+    pageInit: function () {
+	var app = this.$f7;
+		var $$ = this.$$;
+	var router = this.$router;
+	document.addEventListener('backbutton', function (e) {
+				var leftp = app.panel.left && app.panel.left.opened;
+            var rightp = app.panel.right && app.panel.right.opened;
+            if ( leftp || rightp ) {
+                app.panel.close();
+                return false;
+            }else
+				if ($$('.modal-in').length > 0) {
+                app.dialog.close();
+                return false;
+            } 
+else
+		$$('.nazad').click();
+	
+    }, false);
+	//app.data.routs.rout="";
+	var lang = JSON.parse(localStorage.getItem("f7form-lang"));
+		if (lang.lang=="ru"){
+		$$('#language').text('Русский');
+		$$('.titlel').text('Язык');
+		$$('.uvi').text('Настройка уведомлений');
+		}
+		else
+		{
+		$$('#language').text('Қазақша');
+		$$('.titlel').text('Тіл');
+		$$('.uvi').text('Хабарландыруды баптау');
+		}
+	},
+	},
+};
+</script>
